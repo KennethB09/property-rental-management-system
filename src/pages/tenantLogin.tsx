@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useAuthContext } from "@/context/AuthContext";
 
 const formSchema = z.object({
   email: z.email({
@@ -23,6 +24,8 @@ const formSchema = z.object({
 });
 
 export default function TenantLogin() {
+  const { signIn } = useAuthContext();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -32,7 +35,17 @@ export default function TenantLogin() {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    const response = signIn(values.email, values.password);
+    // if (!response.response.ok) {
+    //   console.log(response)
+    //   // toast({
+    // //   title: "Ops, something went wrong",
+    // //   description: `${response.json.error}`,
+    // //   variant: "destructive",
+    // // });
+    // }
+
+    console.log(response)
   }
 
   return (

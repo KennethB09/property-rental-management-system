@@ -20,6 +20,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useAuthContext } from "@/context/AuthContext";
+
 
 const formSchema = z.object({
   first_name: z.string(),
@@ -34,6 +36,8 @@ const formSchema = z.object({
 });
 
 export default function TenantSignup() {
+  const { signUp } = useAuthContext();
+  
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -47,7 +51,17 @@ export default function TenantSignup() {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    const response = signUp(values.email, values.password);
+    if (!response.response.ok) {
+      console.log(response)
+      // toast({
+    //   title: "Ops, something went wrong",
+    //   description: `${response.json.error}`,
+    //   variant: "destructive",
+    // });
+    }
+
+    console.log(response.json)
   }
 
   return (
@@ -125,13 +139,18 @@ export default function TenantSignup() {
                         defaultValue={field.value}
                         value={field.value}
                       >
-                        <SelectTrigger className="w-full border-gray-900" iconColor="#101828">
-                          <SelectValue placeholder="Occupation"/>
+                        <SelectTrigger
+                          className="w-full border-gray-900"
+                          iconColor="#101828"
+                        >
+                          <SelectValue placeholder="Occupation" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="student">Student</SelectItem>
                           <SelectItem value="employed">Employed</SelectItem>
-                          <SelectItem value="self-employed">Self-employed</SelectItem>
+                          <SelectItem value="self-employed">
+                            Self-employed
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>

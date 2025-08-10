@@ -3,10 +3,16 @@ import TenantDashboard from "./pages/tenantDashboard.tsx";
 import TenantLogin from "./pages/tenantLogin.tsx";
 import TenantSignup from "./pages/tenantSignup.tsx";
 import { useAuthContext } from "./context/AuthContext.tsx";
-import "./App.css"
+import Settings from "./routes/Settings.tsx";
+import Listings from "./routes/Listings.tsx";
+import "./App.css";
 
 function App() {
-  const { user } = useAuthContext();
+  const { session } = useAuthContext();
+
+  if (session === undefined) {
+    return <p>loading</p>;
+  }
 
   return (
     <BrowserRouter>
@@ -14,16 +20,23 @@ function App() {
         <Route
           path="/"
           element={
-            user ? <TenantDashboard /> : <Navigate to={"auth/tenant-login"} />
+            session ? (
+              <TenantDashboard />
+            ) : (
+              <Navigate to={"auth/tenant-login"} />
+            )
           }
-        />
+        >
+          <Route path="listings" element={<Listings />} />
+          <Route path="settings" element={<Settings />} />
+        </Route>
         <Route
           path="auth/tenant-login"
-          element={user ? <Navigate to={"/"} /> : <TenantLogin />}
+          element={session ? <Navigate to={"/"} /> : <TenantLogin />}
         />
         <Route
           path="auth/tenant-signup"
-          element={user ? <Navigate to={"/"} /> : <TenantSignup />}
+          element={session ? <Navigate to={"/"} /> : <TenantSignup />}
         />
       </Routes>
     </BrowserRouter>
