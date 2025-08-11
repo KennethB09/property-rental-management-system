@@ -50,9 +50,9 @@ export default function TenantSignup() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    const response = signUp(values.email, values.password);
-    if (!response.response.ok) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const response = await signUp(values.email, values.password, values.first_name, values.last_name, values.phone_number, values.occupation, "tenant");
+    if (response.success) {
       console.log(response)
       // toast({
     //   title: "Ops, something went wrong",
@@ -61,7 +61,7 @@ export default function TenantSignup() {
     // });
     }
 
-    console.log(response.json)
+    console.log(response.error)
   }
 
   return (
@@ -84,6 +84,7 @@ export default function TenantSignup() {
                         placeholder="First Name"
                         {...field}
                         className="border-gray-900"
+                        required
                       />
                     </FormControl>
                     <FormMessage />
@@ -102,6 +103,7 @@ export default function TenantSignup() {
                         placeholder="Last Name"
                         {...field}
                         className="border-gray-900"
+                        required
                       />
                     </FormControl>
                     <FormMessage />
@@ -120,6 +122,7 @@ export default function TenantSignup() {
                         placeholder="Phone Number"
                         {...field}
                         className="border-gray-900"
+                        required
                       />
                     </FormControl>
                     <FormMessage />
@@ -138,6 +141,7 @@ export default function TenantSignup() {
                         onValueChange={field.onChange}
                         defaultValue={field.value}
                         value={field.value}
+                        required
                       >
                         <SelectTrigger
                           className="w-full border-gray-900"
@@ -170,6 +174,7 @@ export default function TenantSignup() {
                         placeholder="Email"
                         {...field}
                         className="border-gray-900"
+                        required
                       />
                     </FormControl>
                     <FormMessage />
@@ -188,6 +193,7 @@ export default function TenantSignup() {
                         placeholder="Password"
                         {...field}
                         className="border-gray-900"
+                        required
                       />
                     </FormControl>
                     <FormMessage />

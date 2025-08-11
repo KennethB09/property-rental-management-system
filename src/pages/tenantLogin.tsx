@@ -65,7 +65,7 @@ export default function TenantLogin() {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input type="email" placeholder="Email" {...field} />
+                      <Input type="email" placeholder="Email" {...field} required/>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -78,7 +78,7 @@ export default function TenantLogin() {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input type="password" placeholder="Password" {...field} />
+                      <Input type="password" placeholder="Password" {...field} required/>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
