@@ -1,5 +1,5 @@
 import AuthPageNav from "@/components/authPageNav";
-import svg from "../assets/svgs/undraw_house-searching_g2b8.svg";
+import svg from "@/assets/svgs/undraw_house-searching_g2b8.svg";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -14,6 +14,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useAuthContext } from "@/context/AuthContext";
+import { useState } from "react";
+import { toast } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
 
 const formSchema = z.object({
   email: z.email({
@@ -25,6 +28,8 @@ const formSchema = z.object({
 
 export default function TenantLogin() {
   const { signIn } = useAuthContext();
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -34,22 +39,25 @@ export default function TenantLogin() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    const response = signIn(values.email, values.password);
-    // if (!response.response.ok) {
-    //   console.log(response)
-    //   // toast({
-    // //   title: "Ops, something went wrong",
-    // //   description: `${response.json.error}`,
-    // //   variant: "destructive",
-    // // });
-    // }
-
-    console.log(response)
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setLoading(true);
+    const response = await signIn(values.email, values.password);
+    if (!response.success) {
+      setLoading(false);
+      console.error("Sign-in error:", response.error);
+      setErrorMessage(response.error!);
+      toast.warning("Log-in Failed", {
+        description: "Something went wrong. Please try again.",
+        duration: 5000,
+      });
+      return;
+    }
+    setLoading(false);
   }
 
   return (
     <div className="flex flex-col h-screen px-10 font-roboto">
+      <Toaster richColors />
       <AuthPageNav />
       <div className="flex flex-row h-full">
         <div className="w-5/12 text-center h-full flex flex-col justify-center gap-20">
@@ -65,7 +73,13 @@ export default function TenantLogin() {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input type="email" placeholder="Email" {...field} required/>
+                      <Input
+                        type="email"
+                        placeholder="Email"
+                        {...field}
+                        className="border-gray-900"
+                        required
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -78,14 +92,38 @@ export default function TenantLogin() {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input type="password" placeholder="Password" {...field} required/>
+                      <Input
+                        type="password"
+                        placeholder="Password"
+                        {...field}
+                        className="border-gray-900"
+                        required
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full bg-green-700 hover:bg-green-900">Login</Button>
-              <p className="text-gray-900">Don't have an account? <a href="/auth/tenant-signup" className="text-green-700">Sign-up</a></p>
+
+              {errorMessage && (
+                <p className="text-red-500 font-semibold capitalize">
+                  {errorMessage}
+                </p>
+              )}
+
+              <Button
+                type="submit"
+                className="w-full bg-green-700 hover:bg-green-900"
+                disabled={loading}
+              >
+                Login
+              </Button>
+              <p className="text-gray-900">
+                Don't have an account?{" "}
+                <a href="/auth/tenant-signup" className="text-green-700">
+                  Sign-up
+                </a>
+              </p>
             </form>
           </Form>
         </div>

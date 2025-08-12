@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
-import { useNavigate } from 'react-router';
 
 type UserRole = 'tenant' | 'landlord' | 'guest';
 
 export const useUserRole = () => {
   const [role, setRole] = useState<UserRole>('guest');
   const [isLoading, setIsLoading] = useState(true);
-  const navigate = useNavigate();
+  const [userInfo, setUserInfo] = useState<null | any>(null);
+  // const navigate = useNavigate();
 
   useEffect(() => {
     const checkUserRole = async () => {
@@ -22,6 +22,7 @@ export const useUserRole = () => {
         return;
       }
 
+      setUserInfo(user);
       // Fetch user role (you'll need to create this RPC function)
       const { data, error } = await supabase.rpc('get_user_role');
       
@@ -38,5 +39,5 @@ export const useUserRole = () => {
     checkUserRole();
   }, []);
 
-  return { role, isLoading };
+  return { role, isLoading, userInfo };
 };

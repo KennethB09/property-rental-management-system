@@ -1,5 +1,5 @@
 import AuthPageNav from "@/components/authPageNav";
-import svg from "../assets/svgs/undraw_location-search_nesh.svg";
+import svg from "@/assets/svgs/undraw_location-search_nesh.svg";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -21,7 +21,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useAuthContext } from "@/context/AuthContext";
-
+import { useState } from "react";
+import { toast } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
 
 const formSchema = z.object({
   first_name: z.string(),
@@ -37,7 +39,9 @@ const formSchema = z.object({
 
 export default function TenantSignup() {
   const { signUp } = useAuthContext();
-  
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -51,21 +55,37 @@ export default function TenantSignup() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const response = await signUp(values.email, values.password, values.first_name, values.last_name, values.phone_number, values.occupation, "tenant");
-    if (response.success) {
-      console.log(response)
-      // toast({
-    //   title: "Ops, something went wrong",
-    //   description: `${response.json.error}`,
-    //   variant: "destructive",
-    // });
+    setLoading(true);
+    const response = await signUp(
+      values.email,
+      values.password,
+      values.first_name,
+      values.last_name,
+      values.phone_number,
+      values.occupation,
+      "tenant"
+    );
+    if (!response.success) {
+      setLoading(false);
+      console.error("Sign-up error:", response.error);
+      setErrorMessage(response.error!);
+      toast.warning("Sign-up Failed", {
+        description: "Please try again.",
+      });
+      return;
     }
-
-    console.log(response.error)
+    console.log(response.data.session)
+    if (!response.data.session) {
+      toast.info("Sign-up Failed", {
+        description: "This email is already used.",
+      });
+    }
+    setLoading(false);
   }
 
   return (
     <div className="flex flex-col px-10 font-roboto">
+      <Toaster richColors />
       <AuthPageNav />
       <div className="flex flex-row">
         <div className="w-5/12 h-full flex flex-col justify-center gap-10 my-10">
@@ -200,9 +220,13 @@ export default function TenantSignup() {
                   </FormItem>
                 )}
               />
+
+              {errorMessage && <p className="text-red-500 font-semibold capitalize">{errorMessage}</p>}
+
               <Button
                 type="submit"
                 className="w-full bg-green-700 hover:bg-green-900"
+                disabled={loading}
               >
                 Sign-up
               </Button>
