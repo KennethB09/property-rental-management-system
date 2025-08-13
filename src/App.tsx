@@ -8,7 +8,6 @@ import Listings from "./routes/Listings.tsx";
 import "./App.css";
 import { ProtectedRoute } from "./components/protectedRoute.tsx";
 import LandlordDashboard from "./pages/landlord/landlordDashboard.tsx";
-import { useUserRole } from "./hooks/useCheckRole.tsx";
 import PageNotFound from "./pages/pageNotFound.tsx";
 
 function App() {
@@ -19,11 +18,23 @@ function App() {
       <Routes>
         <Route
           path="/auth/tenant-login"
-          element={!session ? <TenantLogin /> : <Navigate to="/tenant/dashboard" replace />}
+          element={
+            !session ? (
+              <TenantLogin />
+            ) : (
+              <Navigate to="/tenant/dashboard" replace />
+            )
+          }
         />
         <Route
           path="/auth/tenant-signup"
-          element={!session ? <TenantSignup /> : <Navigate to="/tenant/dashboard" replace />}
+          element={
+            !session ? (
+              <TenantSignup />
+            ) : (
+              <Navigate to="/tenant/dashboard" replace />
+            )
+          }
         />
 
         <Route
@@ -47,6 +58,12 @@ function App() {
           <Route path="settings" element={<Settings />} />
           <Route path="*" errorElement element={<PageNotFound />} />
         </Route>
+        <Route
+          path="/"
+          errorElement
+          element={<Navigate to={"/auth/tenant-login"} />}
+        />
+        <Route path="*" errorElement element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>
   );

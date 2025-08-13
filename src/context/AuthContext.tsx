@@ -17,10 +17,19 @@ type AuthContextType = {
     email: string,
     password: string
   ) => Promise<{ success: boolean; data?: any; error?: string }>;
+  landlordSignUp: (
+    role: UserRole,
+    first_name: string,
+    last_name: string,
+    email: string,
+    password: string,
+    address: string,
+    business_name: string,
+    phone_number: string,
+    profile_pic: string
+  ) => Promise<{ success: boolean; data?: any; error?: string }>;
   signOut: () => Promise<void>;
   session: any | undefined;
-  // userRole: UserRole;
-  // loading: boolean; // Add loading state
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -93,6 +102,48 @@ export const AuthContextProvider = ({
     }
   };
 
+  const landlordSignUp = async (
+    role: UserRole,
+    first_name: string,
+    last_name: string,
+    email: string,
+    password: string,
+    address: string,
+    business_name: string,
+    phone_number: string,
+    profile_pic: string
+  ) => {
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email: email,
+        password: password,
+        options: {
+          emailRedirectTo: `${import.meta.env.CLIENT}/${role}/dashboard`,
+          data: {
+            role,
+            first_name,
+            last_name,
+            address,
+            business_name,
+            phone_number,
+            profile_pic,
+          },
+        },
+      });
+      if (error) {
+        console.log("Sign-up error:", error);
+        return { success: false, error: error.message };
+      }
+      return { success: true, data };
+    } catch (error: any) {
+      console.error("Error during signup:", error);
+      return {
+        success: false,
+        error: error.message || "An unexpected error occurred during signup",
+      };
+    }
+  };
+
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
@@ -113,7 +164,9 @@ export const AuthContextProvider = ({
   }
 
   return (
-    <AuthContext.Provider value={{ signUp, signIn, session, signOut }}>
+    <AuthContext.Provider
+      value={{ signUp, signIn, session, signOut, landlordSignUp }}
+    >
       {children}
     </AuthContext.Provider>
   );
