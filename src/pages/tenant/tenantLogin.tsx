@@ -1,4 +1,3 @@
-import AuthPageNav from "@/components/authPageNav";
 import svg from "@/assets/svgs/undraw_house-searching_g2b8.svg";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -48,7 +47,7 @@ export default function TenantLogin() {
       setErrorMessage(response.error!);
       toast.warning("Log-in Failed", {
         description: "Something went wrong. Please try again.",
-        duration: 5000,
+        duration: 5000
       });
       return;
     }
@@ -56,11 +55,10 @@ export default function TenantLogin() {
   }
 
   return (
-    <div className="flex flex-col h-screen px-10 font-roboto">
+    <div className="flex flex-col h-screen px-10 max-sm:px-5 font-roboto">
       <Toaster richColors />
-      <AuthPageNav />
       <div className="flex flex-row h-full">
-        <div className="w-5/12 text-center h-full flex flex-col justify-center gap-20">
+        <div className="w-5/12 max-sm:w-full text-center h-full flex flex-col justify-center gap-20">
           <h1 className="text-gray-900 font-bold text-4xl">
             Welcome <span className="text-green-700">Back</span>!
           </h1>
@@ -127,7 +125,7 @@ export default function TenantLogin() {
             </form>
           </Form>
         </div>
-        <div className="flex justify-center content-center items-center w-full h-full">
+        <div className="flex justify-center content-center items-center w-full h-full max-sm:hidden">
           <img className=" w-4/5" src={svg} />
         </div>
       </div>

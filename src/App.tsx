@@ -9,6 +9,10 @@ import "./App.css";
 import { ProtectedRoute } from "./components/protectedRoute.tsx";
 import LandlordDashboard from "./pages/landlord/landlordDashboard.tsx";
 import PageNotFound from "./pages/pageNotFound.tsx";
+import ConfirmEmail from "./pages/confirmEmail.tsx";
+import AuthPageLayout from "./pages/authPageLayout.tsx";
+import LandlordLogin from "./pages/landlord/landlordLogin.tsx";
+import LandlordSignUp from "./pages/landlord/landlordSignup.tsx";
 
 function App() {
   const { session } = useAuthContext();
@@ -17,25 +21,22 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route
-          path="/auth/tenant-login"
+          path="/auth"
           element={
             !session ? (
-              <TenantLogin />
+              <AuthPageLayout />
             ) : (
-              <Navigate to="/tenant/dashboard" replace />
+              <ProtectedRoute />
             )
           }
-        />
-        <Route
-          path="/auth/tenant-signup"
-          element={
-            !session ? (
-              <TenantSignup />
-            ) : (
-              <Navigate to="/tenant/dashboard" replace />
-            )
-          }
-        />
+        >
+          <Route index path="tenant-login" element={<TenantLogin />}/>
+          <Route path="landlord-login" element={<LandlordLogin />}/>
+          <Route path="tenant-signup" element={<TenantSignup />}/>
+          <Route path="landlord-signup" element={<LandlordSignUp />}/>
+        </Route>
+        
+        <Route path="/email-verification" element={<ConfirmEmail />} />
 
         <Route
           path="/landlord/dashboard"

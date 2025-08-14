@@ -8,12 +8,25 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button"
-import { ChevronDown } from "lucide-react"
+import { Button } from "@/components/ui/button";
+import { ChevronDown } from "lucide-react";
+import { useNavigate } from "react-router";
 
-export default function authPageNav() {
-  const [select, onSelect] = useState<"tenant" | "landlord">("tenant");
+type Tselect = "tenant" | "landlord";
+
+type AuthPageNavProps = {
+  setSelect: Tselect
+}
+
+export default function authPageNav({ setSelect }: AuthPageNavProps) {
+  const [select, onSelect] = useState<Tselect>(setSelect);
+  const navigate = useNavigate();
   const { theme } = useTheme();
+
+  function handleSelect(param: Tselect) {
+    onSelect(param);
+    navigate(`/auth/${param}-login`);
+  }
   return (
     <nav className="flex flex-row justify-between items-center h-20">
       <img
@@ -22,16 +35,20 @@ export default function authPageNav() {
       />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="default" className="capitalize font-semibold text-gray-900 border-gray-900">
+          <Button
+            variant="outline"
+            size="default"
+            className="capitalize font-semibold text-gray-900 border-gray-900"
+          >
             {select}
             <ChevronDown className="text-gray-900" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem onClick={() => onSelect("tenant")}>
+          <DropdownMenuItem onClick={() => handleSelect("tenant")}>
             Tenant
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => onSelect("landlord")}>
+          <DropdownMenuItem onClick={() => handleSelect("landlord")}>
             Landlord
           </DropdownMenuItem>
         </DropdownMenuContent>

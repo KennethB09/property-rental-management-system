@@ -6,7 +6,7 @@ import { useAuthContext } from '@/context/AuthContext';
 type UserRole = 'tenant' | 'landlord' | 'guest';
 
 interface ProtectedRouteProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   allowedRoles?: UserRole[];
   redirectPath?: string;
 }
@@ -25,6 +25,10 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
   if (!allowedRoles.includes(role) || !session) {
     return <Navigate to={redirectPath} replace />;
+  }
+
+  if (allowedRoles.length > 1) {
+    return <Navigate to={`/${role}/dashboard`} replace/>
   }
 
   return <>{children}</>;

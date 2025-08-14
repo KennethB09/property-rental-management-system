@@ -1,4 +1,3 @@
-import AuthPageNav from "@/components/authPageNav";
 import svg from "@/assets/svgs/undraw_location-search_nesh.svg";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -24,6 +23,7 @@ import { useAuthContext } from "@/context/AuthContext";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
+import { useNavigate } from "react-router";
 
 const formSchema = z.object({
   first_name: z.string(),
@@ -38,6 +38,7 @@ const formSchema = z.object({
 });
 
 export default function TenantSignup() {
+  const navigate = useNavigate();
   const { signUp } = useAuthContext();
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -74,21 +75,25 @@ export default function TenantSignup() {
       });
       return;
     }
-    console.log(response.data.session)
     if (!response.data.session) {
-      toast.info("Sign-up Failed", {
-        description: "This email is already used.",
-      });
+      if (response.data.user.role === "") {
+        toast.info("Sign-up Failed", {
+          description: "This email is already used.",
+          duration: 5000
+        });
+        setLoading(false);
+        return;
+      }
+      navigate("/email-verification");
     }
     setLoading(false);
   }
 
   return (
-    <div className="flex flex-col px-10 font-roboto">
+    <div className="flex flex-col px-10 max-sm:px-5 font-roboto">
       <Toaster richColors />
-      <AuthPageNav />
       <div className="flex flex-row">
-        <div className="w-5/12 h-full flex flex-col justify-center gap-10 my-10">
+        <div className="w-5/12 max-sm:w-full h-full flex flex-col justify-center gap-10 my-10">
           <h1 className="text-gray-900 font-bold text-3xl">Sign-up</h1>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
@@ -221,7 +226,11 @@ export default function TenantSignup() {
                 )}
               />
 
-              {errorMessage && <p className="text-red-500 font-semibold capitalize">{errorMessage}</p>}
+              {errorMessage && (
+                <p className="text-red-500 font-semibold capitalize">
+                  {errorMessage}
+                </p>
+              )}
 
               <Button
                 type="submit"
@@ -239,7 +248,7 @@ export default function TenantSignup() {
             </form>
           </Form>
         </div>
-        <div className="flex justify-center items-center w-full">
+        <div className="flex justify-center items-center w-full max-sm:hidden">
           <img className=" w-2/3" src={svg} />
         </div>
       </div>
