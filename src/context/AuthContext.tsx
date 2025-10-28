@@ -22,11 +22,7 @@ type AuthContextType = {
     first_name: string,
     last_name: string,
     email: string,
-    password: string,
-    address: string,
-    business_name: string,
-    phone_number: string,
-    profile_pic: string
+    password: string
   ) => Promise<{ success: boolean; data?: any; error?: string }>;
   signOut: () => Promise<void>;
   session: any | undefined;
@@ -107,11 +103,7 @@ export const AuthContextProvider = ({
     first_name: string,
     last_name: string,
     email: string,
-    password: string,
-    address: string,
-    business_name: string,
-    phone_number: string,
-    profile_pic: string
+    password: string
   ) => {
     try {
       const { data, error } = await supabase.auth.signUp({
@@ -122,11 +114,7 @@ export const AuthContextProvider = ({
           data: {
             role,
             first_name,
-            last_name,
-            address,
-            business_name,
-            phone_number,
-            profile_pic,
+            last_name
           },
         },
       });

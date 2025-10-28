@@ -39,7 +39,7 @@ function App() {
         <Route path="/email-verification" element={<ConfirmEmail />} />
 
         <Route
-          path="/landlord/dashboard"
+          path="/landlord/dashboard/*"
           element={
             <ProtectedRoute allowedRoles={["landlord"]}>
               <LandlordDashboard />
