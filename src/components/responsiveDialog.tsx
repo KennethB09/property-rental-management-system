@@ -22,19 +22,24 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export default function ResponsiveDialog() {
+type ResponsiveDialogProps = {
+  setState: React.Dispatch<React.SetStateAction<boolean>>
+  state: boolean;
+}
+
+export default function ResponsiveDialog({ setState, state }: ResponsiveDialogProps) {
   const [open, setOpen] = React.useState(false);
   const width = window.screen.width;
 
   if (width >= 768) {
     return (
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>
+      <Dialog open={state} onOpenChange={setState}>
+        {/* <DialogTrigger asChild>
           <Button variant="outline">Edit Profile</Button>
-        </DialogTrigger>
+        </DialogTrigger> */}
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Edit profile</DialogTitle>
+            <DialogTitle>Account Set-up</DialogTitle>
             <DialogDescription>
               Make changes to your profile here. Click save when you&apos;re
               done.
@@ -47,21 +52,21 @@ export default function ResponsiveDialog() {
   }
 
   return (
-    <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>
+    <Drawer open={state} onOpenChange={setState}>
+      {/* <DrawerTrigger asChild>
         <Button variant="outline">Edit Profile</Button>
-      </DrawerTrigger>
-      <DrawerContent>
+      </DrawerTrigger> */}
+      <DrawerContent className="bg-white">
         <DrawerHeader className="text-left">
-          <DrawerTitle>Edit profile</DrawerTitle>
-          <DrawerDescription>
+          <DrawerTitle className="text-2xl font-roboto text-gray-900 font-semibold text-start">Account Set-up</DrawerTitle>
+          <DrawerDescription hidden>
             Make changes to your profile here. Click save when you&apos;re done.
           </DrawerDescription>
         </DrawerHeader>
         <ProfileForm className="px-4" />
         <DrawerFooter className="pt-2">
           <DrawerClose asChild>
-            <Button variant="outline">Cancel</Button>
+            <Button variant="outline" className="font-roboto">Maybe later</Button>
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>
@@ -73,14 +78,18 @@ function ProfileForm({ className }: React.ComponentProps<"form">) {
   return (
     <form className={cn("grid items-start gap-6", className)}>
       <div className="grid gap-3">
-        <Label htmlFor="email">Email</Label>
-        <Input type="email" id="email" defaultValue="shadcn@example.com" />
+        <Label htmlFor="address" className="text-gray-900 font-roboto font-semibold">Address</Label>
+        <Input type="address" id="address" defaultValue="" className="border-gray-900"/>
       </div>
       <div className="grid gap-3">
-        <Label htmlFor="username">Username</Label>
-        <Input id="username" defaultValue="@shadcn" />
+        <Label htmlFor="business" className="text-gray-900 font-roboto font-semibold">Business Name</Label>
+        <Input id="business" defaultValue="" className="border-gray-900"/>
       </div>
-      <Button type="submit">Save changes</Button>
+        <div className="grid gap-3">
+        <Label htmlFor="number" className="text-gray-900 font-roboto font-semibold">Phone Number</Label>
+        <Input id="number" defaultValue="" className="border-gray-900"/>
+      </div>
+      <Button type="submit" className="bg-green-700 hover:bg-green-900 font-roboto">Save changes</Button>
     </form>
   );
 }

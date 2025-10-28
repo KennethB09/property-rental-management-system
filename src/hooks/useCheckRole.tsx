@@ -23,7 +23,7 @@ export const useUserRole = () => {
       }
 
       setUserInfo(user);
-      // Fetch user role (you'll need to create this RPC function)
+      // Fetch user role
       const { data, error } = await supabase.rpc('get_user_role');
       
       if (error) {
