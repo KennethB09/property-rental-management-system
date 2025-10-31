@@ -24,6 +24,12 @@ type AuthContextType = {
     email: string,
     password: string
   ) => Promise<{ success: boolean; data?: any; error?: string }>;
+  landlordAccountSetup: (
+    img: string,
+    address: string,
+    business_name: string,
+    phone_number: string
+  ) => Promise<{ success: boolean; data?: any; error?: string }>;
   signOut: () => Promise<void>;
   session: any | undefined;
 };
@@ -114,7 +120,7 @@ export const AuthContextProvider = ({
           data: {
             role,
             first_name,
-            last_name
+            last_name,
           },
         },
       });
@@ -127,9 +133,43 @@ export const AuthContextProvider = ({
       console.error("Error during signup:", error);
       return {
         success: false,
-        error: error.message || "An unexpected error occurred during signup",
+        error: error.message || "An unexpected error occurred during signup"
       };
     }
+  };
+
+  const landlordAccountSetup = async (
+    img: string,
+    address: string,
+    business_name: string,
+    phone_number: string
+  ) => {
+
+    const response = await fetch(
+      `${import.meta.env.VITE_SERVER_URL}/rent-ease/api/complete-setup`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({
+          id: session.user.id,
+          img: img,
+          address: address,
+          business_name: business_name,
+          phone_number: phone_number,
+        }),
+      }
+    );
+
+    const json = await response.json();
+
+    if (!response.ok) {
+      return { success: false, error: json.message || "An unexpected error occurred. Please try again." };
+    }
+
+    return { success: true, data: json };
   };
 
   useEffect(() => {
@@ -153,7 +193,14 @@ export const AuthContextProvider = ({
 
   return (
     <AuthContext.Provider
-      value={{ signUp, signIn, session, signOut, landlordSignUp }}
+      value={{
+        signUp,
+        signIn,
+        session,
+        signOut,
+        landlordSignUp,
+        landlordAccountSetup,
+      }}
     >
       {children}
     </AuthContext.Provider>

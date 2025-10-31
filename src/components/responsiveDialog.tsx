@@ -1,5 +1,4 @@
 import * as React from "react";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -7,7 +6,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
   Drawer,
@@ -17,35 +15,45 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
-  DrawerTrigger,
 } from "@/components/ui/drawer";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import ProfileSetupForm from "./profileSetupForm";
+import svg from "@/assets/svgs/undraw_fill-forms.svg";
 
 type ResponsiveDialogProps = {
-  setState: React.Dispatch<React.SetStateAction<boolean>>
+  setState: React.Dispatch<React.SetStateAction<boolean>>;
   state: boolean;
-}
+};
 
-export default function ResponsiveDialog({ setState, state }: ResponsiveDialogProps) {
-  const [open, setOpen] = React.useState(false);
+export default function ResponsiveDialog({
+  setState,
+  state,
+}: ResponsiveDialogProps) {
   const width = window.screen.width;
 
   if (width >= 768) {
     return (
       <Dialog open={state} onOpenChange={setState}>
-        {/* <DialogTrigger asChild>
-          <Button variant="outline">Edit Profile</Button>
-        </DialogTrigger> */}
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="font-roboto sm:max-w-[800px]">
           <DialogHeader>
             <DialogTitle>Account Set-up</DialogTitle>
             <DialogDescription>
-              Make changes to your profile here. Click save when you&apos;re
-              done.
+              Make changes to your profile here. Click save changes when
+              you&apos;re done.
             </DialogDescription>
           </DialogHeader>
-          <ProfileForm />
+          <div className="sm:flex gap-10">
+            <div className="w-3/5 text-center space-y-10 flex flex-col justify-center items-center">
+              <img src={svg} className="aspect-auto w-4/5" />
+              <h1 className="font-bold text-3xl text-gray-900">
+                <span className="text-green-700">Almost there</span>! Let's
+                finish <wbr />
+                setting up your account.
+              </h1>
+            </div>
+            <div className="w-1/2">
+              <ProfileSetupForm setClose={setState} />
+            </div>
+          </div>
         </DialogContent>
       </Dialog>
     );
@@ -53,43 +61,25 @@ export default function ResponsiveDialog({ setState, state }: ResponsiveDialogPr
 
   return (
     <Drawer open={state} onOpenChange={setState}>
-      {/* <DrawerTrigger asChild>
-        <Button variant="outline">Edit Profile</Button>
-      </DrawerTrigger> */}
-      <DrawerContent className="bg-white">
+      <DrawerContent className="min-h-fit">
         <DrawerHeader className="text-left">
-          <DrawerTitle className="text-2xl font-roboto text-gray-900 font-semibold text-start">Account Set-up</DrawerTitle>
+          <DrawerTitle className="text-2xl font-roboto text-gray-900 font-semibold text-start">
+            Account Set-up
+          </DrawerTitle>
           <DrawerDescription hidden>
-            Make changes to your profile here. Click save when you&apos;re done.
+            Make changes to your profile here. Click save changes when
+            you&apos;re done.
           </DrawerDescription>
         </DrawerHeader>
-        <ProfileForm className="px-4" />
+        <ProfileSetupForm setClose={setState} />
         <DrawerFooter className="pt-2">
           <DrawerClose asChild>
-            <Button variant="outline" className="font-roboto">Maybe later</Button>
+            <Button variant="outline" className="font-roboto">
+              Maybe later
+            </Button>
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
-  );
-}
-
-function ProfileForm({ className }: React.ComponentProps<"form">) {
-  return (
-    <form className={cn("grid items-start gap-6", className)}>
-      <div className="grid gap-3">
-        <Label htmlFor="address" className="text-gray-900 font-roboto font-semibold">Address</Label>
-        <Input type="address" id="address" defaultValue="" className="border-gray-900"/>
-      </div>
-      <div className="grid gap-3">
-        <Label htmlFor="business" className="text-gray-900 font-roboto font-semibold">Business Name</Label>
-        <Input id="business" defaultValue="" className="border-gray-900"/>
-      </div>
-        <div className="grid gap-3">
-        <Label htmlFor="number" className="text-gray-900 font-roboto font-semibold">Phone Number</Label>
-        <Input id="number" defaultValue="" className="border-gray-900"/>
-      </div>
-      <Button type="submit" className="bg-green-700 hover:bg-green-900 font-roboto">Save changes</Button>
-    </form>
   );
 }
