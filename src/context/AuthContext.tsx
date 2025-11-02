@@ -69,7 +69,7 @@ export const AuthContextProvider = ({
         },
       });
       if (error) {
-        console.log("Sign-up error:", error);
+        // console.log("Sign-up error:", error);
         return { success: false, error: error.message };
       }
       return { success: true, data };
@@ -92,7 +92,7 @@ export const AuthContextProvider = ({
         console.log("Sign-in error:", error);
         return { success: false, error: error.message };
       }
-      console.log("Sign-in success:", data);
+      // console.log("Sign-in success:", data);
       return { success: true, data };
     } catch (error: any) {
       console.error("Sign-in error:", error);
@@ -125,7 +125,7 @@ export const AuthContextProvider = ({
         },
       });
       if (error) {
-        console.log("Sign-up error:", error);
+        // console.log("Sign-up error:", error);
         return { success: false, error: error.message };
       }
       return { success: true, data };
@@ -188,6 +188,7 @@ export const AuthContextProvider = ({
       console.error("Error signing out:", error);
     }
 
+    localStorage.removeItem("activeTab")
     setSession(null);
   }
 
