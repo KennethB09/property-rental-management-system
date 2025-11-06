@@ -22,20 +22,14 @@ function App() {
       <Routes>
         <Route
           path="/auth"
-          element={
-            !session ? (
-              <AuthPageLayout />
-            ) : (
-              <ProtectedRoute />
-            )
-          }
+          element={!session ? <AuthPageLayout /> : <ProtectedRoute />}
         >
-          <Route index path="tenant-login" element={<TenantLogin />}/>
-          <Route path="landlord-login" element={<LandlordLogin />}/>
-          <Route path="tenant-signup" element={<TenantSignup />}/>
-          <Route path="landlord-signup" element={<LandlordSignUp />}/>
+          <Route index path="tenant-login" element={<TenantLogin />} />
+          <Route path="landlord-login" element={<LandlordLogin />} />
+          <Route path="tenant-signup" element={<TenantSignup />} />
+          <Route path="landlord-signup" element={<LandlordSignUp />} />
         </Route>
-        
+
         <Route path="/email-verification" element={<ConfirmEmail />} />
 
         <Route
@@ -59,6 +53,7 @@ function App() {
           <Route path="settings" element={<Settings />} />
           <Route path="*" errorElement element={<PageNotFound />} />
         </Route>
+
         <Route
           path="/"
           errorElement

@@ -56,7 +56,7 @@ export default function LandlordMenu() {
   return (
     <div className="flex flex-col p-4 h-full gap-4 font-roboto">
       <header>
-        <h1 className="text-xl font-bold text-gray-900">Menu</h1>
+        <h1 className="text-3xl font-bold text-gray-900">Menu</h1>
       </header>
       <div className="flex flex-col h-full">
         {activeList !== "" && (
