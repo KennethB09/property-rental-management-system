@@ -28,6 +28,7 @@ import { toast } from "sonner";
 import { useAuthContext } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
+import type { TpropertyType } from "@/types/enums";
 
 const formSchema = z.object({
   title: z
@@ -44,6 +45,8 @@ const formSchema = z.object({
     .max(255, { message: "Address must not exceed 255 characters." }),
   propertyType: z.string().max(100),
   occupant: z.string().max(100),
+  status: z.string().max(100),
+  rent: z.number().max(999999999),
 });
 
 type AddPropertyProps = {
@@ -61,6 +64,7 @@ export default function AddProperty({ setClose }: AddPropertyProps) {
   const [latLang, setLatLang] = useState<google.maps.LatLngLiteral | null>(
     null
   );
+  const [propertyType, setPropertyType] = useState<TpropertyType[]>([]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -70,45 +74,71 @@ export default function AddProperty({ setClose }: AddPropertyProps) {
       address: "",
       propertyType: "",
       occupant: "",
+      status: "",
+      rent: 1,
     },
   });
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        // Success callback: location data is available
-        const { latitude, longitude } = position.coords;
-        console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
-        setLatLang({ lat: latitude, lng: longitude });
-      },
-      (error) => {
-        console.error("Error getting geolocation:", error);
-        switch (error.code) {
-          case error.PERMISSION_DENIED:
-            console.error("User denied the request for Geolocation.");
-            break;
-          case error.POSITION_UNAVAILABLE:
-            console.error("Location information is unavailable.");
-            break;
-          case error.TIMEOUT:
-            console.error("The request to get user location timed out.");
-            break;
+    function getUserLocation() {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          // console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+          setLatLang({ lat: latitude, lng: longitude });
+        },
+        (error) => {
+          console.error("Error getting geolocation:", error);
+          switch (error.code) {
+            case error.PERMISSION_DENIED:
+              console.error("User denied the request for Geolocation.");
+              break;
+            case error.POSITION_UNAVAILABLE:
+              console.error("Location information is unavailable.");
+              break;
+            case error.TIMEOUT:
+              console.error("The request to get user location timed out.");
+              break;
+          }
         }
+        // {
+        //   // Optional: Configuration options for getCurrentPosition
+        //   enableHighAccuracy: true, // Request a more accurate position (may take longer)
+        //   timeout: 5000, // Maximum time (in ms) to wait for a response
+        //   maximumAge: 0, // Don't use a cached position
+        // }
+      );
+    }
+
+    async function getPropertyType() {
+      const response = await fetch(
+        `${import.meta.env.VITE_SERVER_URL}/rent-ease/api/property-type`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${session.access_token}`,
+          },
+        }
+      );
+
+      const json = await response.json();
+
+      if (!response.ok) {
+        return toast.error(json.message);
       }
-      // {
-      //   // Optional: Configuration options for getCurrentPosition
-      //   enableHighAccuracy: true, // Request a more accurate position (may take longer)
-      //   timeout: 5000, // Maximum time (in ms) to wait for a response
-      //   maximumAge: 0, // Don't use a cached position
-      // }
-    );
+
+      setPropertyType(json);
+    }
+
+    getUserLocation();
+    getPropertyType();
   }, []);
 
   async function handleSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
 
     if (images.length === 0) {
-      toast.warning("Please select some property images.")
+      toast.warning("Please select some property images.");
       return setLoading(false);
     }
 
@@ -123,7 +153,7 @@ export default function AddProperty({ setClose }: AddPropertyProps) {
         body: JSON.stringify({
           id: session.user.id,
           thumbnail: thumbnail,
-          images: images,
+          images: JSON.stringify(images),
           lat: latLang?.lat,
           lng: latLang?.lng,
           title: values.title,
@@ -131,6 +161,8 @@ export default function AddProperty({ setClose }: AddPropertyProps) {
           address: values.address,
           propertyType: values.propertyType,
           occupant: values.occupant,
+          status: values.status,
+          rent: values.rent,
         }),
       }
     );
@@ -147,6 +179,7 @@ export default function AddProperty({ setClose }: AddPropertyProps) {
     console.log(json);
     setLoading(false);
     toast.success(json.message);
+    form.reset();
   }
 
   return (
@@ -163,7 +196,6 @@ export default function AddProperty({ setClose }: AddPropertyProps) {
           The first image that selected will be the default thumbnail if not
           set.
         </p>
-        {/* NOTE: Create and Add a Upload Property Image component here */}
         <div>
           <UploadPropertyImages
             listItemThumbnail={setThumbnail}
@@ -190,6 +222,7 @@ export default function AddProperty({ setClose }: AddPropertyProps) {
                       {...field}
                       placeholder="Title"
                       className="border-gray-400"
+                      disabled={loading}
                       required
                     />
                   </FormControl>
@@ -210,6 +243,7 @@ export default function AddProperty({ setClose }: AddPropertyProps) {
                       {...field}
                       placeholder="Description"
                       className="border-gray-400"
+                      disabled={loading}
                       required
                     />
                   </FormControl>
@@ -231,6 +265,7 @@ export default function AddProperty({ setClose }: AddPropertyProps) {
                       type="address"
                       placeholder="Address"
                       className="border-gray-400"
+                      disabled={loading}
                       required
                     />
                   </FormControl>
@@ -245,15 +280,25 @@ export default function AddProperty({ setClose }: AddPropertyProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-gray-900 text-base">
-                      Propert type
+                      Property type
                     </FormLabel>
                     <FormControl>
-                      <Select {...field}>
+                      <Select
+                        {...field}
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        value={field.value}
+                        required
+                      >
                         <SelectTrigger className="border-gray-400">
                           <SelectValue placeholder="Property type" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="apartment">Apartment</SelectItem>
+                          {propertyType.map((i) => (
+                            <SelectItem key={i.id} value={i.id.toString()}>
+                              {i.name}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                     </FormControl>
@@ -272,9 +317,66 @@ export default function AddProperty({ setClose }: AddPropertyProps) {
                     <FormControl>
                       <Input
                         {...field}
-                        placeholder="Occupant"
+                        placeholder="Max occupant"
                         type="number"
                         className="border-gray-400"
+                        required
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="flex justify-between gap-3">
+              <FormField
+                control={form.control}
+                name="status"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-gray-900 text-base">
+                      Status
+                    </FormLabel>
+                    <FormControl>
+                      <Select
+                        {...field}
+                        onValueChange={field.onChange}
+                        defaultValue={"unlisted"}
+                        value={field.value}
+                        required
+                      >
+                        <SelectTrigger className="border-gray-400">
+                          <SelectValue placeholder="Status" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="unlisted">Unlist for now</SelectItem>
+                          <SelectItem value="available">
+                            List property
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="rent"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-gray-900 text-base">
+                      Rent per month
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="Rent"
+                        type="number"
+                        className="border-gray-400"
+                        onChange={(event) =>
+                          field.onChange(+event.target.value)
+                        }
                         required
                       />
                     </FormControl>
@@ -319,7 +421,7 @@ export default function AddProperty({ setClose }: AddPropertyProps) {
                 {loading ? (
                   <Loader2 size={25} className="animate-spin" />
                 ) : (
-                  "List"
+                  "Add"
                 )}
               </Button>
             </div>
