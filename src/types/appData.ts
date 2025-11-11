@@ -10,11 +10,12 @@ export type TProperty = {
     address: string;
     latitude: number;
     longitude: number;
-    pictures: string[];
+    occupant: number;
+    images: string[];
     thumbnail: string;
-    propertyType: TpropertyType;
-    createdAt: string;
-    updatedAt: string;
+    property_type: TpropertyType;
+    created_at: string;
+    updated_at: string;
 }
 
 export type TOccupied_rooms = {

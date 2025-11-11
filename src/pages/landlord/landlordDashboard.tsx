@@ -10,17 +10,28 @@ import { toast, Toaster } from "sonner";
 import LandlordChats from "./tabs/landlordChats";
 import LandlordManage from "@/pages/landlord/tabs/landlordManage";
 import LandlordMenu from "./tabs/landlordMenu";
+import { useLocation } from "react-router";
+import { useGetLandlordProperty } from "@/hooks/useGetLandlordProperty";
 
 type Ttab = "Home" | "Chats" | "Manage" | "Menu";
 
 export default function LandlordDashboard() {
   const { session } = useAuthContext();
+  const loaction = useLocation();
   const [activeTab, setActiveTab] = useState<Ttab>("Home");
   const [accountSetup, setAccountSetup] = useState(false);
+  const { error } = useGetLandlordProperty();
+
+  if (error) {
+    toast.error(error);
+  }
 
   useEffect(() => {
     const storedTab = localStorage.getItem("activeTab");
-    if (storedTab) {
+
+    if (loaction.pathname.split("/").length === 3) {
+      setActiveTab("Home");
+    } else if (storedTab) {
       setActiveTab(storedTab as Ttab);
     } else {
       setActiveTab("Home");
@@ -69,7 +80,7 @@ export default function LandlordDashboard() {
   return (
     <main className="bg-white h-screen relative">
       <Toaster richColors />
-      <ResponsiveDialog state={accountSetup} setState={setAccountSetup}/>
+      <ResponsiveDialog state={accountSetup} setState={setAccountSetup} />
       <Routes>
         <Route index path="" element={<LandlordHome />} />
         <Route path="/chats" element={<LandlordChats />} />

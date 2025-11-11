@@ -21,7 +21,6 @@ import {
 } from "@/components/ui/select";
 import { Map, Marker } from "@vis.gl/react-google-maps";
 import { Map as MapIcon } from "lucide-react";
-import UploadPropertyImages from "./uploadPropertyImages";
 import { useState, useEffect } from "react";
 import type { ImageListType, ImageType } from "react-images-uploading";
 import { toast } from "sonner";
@@ -29,6 +28,8 @@ import { useAuthContext } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import type { TpropertyType } from "@/types/enums";
+import type { TProperty } from "@/types/appData";
+import UpdatePropertyImages from "./updatePropertyImages";
 
 const formSchema = z.object({
   title: z
@@ -49,67 +50,58 @@ const formSchema = z.object({
   rent: z.number().max(999999999),
 });
 
-type AddPropertyProps = {
+type EditPropertyProps = {
+  property: TProperty;
   setClose: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function AddProperty({ setClose }: AddPropertyProps) {
+type TsetImage = {
+    newImages: ImageListType;
+    deleteImages: string[];
+    currentImages: string[];
+}
+
+export default function EditProperty({ setClose, property }: EditPropertyProps) {
   const { session } = useAuthContext();
 
   const width = window.screen.width;
 
   const [loading, setLoading] = useState(false);
-  const [thumbnail, setThumbnail] = useState<ImageType>();
-  const [images, setImages] = useState<ImageListType>([]);
+  const [thumbnail, setThumbnail] = useState<ImageType | string>();
+  const [images, setImages] = useState<TsetImage>();
   const [latLang, setLatLang] = useState<google.maps.LatLngLiteral | null>(
     null
   );
   const [propertyType, setPropertyType] = useState<TpropertyType[]>([]);
 
+  function listItemImages(payload: {
+    newImages: ImageListType;
+    deleteImages: string[];
+    currentImages: string[];
+  }) {
+    // console.log(payload)
+    setImages(payload)
+  }
+
+  function listItemThumbnail(thumb: ImageType | string | undefined) {
+    // console.log(thumb)
+    setThumbnail(thumb)
+  }
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: "",
-      description: "",
-      address: "",
-      propertyType: "",
-      occupant: "",
-      status: "unlisted",
-      rent: 1,
+      title: property.name,
+      description: property.description,
+      address: property.address,
+      propertyType: property.property_type.id.toString(),
+      occupant: property.occupant.toString(),
+      status: property.status,
+      rent: +property.rent,
     },
   });
 
   useEffect(() => {
-    function getUserLocation() {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          // console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
-          setLatLang({ lat: latitude, lng: longitude });
-        },
-        (error) => {
-          console.error("Error getting geolocation:", error);
-          switch (error.code) {
-            case error.PERMISSION_DENIED:
-              console.error("User denied the request for Geolocation.");
-              break;
-            case error.POSITION_UNAVAILABLE:
-              console.error("Location information is unavailable.");
-              break;
-            case error.TIMEOUT:
-              console.error("The request to get user location timed out.");
-              break;
-          }
-        }
-        // {
-        //   // Optional: Configuration options for getCurrentPosition
-        //   enableHighAccuracy: true, // Request a more accurate position (may take longer)
-        //   timeout: 5000, // Maximum time (in ms) to wait for a response
-        //   maximumAge: 0, // Don't use a cached position
-        // }
-      );
-    }
-
     async function getPropertyType() {
       const response = await fetch(
         `${import.meta.env.VITE_SERVER_URL}/rent-ease/api/property-type`,
@@ -130,20 +122,32 @@ export default function AddProperty({ setClose }: AddPropertyProps) {
       setPropertyType(json);
     }
 
-    getUserLocation();
     getPropertyType();
   }, []);
 
   async function handleSubmit(values: z.infer<typeof formSchema>) {
+    let thumb;
     setLoading(true);
 
-    if (images.length === 0) {
+    if (images?.currentImages.length === images?.deleteImages.length) {
       toast.warning("Please select some property images.");
       return setLoading(false);
     }
 
+    if (typeof thumbnail === "string" || typeof thumbnail === "undefined") {
+      thumb = {
+        type: "route",
+        thumbnail: thumbnail
+      }
+    } else {
+      thumb = {
+        type: "file",
+        thumbnail: thumbnail
+      }
+    }
+
     const response = await fetch(
-      `${import.meta.env.VITE_SERVER_URL}/rent-ease/api/landlord-list-property`,
+      `${import.meta.env.VITE_SERVER_URL}/rent-ease/api/landlord-update-property/${property.id}`,
       {
         method: "POST",
         headers: {
@@ -151,8 +155,7 @@ export default function AddProperty({ setClose }: AddPropertyProps) {
           Authorization: `Bearer ${session.access_token}`,
         },
         body: JSON.stringify({
-          id: session.user.id,
-          thumbnail: thumbnail,
+          thumbnail: thumb,
           images: JSON.stringify(images),
           lat: latLang?.lat,
           lng: latLang?.lng,
@@ -176,32 +179,29 @@ export default function AddProperty({ setClose }: AddPropertyProps) {
       );
     }
 
-    // console.log(json);
+    console.log(json);
     setLoading(false);
     toast.success(json.message);
     form.reset();
-    setClose(prev => !prev);
+    setClose(prev => !prev)
   }
 
   return (
-    <div className="flex flex-col font-roboto max-h-full w-full overflow-y-scroll top-0 left-0 bg-white absolute">
+    <div className="flex flex-col font-roboto max-h-dvh w-full overflow-y-scroll top-0 left-0 bg-white fixed z-10">
       <div className="flex justify-between p-4">
-        <h1 className="text-3xl text-gray-900 font-bold">Add Property</h1>
+        <h1 className="text-3xl text-gray-900 font-bold">Edit Property</h1>
         <button onClick={() => setClose((prev) => !prev)}>
           <X size={30} />
         </button>
       </div>
       <div className="mb-3">
-        <h1 className="text-gray-900 font-semibold text-lg px-4">Add Images</h1>
+        <h1 className="text-gray-900 font-semibold text-lg px-4">Edit Images</h1>
         <p className="px-4 mb-2 text-gray-900 text-base">
           The first image that selected will be the default thumbnail if not
           set.
         </p>
         <div>
-          <UploadPropertyImages
-            listItemThumbnail={setThumbnail}
-            listItemImages={setImages}
-          />
+          <UpdatePropertyImages listItemImages={listItemImages} listItemThumbnail={listItemThumbnail} propertyImages={property.images} propertyThumbnail={property.thumbnail}/>
         </div>
       </div>
       <div className="px-4">
@@ -350,7 +350,9 @@ export default function AddProperty({ setClose }: AddPropertyProps) {
                           <SelectValue placeholder="Status" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="unlisted">Unlist for now</SelectItem>
+                          <SelectItem value="unlisted">
+                            Unlist for now
+                          </SelectItem>
                           <SelectItem value="available">
                             List property
                           </SelectItem>
@@ -399,17 +401,17 @@ export default function AddProperty({ setClose }: AddPropertyProps) {
                   overflow: "hidden",
                 }}
                 defaultCenter={
-                  latLang ? latLang : { lat: 12.881959, lng: 121.766541 }
+                  latLang ? latLang : { lat: property.latitude, lng: property.longitude }
                 }
-                defaultZoom={10}
+                defaultZoom={20}
                 gestureHandling="greedy"
                 disableDefaultUI
                 onClick={(e) => setLatLang(e.detail.latLng)}
               >
-                <Marker position={latLang} />
+                <Marker position={latLang ? latLang : { lat: property.latitude, lng: property.longitude }} />
               </Map>
             </div>
-            <div className="flex justify-end gap-3 mb-20 mt-4">
+            <div className="flex justify-end gap-3 my-4">
               <Button
                 variant={"secondary"}
                 onClick={() => setClose((prev) => !prev)}
@@ -422,7 +424,7 @@ export default function AddProperty({ setClose }: AddPropertyProps) {
                 {loading ? (
                   <Loader2 size={25} className="animate-spin" />
                 ) : (
-                  "Add"
+                  "Save"
                 )}
               </Button>
             </div>

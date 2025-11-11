@@ -13,6 +13,7 @@ import ConfirmEmail from "./pages/confirmEmail.tsx";
 import AuthPageLayout from "./pages/authPageLayout.tsx";
 import LandlordLogin from "./pages/landlord/landlordLogin.tsx";
 import LandlordSignUp from "./pages/landlord/landlordSignup.tsx";
+import { PropertiesProvider } from "./context/PropertyContext.tsx";
 
 function App() {
   const { session } = useAuthContext();
@@ -36,7 +37,9 @@ function App() {
           path="/landlord/dashboard/*"
           element={
             <ProtectedRoute allowedRoles={["landlord"]}>
-              <LandlordDashboard />
+              <PropertiesProvider>
+                <LandlordDashboard />
+              </PropertiesProvider>
             </ProtectedRoute>
           }
         />

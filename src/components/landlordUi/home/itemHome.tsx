@@ -1,15 +1,12 @@
 import type { TProperty } from "@/types/appData";
 
-type Tstatus = "unlisted" | "listed" | "occupied";
+type ItemHomeProps = {
+  property: TProperty;
+};
 
-type ItemProps = {
-    property: TProperty
-    onClick: (param: TProperty) => void
-}
-
-export default function Item({ property, onClick }: ItemProps) {
+export default function ItemHome({ property }: ItemHomeProps) {
   return (
-    <div className="flex items-center gap-2 h-24" onClick={() => onClick(property)}>
+    <div className="flex items-center gap-2 h-24">
       <div className="aspect-square flex justify-center items-center w-24">
         <img
           className="h-20 object-cover rounded-2xl"

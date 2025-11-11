@@ -65,7 +65,6 @@ export default function UploadPropertyImages({ listItemThumbnail, listItemImages
           isDragging,
           dragProps,
         }) => (
-          // write your building UI
           <div className="w-full flex px-4 flex-col gap-2">
             {imageList.length === 0 && (
               <div className="w-full h-60 flex justify-center items-center rounded-2xl bg-gray-300">
@@ -121,7 +120,6 @@ export default function UploadPropertyImages({ listItemThumbnail, listItemImages
               </Button>
             )}
             {/* Image viewer */}
-            {/* Fullscreen viewer: fixed to viewport so it sticks on screen */}
             {viewerOpen && (
               <div className="fixed inset-0 z-50 bg-gray-950/95">
                 <button
