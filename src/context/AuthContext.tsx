@@ -189,6 +189,7 @@ export const AuthContextProvider = ({
     }
 
     localStorage.removeItem("activeTab")
+    localStorage.removeItem("TenantActiveTab")
     setSession(null);
   }
 
