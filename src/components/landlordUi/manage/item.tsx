@@ -1,7 +1,5 @@
 import type { TProperty } from "@/types/appData";
 
-type Tstatus = "unlisted" | "listed" | "occupied";
-
 type ItemProps = {
     property: TProperty
     onClick: (param: TProperty) => void
@@ -10,13 +8,13 @@ type ItemProps = {
 export default function Item({ property, onClick }: ItemProps) {
   return (
     <div className="flex items-center gap-2 h-24" onClick={() => onClick(property)}>
-      <div className="aspect-square flex justify-center items-center w-24">
+      <div className="aspect-square flex justify-center items-center w-20 h-20">
         <img
-          className="h-20 object-cover rounded-2xl"
+          className="h-20 w-20 aspect-square object-cover rounded-2xl"
           src={`https://bdmyzcymcqiuqanmbmrn.supabase.co/storage/v1/object/public/listings_image/${property.thumbnail}`}
         />
       </div>
-      <div>
+      <div className="truncate">
         <h1 className="font-bold text-lg text-gray-900">{property.name}</h1>
         <span className="font-semibold text-base text-gray-800">Rent: {property.rent}</span>
       </div>

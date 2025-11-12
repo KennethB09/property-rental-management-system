@@ -28,7 +28,8 @@ import { toast } from "sonner";
 import { useAuthContext } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
-import type { TpropertyType } from "@/types/enums";
+import { usePropertyContext } from "@/hooks/usePropertyContext";
+import { getFilters } from "@/hooks/useFetchData";
 
 const formSchema = z.object({
   title: z
@@ -55,6 +56,8 @@ type AddPropertyProps = {
 
 export default function AddProperty({ setClose }: AddPropertyProps) {
   const { session } = useAuthContext();
+  const { dispatch } = usePropertyContext();
+  const { filters } = getFilters();
 
   const width = window.screen.width;
 
@@ -64,7 +67,6 @@ export default function AddProperty({ setClose }: AddPropertyProps) {
   const [latLang, setLatLang] = useState<google.maps.LatLngLiteral | null>(
     null
   );
-  const [propertyType, setPropertyType] = useState<TpropertyType[]>([]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -100,38 +102,17 @@ export default function AddProperty({ setClose }: AddPropertyProps) {
               console.error("The request to get user location timed out.");
               break;
           }
-        }
-        // {
-        //   // Optional: Configuration options for getCurrentPosition
-        //   enableHighAccuracy: true, // Request a more accurate position (may take longer)
-        //   timeout: 5000, // Maximum time (in ms) to wait for a response
-        //   maximumAge: 0, // Don't use a cached position
-        // }
-      );
-    }
-
-    async function getPropertyType() {
-      const response = await fetch(
-        `${import.meta.env.VITE_SERVER_URL}/rent-ease/api/property-type`,
+        },
         {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${session.access_token}`,
-          },
+          // Optional: Configuration options for getCurrentPosition
+          enableHighAccuracy: true, // Request a more accurate position (may take longer)
+          timeout: 5000, // Maximum time (in ms) to wait for a response
+          maximumAge: 0, // Don't use a cached position
         }
       );
-
-      const json = await response.json();
-
-      if (!response.ok) {
-        return toast.error(json.message);
-      }
-
-      setPropertyType(json);
     }
 
     getUserLocation();
-    getPropertyType();
   }, []);
 
   async function handleSubmit(values: z.infer<typeof formSchema>) {
@@ -176,8 +157,9 @@ export default function AddProperty({ setClose }: AddPropertyProps) {
       );
     }
 
-    // console.log(json);
+    console.log(json.property);
     setLoading(false);
+    dispatch({ type: "ADD_PROPERTY", payload: json.property })
     toast.success(json.message);
     form.reset();
     setClose(prev => !prev);
@@ -289,13 +271,14 @@ export default function AddProperty({ setClose }: AddPropertyProps) {
                         onValueChange={field.onChange}
                         defaultValue={field.value}
                         value={field.value}
+                        disabled={loading}
                         required
                       >
                         <SelectTrigger className="border-gray-400">
                           <SelectValue placeholder="Property type" />
                         </SelectTrigger>
                         <SelectContent>
-                          {propertyType.map((i) => (
+                          {filters.map((i) => (
                             <SelectItem key={i.id} value={i.id.toString()}>
                               {i.name}
                             </SelectItem>
@@ -321,6 +304,7 @@ export default function AddProperty({ setClose }: AddPropertyProps) {
                         placeholder="Max occupant"
                         type="number"
                         className="border-gray-400"
+                        disabled={loading}
                         required
                       />
                     </FormControl>
@@ -344,6 +328,7 @@ export default function AddProperty({ setClose }: AddPropertyProps) {
                         onValueChange={field.onChange}
                         defaultValue={"unlisted"}
                         value={field.value}
+                        disabled={loading}
                         required
                       >
                         <SelectTrigger className="border-gray-400">
@@ -378,6 +363,7 @@ export default function AddProperty({ setClose }: AddPropertyProps) {
                         onChange={(event) =>
                           field.onChange(+event.target.value)
                         }
+                        disabled={loading}
                         required
                       />
                     </FormControl>

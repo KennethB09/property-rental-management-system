@@ -13,6 +13,7 @@ import { Trash2, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useAuthContext } from "@/context/AuthContext";
 import { toast } from "sonner";
+import { usePropertyContext } from "@/hooks/usePropertyContext";
 
 type DeletePropertyProps = {
   id: string;
@@ -20,6 +21,8 @@ type DeletePropertyProps = {
 
 export default function DeleteProperty({ id }: DeletePropertyProps) {
   const { session } = useAuthContext();
+  const { dispatch } = usePropertyContext();
+
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -47,6 +50,7 @@ export default function DeleteProperty({ id }: DeletePropertyProps) {
     }
 
     setLoading(false);
+    dispatch({ type: "DELETE_PROPERTY", payload: id })
     toast.success(json.message)
     setIsOpen(false);
   }

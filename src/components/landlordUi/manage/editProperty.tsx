@@ -21,15 +21,16 @@ import {
 } from "@/components/ui/select";
 import { Map, Marker } from "@vis.gl/react-google-maps";
 import { Map as MapIcon } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import type { ImageListType, ImageType } from "react-images-uploading";
 import { toast } from "sonner";
 import { useAuthContext } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
-import type { TpropertyType } from "@/types/enums";
 import type { TProperty } from "@/types/appData";
 import UpdatePropertyImages from "./updatePropertyImages";
+import { usePropertyContext } from "@/hooks/usePropertyContext";
+import { getFilters } from "@/hooks/useFetchData";
 
 const formSchema = z.object({
   title: z
@@ -63,7 +64,8 @@ type TsetImage = {
 
 export default function EditProperty({ setClose, property }: EditPropertyProps) {
   const { session } = useAuthContext();
-
+  const { dispatch } = usePropertyContext();
+  const { filters } = getFilters();
   const width = window.screen.width;
 
   const [loading, setLoading] = useState(false);
@@ -72,7 +74,6 @@ export default function EditProperty({ setClose, property }: EditPropertyProps) 
   const [latLang, setLatLang] = useState<google.maps.LatLngLiteral | null>(
     null
   );
-  const [propertyType, setPropertyType] = useState<TpropertyType[]>([]);
 
   function listItemImages(payload: {
     newImages: ImageListType;
@@ -100,30 +101,6 @@ export default function EditProperty({ setClose, property }: EditPropertyProps) 
       rent: +property.rent,
     },
   });
-
-  useEffect(() => {
-    async function getPropertyType() {
-      const response = await fetch(
-        `${import.meta.env.VITE_SERVER_URL}/rent-ease/api/property-type`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${session.access_token}`,
-          },
-        }
-      );
-
-      const json = await response.json();
-
-      if (!response.ok) {
-        return toast.error(json.message);
-      }
-
-      setPropertyType(json);
-    }
-
-    getPropertyType();
-  }, []);
 
   async function handleSubmit(values: z.infer<typeof formSchema>) {
     let thumb;
@@ -179,8 +156,9 @@ export default function EditProperty({ setClose, property }: EditPropertyProps) 
       );
     }
 
-    console.log(json);
+    // console.log(json);
     setLoading(false);
+    dispatch({ type: "UPDATE_PROPERTY", payload: json.property })
     toast.success(json.message);
     form.reset();
     setClose(prev => !prev)
@@ -289,13 +267,14 @@ export default function EditProperty({ setClose, property }: EditPropertyProps) 
                         onValueChange={field.onChange}
                         defaultValue={field.value}
                         value={field.value}
+                        disabled={loading}
                         required
                       >
                         <SelectTrigger className="border-gray-400">
                           <SelectValue placeholder="Property type" />
                         </SelectTrigger>
                         <SelectContent>
-                          {propertyType.map((i) => (
+                          {filters.map((i) => (
                             <SelectItem key={i.id} value={i.id.toString()}>
                               {i.name}
                             </SelectItem>
@@ -321,6 +300,7 @@ export default function EditProperty({ setClose, property }: EditPropertyProps) 
                         placeholder="Max occupant"
                         type="number"
                         className="border-gray-400"
+                        disabled={loading}
                         required
                       />
                     </FormControl>
@@ -344,6 +324,7 @@ export default function EditProperty({ setClose, property }: EditPropertyProps) 
                         onValueChange={field.onChange}
                         defaultValue={"unlisted"}
                         value={field.value}
+                        disabled={loading}
                         required
                       >
                         <SelectTrigger className="border-gray-400">
@@ -380,6 +361,7 @@ export default function EditProperty({ setClose, property }: EditPropertyProps) 
                         onChange={(event) =>
                           field.onChange(+event.target.value)
                         }
+                        disabled={loading}
                         required
                       />
                     </FormControl>

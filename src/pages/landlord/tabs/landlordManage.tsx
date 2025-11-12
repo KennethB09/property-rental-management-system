@@ -11,15 +11,6 @@ import { Plus } from "lucide-react";
 import { useState } from "react";
 import { usePropertyContext } from "@/hooks/usePropertyContext";
 import Item from "@/components/landlordUi/manage/item";
-import {
-  Dialog,
-  DialogContent,
-  DialogClose,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from "@/components/ui/dialog";
 import PropertyInfo from "@/components/landlordUi/manage/propertyInfo";
 import type { TProperty } from "@/types/appData";
 
