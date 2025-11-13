@@ -18,7 +18,7 @@ export type TProperty = {
   updated_at: string;
 };
 
-export type TOccupied_rooms = {
+export type Toccupied_rooms = {
   id: string;
   room_Id: string;
   tenant_Id: string;
@@ -31,3 +31,10 @@ export type propertiesCount = {
   occupied: number;
   total: number;
 };
+
+export type tenantSaves = {
+  id: string;
+  tenant_ID: string;
+  listing_ID: string;
+  created_at: string;
+}

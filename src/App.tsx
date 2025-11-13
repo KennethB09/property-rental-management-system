@@ -45,7 +45,7 @@ function App() {
         />
 
         <Route
-          path="/tenant/dashboard"
+          path="/tenant/dashboard/*"
           element={
             <ProtectedRoute allowedRoles={["tenant"]}>
               <TenantDashboard />
