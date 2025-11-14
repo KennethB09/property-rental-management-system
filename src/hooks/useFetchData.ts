@@ -115,7 +115,7 @@ export function getListedProperties() {
         return;
       }
 
-      console.log(json)
+      // console.log(json)
       setIsLoading(false);
       setListings(json);
       dispatch({ type: "SET_LISTINGS", payload: json })

@@ -30,7 +30,7 @@ export const useUserRole = () => {
         console.error('Error fetching user role:', error);
         setRole('guest');
       } else {
-        setRole(data || 'guest');
+        setRole(data);
       }
       
       setIsLoading(false);

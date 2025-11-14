@@ -66,7 +66,7 @@ const appReducer = (state: AppState, action: AppAction): AppState => {
     case "REMOVE_SAVE":
       return {
         ...state,
-        saves: state.saves.filter((item) => item.listing_ID !== action.payload),
+        saves: state.saves.filter((item) => item.listing_ID.id !== action.payload),
       };
     default:
       return state;

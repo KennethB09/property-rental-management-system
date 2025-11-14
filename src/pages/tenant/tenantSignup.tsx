@@ -20,10 +20,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useAuthContext } from "@/context/AuthContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 import { useNavigate } from "react-router";
+import { useApi } from "@/context/ApiContext";
+import type { occupation } from "@/types/appData";
 
 const formSchema = z.object({
   first_name: z.string(),
@@ -38,10 +40,12 @@ const formSchema = z.object({
 });
 
 export default function TenantSignup() {
+  const { getOccupantType } = useApi();
   const navigate = useNavigate();
   const { signUp } = useAuthContext();
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [occupantion, setOccupantion] = useState<occupation[]>([]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -79,7 +83,7 @@ export default function TenantSignup() {
       if (response.data.user.role === "") {
         toast.info("Sign-up Failed", {
           description: "This email is already used.",
-          duration: 5000
+          duration: 5000,
         });
         setLoading(false);
         return;
@@ -88,6 +92,20 @@ export default function TenantSignup() {
     }
     setLoading(false);
   }
+
+  useEffect(() => {
+    async function getOccupantion() {
+      const occupantType = await getOccupantType();
+
+      if (occupantType.error) {
+        return toast.error(occupantType.error);
+      }
+
+      setOccupantion(occupantType.data!);
+    }
+
+    getOccupantion();
+  }, []);
 
   return (
     <div className="flex flex-col px-10 max-sm:px-5 font-roboto">
@@ -175,11 +193,11 @@ export default function TenantSignup() {
                           <SelectValue placeholder="Occupation" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="student">Student</SelectItem>
-                          <SelectItem value="employed">Employed</SelectItem>
-                          <SelectItem value="self-employed">
-                            Self-employed
-                          </SelectItem>
+                          {occupantion.map((item) => (
+                            <SelectItem value={item.id.toString()}>
+                              {item.name}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                     </FormControl>

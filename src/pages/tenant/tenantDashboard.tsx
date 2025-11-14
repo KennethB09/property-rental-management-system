@@ -28,8 +28,8 @@ export default function TenantDashboard() {
 
   useEffect(() => {
     function checkTab() {
-      const storedTab = localStorage.getItem("activeTab");
-
+      const storedTab = localStorage.getItem("TenantActiveTab");
+      
       if (loaction.pathname.split("/").length === 3) {
         setActiveTab("Explore");
       } else if (storedTab) {
@@ -45,7 +45,7 @@ export default function TenantDashboard() {
       if (saves.error) {
         return toast.error(saves.error);
       }
-
+      // console.log(saves.data)
       dispatch({ type: "SET_SAVES", payload: saves.data })
     };
 
@@ -65,7 +65,7 @@ export default function TenantDashboard() {
       <Routes>
         <Route index path="/" element={<TenantExplore />} />
         <Route path="/chats" element={<TenantChats />} />
-        <Route path="/manage" element={<TenantSaved />} />
+        <Route path="/saved" element={<TenantSaved />} />
         <Route path="/menu" element={<TenantMenu />} />
       </Routes>
 
@@ -85,7 +85,7 @@ export default function TenantDashboard() {
           onClick={handleTab}
         />
         <NavigationItem
-          url="/tenant/dashboard/manage"
+          url="/tenant/dashboard/saved"
           Icon={Heart}
           label="Saved"
           activeTab={activeTab}

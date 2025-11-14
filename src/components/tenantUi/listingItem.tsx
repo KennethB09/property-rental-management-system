@@ -15,7 +15,7 @@ export default function ListingItem({ property, onClick }: ListingItemProps) {
   const { tenantSave, tenantRemoveSave } = useApi();
   const { dispatch, saves } = useAppContext();
 
-  const isSave = saves.map((item) => item.listing_ID).includes(property.id);
+  const isSave = saves.map((item) => item.listing_ID.id).includes(property.id);
 
   async function handleSave() {
     if (isSave) {
@@ -57,7 +57,7 @@ export default function ListingItem({ property, onClick }: ListingItemProps) {
         />
       </div>
 
-      <div className="absolute bg-black/60 w-full bottom-0 h-12 bg-opacity-25 flex justify-between items-center p-3 gap-10">
+      <div className="absolute bg-black/60 backdrop-blur-sm w-full bottom-0 h-12 bg-opacity-25 flex justify-between items-center p-3 gap-10">
         <h1 className="text-lg text-white truncate">{property.name}</h1>
         <span>{}</span>
       </div>

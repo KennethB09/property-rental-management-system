@@ -65,7 +65,7 @@ export default function ProfileUpload({ setProfile }: ProfileUploadProps) {
       <ImageUploading
         multiple={false}
         value={[]}
-        acceptType={["png", "jpeg", "webp"]}
+        acceptType={["png", "jpeg", "webp", "jpg"]}
         onChange={onChange}
         maxNumber={maxNumber}
       >

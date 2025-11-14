@@ -1,8 +1,10 @@
+import type { occupation } from "./appData";
 import type { Tstatus, TpropertyType } from "./enums";
 
 export interface listing {
   id: string;
   landlord_ID: {
+    id: string
     first_name: string;
     last_name: string;
     profile_pic: string;
@@ -20,4 +22,14 @@ export interface listing {
   property_type: TpropertyType;
   created_at: string;
   updated_at: string;
+}
+
+export interface tenant {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone_number: string;
+  occupation: occupation;
+  profile_pic: string;
 }

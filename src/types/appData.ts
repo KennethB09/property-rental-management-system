@@ -1,4 +1,5 @@
 import type { TpropertyType, Tstatus } from "./enums";
+import type { listing } from "./interface";
 
 export type TProperty = {
   id: string;
@@ -35,6 +36,11 @@ export type propertiesCount = {
 export type tenantSaves = {
   id: string;
   tenant_ID: string;
-  listing_ID: string;
+  listing_ID: listing;
   created_at: string;
+}
+
+export type occupation = {
+  id: string;
+  name: string;
 }

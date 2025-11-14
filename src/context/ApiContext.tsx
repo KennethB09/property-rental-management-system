@@ -1,8 +1,11 @@
 import { createContext, type ReactNode } from "react";
 import { useContext } from "react";
 import { useAuthContext } from "./AuthContext";
+import type { tenant } from "@/types/interface";
+import type { occupation } from "@/types/appData";
 
 type ApiContextType = {
+  getTenantProfile: () => Promise<{ data?: tenant; error?: string }>;
   getTenantSaves: () => Promise<{ data?: any; error?: string }>;
   tenantSave: (
     listing_ID: string,
@@ -11,6 +14,7 @@ type ApiContextType = {
   tenantRemoveSave: (
     listing_ID: string
   ) => Promise<{ data?: any; error?: string }>;
+  getOccupantType: () => Promise<{ data?: occupation[]; error?: string }>;
 };
 
 const ApiContext = createContext<ApiContextType | undefined>(undefined);
@@ -19,6 +23,35 @@ type Props = { children: ReactNode };
 
 export const ApiProvider = ({ children }: Props) => {
   const { session } = useAuthContext();
+
+  const getTenantProfile = async (): Promise<{
+    data?: tenant;
+    error?: string;
+  }> => {
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_SERVER_URL}/rent-ease/api/tenant-profile/${
+          session.user.id
+        }`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${session.access_token}`,
+          },
+        }
+      );
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        return { error: data?.message ?? "Failed to fetch tenant profile" };
+      }
+
+      return { data };
+    } catch (err) {
+      return { error: (err as Error).message };
+    }
+  };
 
   const getTenantSaves = async (): Promise<{ data?: any; error?: string }> => {
     try {
@@ -95,9 +128,29 @@ export const ApiProvider = ({ children }: Props) => {
     }
   };
 
+  const getOccupantType = async () => {
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_SERVER_URL}/rent-ease/api/occupantion-type`,
+        {
+          method: "GET",
+        }
+      );
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        return { error: data?.message ?? "Failed to remove save" };
+      }
+      return { data };
+    } catch (err) {
+      return { error: (err as Error).message };
+    }
+  };
+
   return (
     <ApiContext.Provider
-      value={{ getTenantSaves, tenantSave, tenantRemoveSave }}
+      value={{ getTenantProfile, getTenantSaves, tenantSave, tenantRemoveSave, getOccupantType }}
     >
       {children}
     </ApiContext.Provider>

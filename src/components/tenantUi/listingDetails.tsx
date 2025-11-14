@@ -38,7 +38,7 @@ export default function ListingDetails({
   const { tenantSave, tenantRemoveSave } = useApi();
   const { dispatch, saves } = useAppContext();
 
-  const isSave = saves.map((item) => item.listing_ID).includes(details.id);
+  const isSave = saves.map((item) => item.listing_ID.id).includes(details.id);
 
   async function handleSave() {
     if (isSave) {
@@ -65,7 +65,7 @@ export default function ListingDetails({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="[&>button]:hidden p-0 border-0 min-w-full h-screen rounded-none overflow-y-scroll">
-        <DialogHeader className="absolute flex-row justify-between bg-black/50 w-full text-white p-3">
+        <DialogHeader className="absolute flex-row justify-between bg-black/30 w-full text-white p-3">
           <DialogClose className="w-fit">
             <ArrowLeft size={30} />
           </DialogClose>
