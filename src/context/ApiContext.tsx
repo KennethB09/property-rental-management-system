@@ -1,7 +1,7 @@
 import { createContext, type ReactNode } from "react";
 import { useContext } from "react";
 import { useAuthContext } from "./AuthContext";
-import type { tenant } from "@/types/interface";
+import type { conversation, tenant } from "@/types/interface";
 import type { occupation } from "@/types/appData";
 
 type ApiContextType = {
@@ -15,6 +15,7 @@ type ApiContextType = {
     listing_ID: string
   ) => Promise<{ data?: any; error?: string }>;
   getOccupantType: () => Promise<{ data?: occupation[]; error?: string }>;
+  getTenantConversation: () => Promise<{ data?: conversation[]; error?: string }>;
 };
 
 const ApiContext = createContext<ApiContextType | undefined>(undefined);
@@ -148,9 +149,29 @@ export const ApiProvider = ({ children }: Props) => {
     }
   };
 
+  const getTenantConversation = async () => {
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_SERVER_URL}/rent-ease/api/tenant/get-conversations/${session.user.id}`,
+        {
+          method: "GET",
+        }
+      );
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        return { error: data?.message ?? "Failed to remove save" };
+      }
+      return { data };
+    } catch (err) {
+      return { error: (err as Error).message };
+    }
+  }
+
   return (
     <ApiContext.Provider
-      value={{ getTenantProfile, getTenantSaves, tenantSave, tenantRemoveSave, getOccupantType }}
+      value={{ getTenantProfile, getTenantSaves, tenantSave, tenantRemoveSave, getOccupantType, getTenantConversation }}
     >
       {children}
     </ApiContext.Provider>

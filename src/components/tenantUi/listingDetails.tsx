@@ -22,6 +22,8 @@ import { useApi } from "@/context/ApiContext";
 import { useAuthContext } from "@/context/AuthContext";
 import { toast } from "sonner";
 import { useAppContext } from "@/hooks/useAppContext";
+import { useState } from "react";
+import StartConvoModal from "./startConvoModal";
 
 type ListingDetailsProps = {
   details: listing;
@@ -37,6 +39,7 @@ export default function ListingDetails({
   const { session } = useAuthContext();
   const { tenantSave, tenantRemoveSave } = useApi();
   const { dispatch, saves } = useAppContext();
+  const [openMessageLandlord, setOpenLandlord] = useState(false);
 
   const isSave = saves.map((item) => item.listing_ID.id).includes(details.id);
 
@@ -64,6 +67,14 @@ export default function ListingDetails({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
+      {openMessageLandlord && (
+        <StartConvoModal
+          open={openMessageLandlord}
+          setOpen={setOpenLandlord}
+          property={details}
+        />
+      )}
+
       <DialogContent className="[&>button]:hidden p-0 border-0 min-w-full h-screen rounded-none overflow-y-scroll">
         <DialogHeader className="absolute flex-row justify-between bg-black/30 w-full text-white p-3">
           <DialogClose className="w-fit">
@@ -173,7 +184,12 @@ export default function ListingDetails({
           </div>
         </div>
         <div className="sticky bottom-0 w-full bg-white p-3">
-          <Button className="w-full bg-green-700">Message Landlord</Button>
+          <Button
+            className="w-full bg-green-700"
+            onClick={() => setOpenLandlord(true)}
+          >
+            Message Landlord
+          </Button>
         </div>
       </DialogContent>
     </Dialog>

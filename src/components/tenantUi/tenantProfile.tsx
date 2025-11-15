@@ -1,6 +1,5 @@
 import { X } from "lucide-react";
 import emptyProfile from "@/assets/svgs/blank-profile-picture-973460.svg";
-import { useAuthContext } from "@/context/AuthContext.tsx";
 import type { tenant } from "@/types/interface";
 import { Button } from "../ui/button";
 import { useState } from "react";
@@ -14,8 +13,8 @@ type TenantProfileProps = {
 };
 
 export default function TenantProfile({ tenant, onClose }: TenantProfileProps) {
-  const { session } = useAuthContext();
   const [openEditModal, setOpenEditModal] = useState(false);
+
   return (
     <div className="fixed h-screen w-full z-10 bg-white">
       {openEditModal && (

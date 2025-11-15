@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/themeProvider";
 import { APIProvider } from "@vis.gl/react-google-maps";
 import { AppProvider } from "./context/AppContext.tsx";
 import { ApiProvider } from "./context/ApiContext.tsx";
+import { ConversationProvider } from "./context/ConversationContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -14,7 +15,9 @@ createRoot(document.getElementById("root")!).render(
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
           <ApiProvider>
             <AppProvider>
-              <App />
+              <ConversationProvider>
+                <App />
+              </ConversationProvider>
             </AppProvider>
           </ApiProvider>
         </ThemeProvider>

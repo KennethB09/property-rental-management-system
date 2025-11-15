@@ -4,7 +4,7 @@ import type { Tstatus, TpropertyType } from "./enums";
 export interface listing {
   id: string;
   landlord_ID: {
-    id: string
+    id: string;
     first_name: string;
     last_name: string;
     profile_pic: string;
@@ -32,4 +32,32 @@ export interface tenant {
   phone_number: string;
   occupation: occupation;
   profile_pic: string;
+}
+
+export interface landlord {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone_number: string;
+  address: string;
+  business_name: string;
+  profile_pic: string;
+}
+
+export interface conversation {
+  id: string;
+  listing_id: listing;
+  tenant_id: tenant;
+  landlord_id: landlord;
+  last_msg: string;
+}
+
+export interface message {
+  id: string;
+  convo_Id: string;
+  content: string;
+  sender_id: string;
+  replyingTo: string | null;
+  created_at: string;
 }
