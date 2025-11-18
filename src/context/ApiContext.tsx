@@ -15,7 +15,9 @@ type ApiContextType = {
     listing_ID: string
   ) => Promise<{ data?: any; error?: string }>;
   getOccupantType: () => Promise<{ data?: occupation[]; error?: string }>;
-  getTenantConversation: () => Promise<{ data?: conversation[]; error?: string }>;
+  getConversations: (
+    role: "tenant" | "landlord"
+  ) => Promise<{ data?: conversation[]; error?: string }>;
 };
 
 const ApiContext = createContext<ApiContextType | undefined>(undefined);
@@ -149,10 +151,12 @@ export const ApiProvider = ({ children }: Props) => {
     }
   };
 
-  const getTenantConversation = async () => {
+  const getConversations = async (role: "tenant" | "landlord") => {
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_SERVER_URL}/rent-ease/api/tenant/get-conversations/${session.user.id}`,
+        `${
+          import.meta.env.VITE_SERVER_URL
+        }/rent-ease/api/${role}/get-conversations/${session.user.id}`,
         {
           method: "GET",
         }
@@ -167,11 +171,18 @@ export const ApiProvider = ({ children }: Props) => {
     } catch (err) {
       return { error: (err as Error).message };
     }
-  }
+  };
 
   return (
     <ApiContext.Provider
-      value={{ getTenantProfile, getTenantSaves, tenantSave, tenantRemoveSave, getOccupantType, getTenantConversation }}
+      value={{
+        getTenantProfile,
+        getTenantSaves,
+        tenantSave,
+        tenantRemoveSave,
+        getOccupantType,
+        getConversations,
+      }}
     >
       {children}
     </ApiContext.Provider>

@@ -17,7 +17,7 @@ import { useConversationContext } from "@/hooks/useConversationContext";
 type Ttab = "Explore" | "Chats" | "Saved" | "Menu";
 
 export default function TenantDashboard() {
-  const { getTenantSaves, getTenantConversation } = useApi();
+  const { getTenantSaves, getConversations } = useApi();
   const { dispatch } = useAppContext();
   const { dispatch: conversationDispatch } = useConversationContext();
   const { error } = getListedProperties();
@@ -51,19 +51,19 @@ export default function TenantDashboard() {
       dispatch({ type: "SET_SAVES", payload: saves.data })
     };
 
-    async function getConversations() {
-      const conversations = await getTenantConversation();
+    async function getUserConversations() {
+      const conversations = await getConversations("tenant");
 
       if (conversations.error) {
         return toast.error(conversations.error);
       }
-      console.log(conversations.data)
+      // console.log(conversations.data)
       conversationDispatch({ type: "SET_CONVERSATIONS", payload: conversations.data! })
     };
 
     checkTab();
     getTenantSaveListings();
-    getConversations();
+    getUserConversations();
   }, []);
 
   function handleTab(param: Ttab) {

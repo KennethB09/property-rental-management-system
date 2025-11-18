@@ -12,10 +12,14 @@ import LandlordManage from "@/pages/landlord/tabs/landlordManage";
 import LandlordMenu from "./tabs/landlordMenu";
 import { useLocation } from "react-router";
 import { useGetLandlordProperty } from "@/hooks/useGetLandlordProperty";
+import { useApi } from "@/context/ApiContext";
+import { useConversationContext } from "@/hooks/useConversationContext";
 
 type Ttab = "Home" | "Chats" | "Manage" | "Menu";
 
 export default function LandlordDashboard() {
+  const { getConversations } = useApi();
+  const { dispatch: conversationDispatch } = useConversationContext();
   const { session } = useAuthContext();
   const loaction = useLocation();
   const [activeTab, setActiveTab] = useState<Ttab>("Home");
@@ -70,6 +74,18 @@ export default function LandlordDashboard() {
     if (!accountSetup || accountSetup === "false") {
       checkAccountSetup();
     }
+
+    async function getUserConversations() {
+      const conversations = await getConversations("landlord");
+
+      if (conversations.error) {
+        return toast.error(conversations.error);
+      }
+      // console.log(conversations.data)
+      conversationDispatch({ type: "SET_CONVERSATIONS", payload: conversations.data! })
+    };
+
+    getUserConversations();
   }, []);
 
   function handleTab(param: Ttab) {
