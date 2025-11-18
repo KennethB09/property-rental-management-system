@@ -9,7 +9,7 @@ import {
   DialogTitle,
 } from "../ui/dialog";
 import { Input } from "../ui/input";
-import type { listing } from "@/types/interface";
+import type { listing, message } from "@/types/interface";
 import { useNavigate } from "react-router";
 import { useAuthContext } from "@/context/AuthContext";
 import { toast } from "sonner";
@@ -32,6 +32,7 @@ export default function StartConvoModal({
   const [message, setMessage] = useState("");
 
   async function startConversation() {
+
     const response = await fetch(
       `${import.meta.env.VITE_SERVER_URL}/rent-ease/api/start-conversation`,
       {
@@ -44,6 +45,7 @@ export default function StartConvoModal({
           listing_Id: property.id,
           landlord_Id: property.landlord_ID.id,
           tenant_Id: session.user.id,
+          message: message
         }),
       }
     );

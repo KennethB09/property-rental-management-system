@@ -50,7 +50,7 @@ export interface conversation {
   listing_id: listing;
   tenant_id: tenant;
   landlord_id: landlord;
-  last_msg: string;
+  last_msg: message;
 }
 
 export interface message {
