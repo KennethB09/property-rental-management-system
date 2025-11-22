@@ -187,7 +187,7 @@ export default function ListingDetails({
             <h1 className="text-base font-semibold text-gray-900">Reviews</h1>
             <div>
               {details.reviews.map((review) => (
-                <ReviewItem data={review} />
+                <ReviewItem key={review.id} data={review} />
               ))}
             </div>
           </div>

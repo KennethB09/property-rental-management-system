@@ -1,4 +1,4 @@
-import type { listing, ratingAndReviews, review } from "@/types/interface";
+import type { listing, ratingAndReviews } from "@/types/interface";
 import { Heart } from "lucide-react";
 import { useApi } from "@/context/ApiContext";
 import { useAuthContext } from "@/context/AuthContext";
@@ -66,7 +66,7 @@ export default function ListingItem({ property, onClick }: ListingItemProps) {
 
   return (
     <div
-      className="overflow-clip relative w-screen aspect-square items-center justify-center bg-gray-900 flex flex-col rounded-2xl border-1 border-gray-400"
+      className="overflow-clip relative aspect-square items-center justify-center bg-gray-900 flex flex-col rounded-2xl border-1 border-gray-400"
       onClick={() => onClick({...property, ...reviews!})}
       aria-disabled={!reviews}
     >

@@ -1,9 +1,10 @@
 import { ArrowRight, Search } from "lucide-react";
 import { useAppContext } from "@/hooks/useAppContext";
 import ListingItem from "@/components/tenantUi/listingItem";
-import type { listing, ratingAndReviews, review } from "@/types/interface";
+import type { listing, ratingAndReviews } from "@/types/interface";
 import ListingDetails from "@/components/tenantUi/listingDetails";
 import { useState } from "react";
+import { Link } from "react-router";
 
 export default function TenantExplore() {
   const { listings } = useAppContext();
@@ -20,12 +21,12 @@ export default function TenantExplore() {
 
         {openModal && selected && <ListingDetails details={selected} open={openModal} setOpen={setOpenModal}/>}
 
-      <button className="flex items-center mx-4 p-4 gap-4 border-1 border-gray-300 rounded-3xl">
+      <Link to={"/tenant/search"} className="flex items-center mx-4 p-4 gap-4 border-1 border-gray-300 rounded-3xl">
         <div>
           <Search size={25} className="text-green-700" />
         </div>
         <span className="font-light text-lg text-gray-400">Search</span>
-      </button>
+      </Link>
 
       <div className="">
         <div className="flex w-full justify-between px-4">

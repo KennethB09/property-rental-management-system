@@ -3,14 +3,14 @@ import ListingDetails from "@/components/tenantUi/listingDetails";
 import TenantHeader from "@/components/tenantUi/tenantHeader";
 import { useAppContext } from "@/hooks/useAppContext";
 import { useState } from "react";
-import type { listing } from "@/types/interface";
+import type { listing, ratingAndReviews } from "@/types/interface";
 
 export default function TenantSaved() {
   const { saves } = useAppContext();
-  const [selected, setSelected] = useState<listing>();
+  const [selected, setSelected] = useState<listing & ratingAndReviews>();
   const [openModal, setOpenModal] = useState(false);
 
-  function handleSelectedListing(param: listing) {
+  function handleSelectedListing(param: listing & ratingAndReviews) {
     setSelected(param);
     setOpenModal(true);
   }

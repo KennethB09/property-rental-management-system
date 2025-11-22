@@ -2,13 +2,8 @@ import NavigationBar from "@/components/navigationBar/navigationBar";
 import NavigationItem from "@/components/navigationBar/navigationItem";
 import { toast, Toaster } from "sonner";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router";
-import { Routes, Route } from "react-router";
+import { Outlet, useLocation } from "react-router";
 import { Telescope, MessageCircle, Heart, Menu } from "lucide-react";
-import TenantExplore from "./tabs/tenantExplore";
-import TenantChats from "./tabs/tenantChats";
-import TenantSaved from "./tabs/tenantSaved";
-import TenantMenu from "./tabs/tenantMenu";
 import { getListedProperties } from "@/hooks/useFetchData";
 import { useApi } from "@/context/ApiContext";
 import { useAppContext } from "@/hooks/useAppContext";
@@ -92,12 +87,7 @@ export default function TenantDashboard() {
     <main className="font-roboto">
       <Toaster richColors />
 
-      <Routes>
-        <Route index path="/" element={<TenantExplore />} />
-        <Route path="/chats" element={<TenantChats />} />
-        <Route path="/saved" element={<TenantSaved />} />
-        <Route path="/menu" element={<TenantMenu />} />
-      </Routes>
+      <Outlet />
 
       <NavigationBar>
         <NavigationItem

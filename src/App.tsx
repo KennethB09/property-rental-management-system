@@ -1,10 +1,8 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router";
+import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router";
 import TenantDashboard from "./pages/tenant/tenantDashboard.tsx";
 import TenantLogin from "./pages/tenant/tenantLogin.tsx";
 import TenantSignup from "./pages/tenant/tenantSignup.tsx";
 import { useAuthContext } from "./context/AuthContext.tsx";
-import Settings from "./routes/Settings.tsx";
-import Listings from "./routes/Listings.tsx";
 import "./App.css";
 import { ProtectedRoute } from "./components/protectedRoute.tsx";
 import LandlordDashboard from "./pages/landlord/landlordDashboard.tsx";
@@ -14,6 +12,11 @@ import AuthPageLayout from "./pages/authPageLayout.tsx";
 import LandlordLogin from "./pages/landlord/landlordLogin.tsx";
 import LandlordSignUp from "./pages/landlord/landlordSignup.tsx";
 import { PropertiesProvider } from "./context/PropertyContext.tsx";
+import TenantSearch from "./pages/tenant/tenantSearch.tsx";
+import TenantExplore from "@/pages/tenant/tabs/tenantExplore";
+import TenantChats from "@/pages/tenant/tabs/tenantChats";
+import TenantSaved from "@/pages/tenant/tabs/tenantSaved";
+import TenantMenu from "@/pages/tenant/tabs/tenantMenu";
 
 function App() {
   const { session } = useAuthContext();
@@ -45,16 +48,24 @@ function App() {
         />
 
         <Route
-          path="/tenant/dashboard/*"
+          path="/tenant"
           element={
             <ProtectedRoute allowedRoles={["tenant"]}>
-              <TenantDashboard />
+              <Outlet />
             </ProtectedRoute>
           }
         >
-          <Route path="listings" element={<Listings />} />
-          <Route path="settings" element={<Settings />} />
-          <Route path="*" errorElement element={<PageNotFound />} />
+          <Route index element={<Navigate to="dashboard" replace />} />
+
+          <Route path="dashboard" element={<TenantDashboard />}>
+            <Route index element={<TenantExplore />} />
+            <Route path="chats" element={<TenantChats />} />
+            <Route path="saved" element={<TenantSaved />} />
+            <Route path="menu" element={<TenantMenu />} />
+          </Route>
+
+          <Route path="search" element={<TenantSearch />} />
+          <Route path="*" element={<PageNotFound />} />
         </Route>
 
         <Route
