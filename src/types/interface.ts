@@ -80,3 +80,21 @@ export interface tenancyProperty {
   thumbnail: string;
   rent: string
 }
+
+export interface review {
+  id: string;
+  created_at: string;
+  content: string;
+  listing_ID: string;
+  tenant_ID: tenant;
+  likes: number;
+  rating: number;
+  isAnon: boolean | null;
+  updated_at: string;
+}
+
+export interface ratingAndReviews {
+  reviews: review[]
+  rating: number
+  reviewLength: number
+}

@@ -15,7 +15,7 @@ import {
   DialogDescription,
   DialogClose,
 } from "../ui/dialog";
-import type { listing } from "@/types/interface";
+import type { listing, ratingAndReviews } from "@/types/interface";
 import { Map, Marker } from "@vis.gl/react-google-maps";
 import { Button } from "../ui/button";
 import { useApi } from "@/context/ApiContext";
@@ -24,9 +24,10 @@ import { toast } from "sonner";
 import { useAppContext } from "@/hooks/useAppContext";
 import { useState } from "react";
 import StartConvoModal from "./startConvoModal";
+import ReviewItem from "../review/reviewItem";
 
 type ListingDetailsProps = {
-  details: listing;
+  details: listing & ratingAndReviews;
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -40,8 +41,8 @@ export default function ListingDetails({
   const { tenantSave, tenantRemoveSave } = useApi();
   const { dispatch, saves } = useAppContext();
   const [openMessageLandlord, setOpenLandlord] = useState(false);
-
   const isSave = saves.map((item) => item.listing_ID.id).includes(details.id);
+  // console.log(details)
 
   async function handleSave() {
     if (isSave) {
@@ -109,15 +110,15 @@ export default function ListingDetails({
               {details.name}
             </h1>
             <div className="flex justify-center gap-7 font-semibold text-gray-500 my-3">
-              <span>Reviews {}</span>
-              <span>Ratings {}</span>
+              <span>Reviews {details.reviewLength}</span>
+              <span>Ratings {details.rating}</span>
             </div>
           </div>
 
           <div className="flex gap-3 items-center mx-4 border-y-2 py-3 border-gray-300">
             <div className="w-16 aspect-square">
               <img
-                className="aspect-square rounded-full"
+                className="aspect-square rounded-full w-full"
                 src={`https://bdmyzcymcqiuqanmbmrn.supabase.co/storage/v1/object/public/${details.landlord_ID.profile_pic}`}
               />
             </div>
@@ -181,6 +182,14 @@ export default function ListingDetails({
                 position={{ lat: details.latitude, lng: details.longitude }}
               />
             </Map>
+          </div>
+          <div className="px-4 flex flex-col gap-3">
+            <h1 className="text-base font-semibold text-gray-900">Reviews</h1>
+            <div>
+              {details.reviews.map((review) => (
+                <ReviewItem data={review} />
+              ))}
+            </div>
           </div>
         </div>
         <div className="sticky bottom-0 w-full bg-white p-3">

@@ -1,16 +1,16 @@
 import { ArrowRight, Search } from "lucide-react";
 import { useAppContext } from "@/hooks/useAppContext";
 import ListingItem from "@/components/tenantUi/listingItem";
-import type { listing } from "@/types/interface";
+import type { listing, ratingAndReviews, review } from "@/types/interface";
 import ListingDetails from "@/components/tenantUi/listingDetails";
 import { useState } from "react";
 
 export default function TenantExplore() {
   const { listings } = useAppContext();
-  const [selected, setSelected] = useState<listing>();
+  const [selected, setSelected] = useState<listing & ratingAndReviews>();
   const [openModal, setOpenModal] = useState(false);
 
-  function handleSelectedListing(param: listing) {
+  function handleSelectedListing(param: listing & ratingAndReviews) {
     setSelected(param);
     setOpenModal(true)
   }
