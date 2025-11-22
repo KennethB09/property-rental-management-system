@@ -7,6 +7,7 @@ import { APIProvider } from "@vis.gl/react-google-maps";
 import { AppProvider } from "./context/AppContext.tsx";
 import { ApiProvider } from "./context/ApiContext.tsx";
 import { ConversationProvider } from "./context/ConversationContext.tsx";
+import { TenanciesProvider } from "./context/TenanciesContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -16,7 +17,9 @@ createRoot(document.getElementById("root")!).render(
           <ApiProvider>
             <AppProvider>
               <ConversationProvider>
-                <App />
+                <TenanciesProvider>
+                  <App />
+                </TenanciesProvider>
               </ConversationProvider>
             </AppProvider>
           </ApiProvider>

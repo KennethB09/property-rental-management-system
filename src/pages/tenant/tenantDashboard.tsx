@@ -13,11 +13,13 @@ import { getListedProperties } from "@/hooks/useFetchData";
 import { useApi } from "@/context/ApiContext";
 import { useAppContext } from "@/hooks/useAppContext";
 import { useConversationContext } from "@/hooks/useConversationContext";
+import { useTenanciesContext } from "@/hooks/useTenanciesContext";
 
 type Ttab = "Explore" | "Chats" | "Saved" | "Menu";
 
 export default function TenantDashboard() {
-  const { getTenantSaves, getConversations } = useApi();
+  const { getTenantSaves, getConversations, getTenancies } = useApi();
+  const { dispatch: tenanciesDispatch } = useTenanciesContext();
   const { dispatch } = useAppContext();
   const { dispatch: conversationDispatch } = useConversationContext();
   const { error } = getListedProperties();
@@ -31,7 +33,7 @@ export default function TenantDashboard() {
   useEffect(() => {
     function checkTab() {
       const storedTab = localStorage.getItem("TenantActiveTab");
-      
+
       if (loaction.pathname.split("/").length === 3) {
         setActiveTab("Explore");
       } else if (storedTab) {
@@ -39,7 +41,7 @@ export default function TenantDashboard() {
       } else {
         setActiveTab("Explore");
       }
-    };
+    }
 
     async function getTenantSaveListings() {
       const saves = await getTenantSaves();
@@ -48,8 +50,8 @@ export default function TenantDashboard() {
         return toast.error(saves.error);
       }
       // console.log(saves.data)
-      dispatch({ type: "SET_SAVES", payload: saves.data })
-    };
+      dispatch({ type: "SET_SAVES", payload: saves.data });
+    }
 
     async function getUserConversations() {
       const conversations = await getConversations("tenant");
@@ -58,18 +60,33 @@ export default function TenantDashboard() {
         return toast.error(conversations.error);
       }
       // console.log(conversations.data)
-      conversationDispatch({ type: "SET_CONVERSATIONS", payload: conversations.data! })
-    };
+      conversationDispatch({
+        type: "SET_CONVERSATIONS",
+        payload: conversations.data!,
+      });
+    }
+
+    async function getUserTenancies() {
+      const tenancies = await getTenancies();
+
+      if (tenancies.error) {
+        console.log(tenancies.error);
+        return toast.error(tenancies.error);
+      }
+      // console.log(tenancies.data)
+      tenanciesDispatch({ type: "SET_TENANCIES", payload: tenancies.data! });
+    }
 
     checkTab();
     getTenantSaveListings();
     getUserConversations();
+    getUserTenancies();
   }, []);
 
   function handleTab(param: Ttab) {
     localStorage.setItem("TenantActiveTab", param);
     setActiveTab(param);
-  };
+  }
 
   return (
     <main className="font-roboto">

@@ -1,5 +1,5 @@
 import type { occupation } from "./appData";
-import type { Tstatus, TpropertyType } from "./enums";
+import type { Tstatus, TpropertyType, tenanciesStatus, tenanciesInitiatedBy } from "./enums";
 
 export interface listing {
   id: string;
@@ -55,9 +55,28 @@ export interface conversation {
 
 export interface message {
   id: string;
-  convo_Id: string;
+  convo_id: string;
   content: string;
   sender_id: string;
   replyingTo: string | null;
   created_at: string;
+}
+
+export interface tenancies {
+  id: string;
+  landlord_id: string;
+  tenant_id: string;
+  property_id: tenancyProperty;
+  status: tenanciesStatus;
+  created_at: string;
+  start: string;
+  end: string;
+  initiated_by: tenanciesInitiatedBy;
+}
+
+export interface tenancyProperty {
+  id: string;
+  name: string;
+  thumbnail: string;
+  rent: string
 }

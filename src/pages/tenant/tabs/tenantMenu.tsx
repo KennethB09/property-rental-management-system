@@ -1,5 +1,5 @@
 import TenantHeader from "@/components/tenantUi/tenantHeader";
-import emptyProfile from "@/assets/svgs/blank-profile-picture-973460.svg"
+import emptyProfile from "@/assets/svgs/blank-profile-picture-973460.svg";
 import { User } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useAuthContext } from "@/context/AuthContext.tsx";
@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { useApi } from "@/context/ApiContext";
 import type { tenant } from "@/types/interface";
 import TenantProfile from "@/components/tenantUi/tenantProfile";
+import TenantRenting from "@/components/tenantUi/menu/renting/tenantRenting";
 
 export type TactiveList = "profile" | "renting";
 
@@ -22,7 +23,7 @@ export default function TenantMenu() {
 
   useEffect(() => {
     async function getProfile() {
-      setLoading(true)
+      setLoading(true);
 
       const profile = await getTenantProfile();
 
@@ -33,15 +34,17 @@ export default function TenantMenu() {
 
       setLoading(false);
       setProfile(profile.data);
-    };
+    }
 
     getProfile();
-  }, [])
+  }, []);
 
   return (
     <div className="flex flex-col h-screen gap-4">
-
-      {activeList !== "" && profile && <TenantProfile tenant={profile} onClose={setActiveList}/>}
+      {activeList === "profile" && profile && (
+        <TenantProfile tenant={profile} onClose={setActiveList} />
+      )}
+      {activeList === "renting" && <TenantRenting onClick={setActiveList} />}
 
       <TenantHeader title="Menu" />
 
@@ -52,7 +55,11 @@ export default function TenantMenu() {
           ) : (
             <img
               className="aspect-square w-full object-fill"
-              src={profile && profile.profile_pic ? `https://bdmyzcymcqiuqanmbmrn.supabase.co/storage/v1/object/public/${profile.profile_pic}` : emptyProfile}
+              src={
+                profile && profile.profile_pic
+                  ? `https://bdmyzcymcqiuqanmbmrn.supabase.co/storage/v1/object/public/${profile.profile_pic}`
+                  : emptyProfile
+              }
             />
           )}
         </div>
@@ -62,7 +69,10 @@ export default function TenantMenu() {
         </h1>
         <div className="flex flex-col justify-between h-full w-full">
           <div className="mx-4">
-            <div className="py-1 flex gap-4 items-center text-gray-900">
+            <div
+              className="py-1 flex gap-4 items-center text-gray-900"
+              onClick={() => setActiveList("renting")}
+            >
               <House size={35} />
               <h2 className="text-xl font-semibold">Renting</h2>
             </div>

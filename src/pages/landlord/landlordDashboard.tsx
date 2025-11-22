@@ -14,17 +14,19 @@ import { useLocation } from "react-router";
 import { useGetLandlordProperty } from "@/hooks/useGetLandlordProperty";
 import { useApi } from "@/context/ApiContext";
 import { useConversationContext } from "@/hooks/useConversationContext";
+import { useTenanciesContext } from "@/hooks/useTenanciesContext";
 
 type Ttab = "Home" | "Chats" | "Manage" | "Menu";
 
 export default function LandlordDashboard() {
-  const { getConversations } = useApi();
+  const { getConversations, getTenancies } = useApi();
   const { dispatch: conversationDispatch } = useConversationContext();
   const { session } = useAuthContext();
   const loaction = useLocation();
   const [activeTab, setActiveTab] = useState<Ttab>("Home");
   const [accountSetup, setAccountSetup] = useState(false);
   const { error } = useGetLandlordProperty();
+  const { dispatch: tenanciesDispatch } = useTenanciesContext();
 
   if (error) {
     toast.error(error);
@@ -81,11 +83,26 @@ export default function LandlordDashboard() {
       if (conversations.error) {
         return toast.error(conversations.error);
       }
-      // console.log(conversations.data)
-      conversationDispatch({ type: "SET_CONVERSATIONS", payload: conversations.data! })
-    };
+
+      conversationDispatch({
+        type: "SET_CONVERSATIONS",
+        payload: conversations.data!,
+      });
+    }
+
+    async function getUserTenancies() {
+      const tenancies = await getTenancies();
+
+      if (tenancies.error) {
+        console.log(tenancies.error)
+        return toast.error(tenancies.error);
+      }
+      // console.log(tenancies.data)
+      tenanciesDispatch({ type: "SET_TENANCIES", payload: tenancies.data! });
+    }
 
     getUserConversations();
+    getUserTenancies();
   }, []);
 
   function handleTab(param: Ttab) {

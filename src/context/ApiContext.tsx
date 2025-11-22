@@ -1,8 +1,9 @@
 import { createContext, type ReactNode } from "react";
 import { useContext } from "react";
 import { useAuthContext } from "./AuthContext";
-import type { conversation, tenant } from "@/types/interface";
+import type { conversation, tenancies, tenant } from "@/types/interface";
 import type { occupation } from "@/types/appData";
+import type { tenanciesStatus } from "@/types/enums";
 
 type ApiContextType = {
   getTenantProfile: () => Promise<{ data?: tenant; error?: string }>;
@@ -18,6 +19,15 @@ type ApiContextType = {
   getConversations: (
     role: "tenant" | "landlord"
   ) => Promise<{ data?: conversation[]; error?: string }>;
+  getTenancies: () => Promise<{ data?: tenancies[]; error?: string }>;
+  updateTenancyStatus: (
+    id: string,
+    newStatus: tenanciesStatus,
+    property_id: string
+  ) => Promise<{
+    data?: { id: string; status: tenanciesStatus };
+    error?: string;
+  }>;
 };
 
 const ApiContext = createContext<ApiContextType | undefined>(undefined);
@@ -173,6 +183,61 @@ export const ApiProvider = ({ children }: Props) => {
     }
   };
 
+  const getTenancies = async () => {
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_SERVER_URL}/rent-ease/api/get-tenancies/${
+          session.user.id
+        }`,
+        {
+          method: "GET",
+        }
+      );
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        return { error: data?.message ?? "Failed to get your tenancies." };
+      }
+      return { data };
+    } catch (err) {
+      return { error: (err as Error).message };
+    }
+  };
+
+  const updateTenancyStatus = async (
+    id: string,
+    newStatus: tenanciesStatus,
+    property_id: string
+  ) => {
+    try {
+      const res = await fetch(
+        `${
+          import.meta.env.VITE_SERVER_URL
+        }/rent-ease/api/update-tenancy-status/${property_id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session.access_token}`,
+          },
+          body: JSON.stringify({ id, status: newStatus }),
+        }
+      );
+
+      const data = await res.json();
+
+      console.log(data)
+
+      if (!res.ok) {
+        return { error: data?.message ?? "Failed to get your tenancies." };
+      }
+      return { data: { id: id, status: data.status } };
+    } catch (err) {
+      return { error: (err as Error).message };
+    }
+  };
+
   return (
     <ApiContext.Provider
       value={{
@@ -182,6 +247,8 @@ export const ApiProvider = ({ children }: Props) => {
         tenantRemoveSave,
         getOccupantType,
         getConversations,
+        getTenancies,
+        updateTenancyStatus,
       }}
     >
       {children}

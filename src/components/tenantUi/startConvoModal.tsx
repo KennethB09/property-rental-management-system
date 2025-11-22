@@ -60,6 +60,7 @@ export default function StartConvoModal({
     navigate("/tenant/dashboard/chats", {
       state: json,
     });
+    localStorage.setItem("TenantActiveTab", "Chats");
   }
 
   return (
@@ -70,9 +71,10 @@ export default function StartConvoModal({
           <DialogDescription hidden></DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button onClick={startConversation}>Send</Button>
+          <Button onClick={startConversation} className="bg-green-700">Send Message</Button>
           <Input
             value={message}
+            placeholder="Message"
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && startConversation()}
           />

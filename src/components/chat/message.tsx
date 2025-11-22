@@ -1,6 +1,6 @@
 import type { message } from "@/types/interface";
 import emptyProfile from "@/assets/svgs/blank-profile-picture-973460.svg";
-import { formatDistance } from "date-fns";
+import { format } from "date-fns";
 
 type Treciever = {
   id: string;
@@ -29,9 +29,7 @@ export default function Message({
           </div>
           <div className="flex justify-end">
             <span className="text-gray-500 font-semibold text-sm">
-              {formatDistance(new Date(message.created_at), new Date(), {
-                addSuffix: true,
-              })}
+              {format(new Date(message.created_at), "hh:mm aa")}
             </span>
           </div>
         </div>
@@ -57,9 +55,7 @@ export default function Message({
         </div>
         <div>
           <span className="text-gray-500 font-semibold text-sm">
-            {formatDistance(new Date(message.created_at), new Date(), {
-              addSuffix: true,
-            })}
+            {format(new Date(message.created_at), "hh:mm aa")}
           </span>
         </div>
       </div>

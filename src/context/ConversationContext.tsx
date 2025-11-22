@@ -54,6 +54,11 @@ const conversationReducer = (
       return {
         ...state,
         messages: [...state.messages, action.payload],
+        conversations: state.conversations.map((convo) =>
+          convo.id === action.payload.convo_id
+            ? { ...convo, last_msg: action.payload }
+            : convo
+        ),
       };
     default:
       return state;

@@ -1,4 +1,4 @@
-import type { TpropertyType, Tstatus } from "./enums";
+import type { tenanciesInitiatedBy, tenanciesStatus, TpropertyType, Tstatus } from "./enums";
 import type { listing } from "./interface";
 
 export type TProperty = {
@@ -43,4 +43,12 @@ export type tenantSaves = {
 export type occupation = {
   id: string;
   name: string;
+}
+
+export type Ttenancies = {
+  landlord_id: string;
+  tenant_id: string;
+  property_id: string;
+  status: tenanciesStatus;
+  initiated_by: tenanciesInitiatedBy;
 }

@@ -1,7 +1,7 @@
 import TenantHeader from "@/components/tenantUi/tenantHeader";
-import Conversation from "@/components/tenantUi/conversation";
+import Conversation from "@/components/chat/conversation";
 import { useConversationContext } from "@/hooks/useConversationContext";
-import ChatItem from "@/components/tenantUi/chatItem";
+import ChatItem from "@/components/chat/chatItem";
 import { useState } from "react";
 import type { conversation } from "@/types/interface";
 
@@ -16,12 +16,12 @@ export default function TenantChats() {
   }
 
   return (
-    <div className="p-4">
+    <div className="h-full">
       {activeConversation && <Conversation conversation={activeConversation} onClose={() => setActiveConversation(undefined)}/>}
 
       <TenantHeader title="Chats" />
 
-      <div>
+      <div className="flex flex-col h-full overflow-y-scroll gap-2 px-4">
         {conversations.map((item) => (
           <ChatItem
             key={item.id}
