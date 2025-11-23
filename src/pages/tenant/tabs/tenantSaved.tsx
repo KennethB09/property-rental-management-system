@@ -16,7 +16,7 @@ export default function TenantSaved() {
   }
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full lg:w-[91%]">
       {openModal && selected && (
         <ListingDetails
           details={selected}
@@ -27,7 +27,7 @@ export default function TenantSaved() {
 
       <TenantHeader title="Saved" />
 
-      <div className="flex flex-wrap justify-center gap-2 overflow-y-scroll h-full">
+      <div className="flex flex-wrap gap-2 px-4 overflow-y-scroll h-full">
         {saves.length !== 0 ? (
           saves.map((item) => (
             <ListingItem

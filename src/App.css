@@ -120,4 +120,8 @@
   }
 }
 
+@utility no-scrollbar {
+  @apply [scrollbar-width:none] [&::-webkit-scrollbar]:hidden;
+}
+
 @theme {  --font-roboto: "Roboto", sans-serif; }

@@ -88,12 +88,12 @@ export default function TenantSearch() {
             e.key === "Enter" && !e.shiftKey && handleApplyFilters()
           }
           disabled={isLoading}
-          className="flex-1"
+          className="flex-1 max-w-2xl ml-auto p-5 rounded-2xl"
         />
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="icon" className="cursor-pointer">
+            <Button variant="outline" size="icon" className="cursor-pointer rounded-2xl p-5">
               <Filter size={20} className="text-green-700" />
             </Button>
           </DropdownMenuTrigger>
@@ -189,14 +189,14 @@ export default function TenantSearch() {
               >
                 Clear
               </Button>
-              <Button size="sm" className="bg-green-700 hover:bg-green-800">
+              <Button size="sm" className="bg-green-700 hover:bg-green-800" onClick={handleApplyFilters}>
                 Apply
               </Button>
             </div>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="flex flex-col gap-2 p-4 w-full">
+      <div className="flex flex-wrap overflow-y-auto h-screen gap-2 p-4 w-full">
         {results.map((item) => (
           <ListingItem key={item.id} property={item} onClick={handleSelectedListing} />
         ))}

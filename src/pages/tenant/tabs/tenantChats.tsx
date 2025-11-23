@@ -12,23 +12,30 @@ export default function TenantChats() {
   const { conversations } = useConversationContext();
 
   function handleClickConversation(param: conversation) {
+    console.log("clicked")
     setActiveConversation(param);
   }
 
   return (
-    <div className="h-full">
-      {activeConversation && <Conversation conversation={activeConversation} onClose={() => setActiveConversation(undefined)}/>}
-
+    <div className="flex flex-col h-full lg:w-[91%]">
       <TenantHeader title="Chats" />
+      <div className="lg:m-4 lg:p-4 lg:border lg:border-gray-300 lg:rounded-2xl flex-1 min-h-0 lg:flex">
+        <div className="flex flex-col h-full overflow-y-scroll gap-2 px-4 lg:w-1/2">
+          {conversations.map((item) => (
+            <ChatItem
+              key={item.id}
+              conversation={item}
+              onClickConversation={() => handleClickConversation(item)}
+            />
+          ))}
+        </div>
 
-      <div className="flex flex-col h-full overflow-y-scroll gap-2 px-4">
-        {conversations.map((item) => (
-          <ChatItem
-            key={item.id}
-            conversation={item}
-            onClickConversation={() => handleClickConversation(item)}
+        {activeConversation && (
+          <Conversation
+            conversation={activeConversation}
+            onClose={() => setActiveConversation(undefined)}
           />
-        ))}
+        )}
       </div>
     </div>
   );

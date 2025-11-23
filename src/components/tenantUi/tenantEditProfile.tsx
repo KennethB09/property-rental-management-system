@@ -114,20 +114,20 @@ export default function TenantEditProfile({
   }, []);
 
   return (
-    <div className="fixed w-full h-screen bg-white">
-      <div className="flex justify-between items-center mb-4 h-16 px-4">
-        <h1 className="text-3xl font-bold text-gray-900">Edit Profile</h1>
+    <div className="fixed w-full h-screen bg-white lg:absolute lg:h-full lg:w-full lg:flex lg:flex-col">
+      <div className="flex justify-between items-center h-16 px-4 lg:p-4">
+        <h1 className="text-2xl font-bold text-gray-900">Edit Profile</h1>
         <button onClick={() => setState(false)}>
           <X size={30} />
         </button>
       </div>
-      <Form {...form}>
-        <ProfileUpload setProfile={setImage} />
 
+      <Form {...form}>
         <form
-          className="p-4 space-y-3 h-full"
+          className="p-4 space-y-3 h-full overflow-y-scroll"
           onSubmit={form.handleSubmit(onSubmit)}
         >
+          <ProfileUpload setProfile={setImage} />
           <FormField
             control={form.control}
             name="first_name"

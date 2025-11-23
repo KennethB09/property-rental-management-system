@@ -114,7 +114,7 @@ export default function RequestOrInviteItem({
       <div className="space-y-1">
         <h1 className="text-lg font-bold text-gray-900">Rent Request</h1>
         <p className="text-base text-gray-900">
-          You sent rent request to
+          You sent rent request to{" "}
           <span className="font-semibold">
             {item.landlord_id.first_name} {item.landlord_id.last_name}
           </span>{" "}

@@ -5,7 +5,7 @@ import type { listing, ratingAndReviews } from "@/types/interface";
 import ListingDetails from "@/components/tenantUi/listingDetails";
 import { useState } from "react";
 import { Link } from "react-router";
-
+import logo from "@/assets/logo/logo-light.svg";
 export default function TenantExplore() {
   const { listings } = useAppContext();
   const [selected, setSelected] = useState<listing & ratingAndReviews>();
@@ -13,20 +13,37 @@ export default function TenantExplore() {
 
   function handleSelectedListing(param: listing & ratingAndReviews) {
     setSelected(param);
-    setOpenModal(true)
+    setOpenModal(true);
   }
 
   return (
-    <div className="py-4 flex flex-col gap-4">
+    <div className="py-4 flex flex-col gap-4 lg:w-[91%] h-full">
+      {openModal && selected && (
+        <ListingDetails
+          details={selected}
+          open={openModal}
+          setOpen={setOpenModal}
+        />
+      )}
 
-        {openModal && selected && <ListingDetails details={selected} open={openModal} setOpen={setOpenModal}/>}
-
-      <Link to={"/tenant/search"} className="flex items-center mx-4 p-4 gap-4 border-1 border-gray-300 rounded-3xl">
-        <div>
-          <Search size={25} className="text-green-700" />
+      <div className="flex justify-between">
+        <div className="hidden lg:flex lg:items-center lg:gap-3">
+          <img src={logo} className="aspect-square w-10" />
+          <p className="text-2xl font-semibold text-gray-900">
+            Rent
+            <span className="text-green-700">Ease</span>
+          </p>
         </div>
-        <span className="font-light text-lg text-gray-400">Search</span>
-      </Link>
+        <Link
+          to={"/tenant/search"}
+          className="flex w-full lg:w-[500px] items-center mx-4 p-4 gap-4 border-1 border-gray-300 rounded-3xl"
+        >
+          <div>
+            <Search size={25} className="text-green-700" />
+          </div>
+          <span className="font-light text-lg text-gray-400">Search</span>
+        </Link>
+      </div>
 
       <div className="">
         <div className="flex w-full justify-between px-4">
@@ -36,9 +53,13 @@ export default function TenantExplore() {
           </button>
         </div>
 
-        <div className="px-4 w-full overflow-y-scroll flex gap-2 py-2">
+        <div className="px-4 w-full h-full overflow-y-scroll flex gap-2 py-2">
           {listings.map((item) => (
-            <ListingItem key={item.id} property={item} onClick={handleSelectedListing} />
+            <ListingItem
+              key={item.id}
+              property={item}
+              onClick={handleSelectedListing}
+            />
           ))}
         </div>
       </div>

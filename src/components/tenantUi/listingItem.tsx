@@ -66,7 +66,7 @@ export default function ListingItem({ property, onClick }: ListingItemProps) {
 
   return (
     <div
-      className="overflow-clip relative aspect-square items-center justify-center bg-gray-900 flex flex-col rounded-2xl border-1 border-gray-400"
+      className="max-h-64 overflow-clip relative aspect-square items-center justify-center bg-gray-900 flex flex-col rounded-2xl border-1 border-gray-400"
       onClick={() => onClick({...property, ...reviews!})}
       aria-disabled={!reviews}
     >

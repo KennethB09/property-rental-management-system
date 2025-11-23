@@ -72,10 +72,13 @@ export default function Conversation({
   }, [sortMessages]);
 
   return (
-    <div className="fixed h-screen w-full bg-white z-10 flex flex-col justify-between">
+    <div
+      className="fixed inset-0 h-screen w-full bg-white z-10 flex flex-col justify-between 
+lg:static lg:border lg:border-gray-300 lg:rounded-2xl lg:h-full lg:w-1/2"
+    >
       <ConversationHeader onClose={onClose} conversation={conversation} />
 
-      <div className="flex flex-col justify-end h-full overflow-y-scroll p-4" ref={newMessageRef}>
+      <div className="flex-1 overflow-y-scroll p-4" ref={newMessageRef}>
         {!isLoading ? (
           <div className="flex flex-col space-y-3">
             {sortMessages.length === 0 && <p>No messages yet...</p>}
@@ -94,7 +97,7 @@ export default function Conversation({
             ))}
           </div>
         ) : (
-          <div className="h-full flex justify-center items-center">
+          <div className="h-full w-full flex justify-center items-center">
             <Loader2 size={30} className="animate-spin text-green-700" />
           </div>
         )}
