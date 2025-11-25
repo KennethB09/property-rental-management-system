@@ -29,24 +29,24 @@ export default function LandlordManage() {
   }
 
   return (
-    <div className="flex flex-col font-roboto p-4 h-full">
-      {modalOpen && activeModal && (
-        <PropertyInfo setClose={setModalOpen} property={activeModal} />
-      )}
+    <div className="flex flex-col font-roboto p-4 h-full lg:w-[91%]">
 
-      {openAddForm && <AddProperty setClose={setOpenAddForm} />}
+      {activeModal && <PropertyInfo setClose={setModalOpen} property={activeModal} open={modalOpen}/>}
+
+      <AddProperty setClose={setOpenAddForm} open={openAddForm} />
+
       <header className="mb-4">
         <h1 className="font-bold text-3xl text-gray-900">Manage</h1>
       </header>
 
-      <Tabs defaultValue="properties" className="h-full">
+      <Tabs defaultValue="properties" className="overflow-y-hidden">
         <TabsList>
           <TabsTrigger value="properties">Properties</TabsTrigger>
           <TabsTrigger value="Requests">Requests</TabsTrigger>
           <TabsTrigger value="Tenants">Tenants</TabsTrigger>
         </TabsList>
         <TabsContent value="properties">
-          <div className="border-2 border-gray-400 rounded-[10px] h-full p-3">
+          <div className="border border-gray-300 rounded-2xl h-full p-3">
             <div className="flex justify-between ">
               <div className="text-white">
                 <Button
@@ -81,7 +81,7 @@ export default function LandlordManage() {
             </div>
           </div>
         </TabsContent>
-        <TabsContent value="Requests">
+        <TabsContent value="Requests" className="h-full overflow-y-auto">
           <Request />
         </TabsContent>
         <TabsContent value="Tenants">

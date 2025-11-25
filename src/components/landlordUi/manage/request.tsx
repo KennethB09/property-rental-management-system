@@ -8,7 +8,7 @@ export default function Request({}: RequestProps) {
     // const filteredTenancies = tenancies.filter(tenancy => tenancy.status !== "active");
 
   return (
-    <div className="py-3 space-y-2">
+    <div className="flex flex-col-reverse gap-2 max-sm:pb-16">
       {tenancies.map((req) => (
         <RequestItem key={req.id} request={req as requestTenancy} />
       ))}

@@ -1,4 +1,3 @@
-import { X } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,7 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Map, Marker } from "@vis.gl/react-google-maps";
-import { Map as MapIcon } from "lucide-react";
+import { Map as MapIcon, X } from "lucide-react";
 import { useState } from "react";
 import type { ImageListType, ImageType } from "react-images-uploading";
 import { toast } from "sonner";
@@ -31,6 +30,11 @@ import type { TProperty } from "@/types/appData";
 import UpdatePropertyImages from "./updatePropertyImages";
 import { usePropertyContext } from "@/hooks/usePropertyContext";
 import { getFilters } from "@/hooks/useFetchData";
+import {
+  DialogHeader,
+  DialogDescription,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 const formSchema = z.object({
   title: z
@@ -57,17 +61,18 @@ type EditPropertyProps = {
 };
 
 type TsetImage = {
-    newImages: ImageListType;
-    deleteImages: string[];
-    currentImages: string[];
-}
+  newImages: ImageListType;
+  deleteImages: string[];
+  currentImages: string[];
+};
 
-export default function EditProperty({ setClose, property }: EditPropertyProps) {
+export default function EditProperty({
+  setClose,
+  property,
+}: EditPropertyProps) {
   const { session } = useAuthContext();
   const { dispatch } = usePropertyContext();
   const { filters } = getFilters();
-  const width = window.screen.width;
-
   const [loading, setLoading] = useState(false);
   const [thumbnail, setThumbnail] = useState<ImageType | string>();
   const [images, setImages] = useState<TsetImage>();
@@ -81,12 +86,12 @@ export default function EditProperty({ setClose, property }: EditPropertyProps) 
     currentImages: string[];
   }) {
     // console.log(payload)
-    setImages(payload)
+    setImages(payload);
   }
 
   function listItemThumbnail(thumb: ImageType | string | undefined) {
     // console.log(thumb)
-    setThumbnail(thumb)
+    setThumbnail(thumb);
   }
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -114,17 +119,19 @@ export default function EditProperty({ setClose, property }: EditPropertyProps) 
     if (typeof thumbnail === "string" || typeof thumbnail === "undefined") {
       thumb = {
         type: "route",
-        thumbnail: thumbnail
-      }
+        thumbnail: thumbnail,
+      };
     } else {
       thumb = {
         type: "file",
-        thumbnail: thumbnail
-      }
+        thumbnail: thumbnail,
+      };
     }
 
     const response = await fetch(
-      `${import.meta.env.VITE_SERVER_URL}/rent-ease/api/landlord-update-property/${property.id}`,
+      `${
+        import.meta.env.VITE_SERVER_URL
+      }/rent-ease/api/landlord-update-property/${property.id}`,
       {
         method: "POST",
         headers: {
@@ -158,261 +165,281 @@ export default function EditProperty({ setClose, property }: EditPropertyProps) 
 
     // console.log(json);
     setLoading(false);
-    dispatch({ type: "UPDATE_PROPERTY", payload: json.property })
+    dispatch({ type: "UPDATE_PROPERTY", payload: json.property });
     toast.success(json.message);
     form.reset();
-    setClose(prev => !prev)
+    setClose((prev) => !prev);
   }
 
   return (
-    <div className="flex flex-col font-roboto max-h-dvh w-full overflow-y-scroll top-0 left-0 bg-white fixed z-10">
-      <div className="flex justify-between p-4">
-        <h1 className="text-3xl text-gray-900 font-bold">Edit Property</h1>
-        <button onClick={() => setClose((prev) => !prev)}>
-          <X size={30} />
-        </button>
-      </div>
-      <div className="mb-3">
-        <h1 className="text-gray-900 font-semibold text-lg px-4">Edit Images</h1>
-        <p className="px-4 mb-2 text-gray-900 text-base">
-          The first image that selected will be the default thumbnail if not
-          set.
-        </p>
-        <div>
-          <UpdatePropertyImages listItemImages={listItemImages} listItemThumbnail={listItemThumbnail} propertyImages={property.images} propertyThumbnail={property.thumbnail}/>
+    <>
+      <DialogHeader className="flex flex-row justify-between p-4 lg:border-b lg:border-gray-300">
+        <DialogTitle className="text-start text-2xl w-fit text-gray-900 font-bold">
+          Edit Property
+        </DialogTitle>
+        <Button variant={"ghost"} size={"icon"} onClick={() => setClose(false)}><X /></Button>
+        <DialogDescription hidden>Edit property.</DialogDescription>
+      </DialogHeader>
+
+      <div className="flex overflow-y-auto flex-col py-4 h-full lg:flex-row lg:justify-between lg:gap-4">
+        <div className="mb-3 lg:h-full lg:w-1/2">
+          <h1 className="text-gray-900 font-semibold text-lg px-4">
+            Edit Images
+          </h1>
+          <p className="px-4 mb-2 text-gray-900 text-base">
+            The first image that selected will be the default thumbnail if not
+            set.
+          </p>
+          <div className="">
+            <UpdatePropertyImages
+              listItemImages={listItemImages}
+              listItemThumbnail={listItemThumbnail}
+              propertyImages={property.images}
+              propertyThumbnail={property.thumbnail}
+            />
+          </div>
+        </div>
+
+        <div className="px-4 h-full lg:overflow-y-auto lg:px-0 lg:pr-4">
+          <Form {...form}>
+            <form
+              className="space-y-3 pb-4"
+              onSubmit={form.handleSubmit(handleSubmit)}
+            >
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-gray-900 text-base">
+                      Title
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="Title"
+                        className="border-gray-400"
+                        disabled={loading}
+                        required
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-gray-900 text-base">
+                      About this property
+                    </FormLabel>
+                    <FormControl>
+                      <Textarea
+                        {...field}
+                        placeholder="Description"
+                        className="border-gray-400"
+                        disabled={loading}
+                        required
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="address"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-gray-900 text-base">
+                      Address
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="address"
+                        placeholder="Address"
+                        className="border-gray-400"
+                        disabled={loading}
+                        required
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="flex justify-between gap-3">
+                <FormField
+                  control={form.control}
+                  name="propertyType"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-gray-900 text-base">
+                        Property type
+                      </FormLabel>
+                      <FormControl>
+                        <Select
+                          {...field}
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                          value={field.value}
+                          disabled={loading}
+                          required
+                        >
+                          <SelectTrigger className="border-gray-400">
+                            <SelectValue placeholder="Property type" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {filters.map((i) => (
+                              <SelectItem key={i.id} value={i.id.toString()}>
+                                {i.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="occupant"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-gray-900 text-base">
+                        Occupant
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder="Max occupant"
+                          type="number"
+                          className="border-gray-400"
+                          disabled={loading}
+                          required
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="flex justify-between gap-3">
+                <FormField
+                  control={form.control}
+                  name="status"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-gray-900 text-base">
+                        Status
+                      </FormLabel>
+                      <FormControl>
+                        <Select
+                          {...field}
+                          onValueChange={field.onChange}
+                          defaultValue={"unlisted"}
+                          value={field.value}
+                          disabled={loading}
+                          required
+                        >
+                          <SelectTrigger className="border-gray-400">
+                            <SelectValue placeholder="Status" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="unlisted">
+                              Unlist for now
+                            </SelectItem>
+                            <SelectItem value="available">
+                              List property
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="rent"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-gray-900 text-base">
+                        Rent per month
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder="Rent"
+                          type="number"
+                          className="border-gray-400"
+                          onChange={(event) =>
+                            field.onChange(+event.target.value)
+                          }
+                          disabled={loading}
+                          required
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="space-y-2 text-gray-900">
+                <div className="flex gap-2">
+                  <MapIcon />
+                  <h1 className="text-base font-semibold">Location</h1>
+                </div>
+                <Map
+                  style={{
+                    width: "100%",
+                    height: "500px",
+                    borderRadius: "10px",
+                    overflow: "hidden",
+                  }}
+                  defaultCenter={
+                    latLang
+                      ? latLang
+                      : { lat: property.latitude, lng: property.longitude }
+                  }
+                  defaultZoom={20}
+                  gestureHandling="cooperative"
+                  disableDefaultUI
+                  onClick={(e) => setLatLang(e.detail.latLng)}
+                >
+                  <Marker
+                    position={
+                      latLang
+                        ? latLang
+                        : { lat: property.latitude, lng: property.longitude }
+                    }
+                  />
+                </Map>
+              </div>
+              <div className="flex justify-end gap-3 my-4 pb-8">
+                <Button
+                  variant={"secondary"}
+                  onClick={() => setClose((prev) => !prev)}
+                  className="w-20 text-gray-900"
+                  disabled={loading}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" className="w-28 bg-green-700">
+                  {loading ? (
+                    <Loader2 size={25} className="animate-spin" />
+                  ) : (
+                    "Save"
+                  )}
+                </Button>
+              </div>
+            </form>
+          </Form>
         </div>
       </div>
-      <div className="px-4">
-        <Form {...form}>
-          <form
-            className="space-y-3"
-            onSubmit={form.handleSubmit(handleSubmit)}
-          >
-            <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-gray-900 text-base">
-                    Title
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="Title"
-                      className="border-gray-400"
-                      disabled={loading}
-                      required
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-gray-900 text-base">
-                    About this property
-                  </FormLabel>
-                  <FormControl>
-                    <Textarea
-                      {...field}
-                      placeholder="Description"
-                      className="border-gray-400"
-                      disabled={loading}
-                      required
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="address"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-gray-900 text-base">
-                    Address
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      type="address"
-                      placeholder="Address"
-                      className="border-gray-400"
-                      disabled={loading}
-                      required
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="flex justify-between gap-3">
-              <FormField
-                control={form.control}
-                name="propertyType"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-gray-900 text-base">
-                      Property type
-                    </FormLabel>
-                    <FormControl>
-                      <Select
-                        {...field}
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                        value={field.value}
-                        disabled={loading}
-                        required
-                      >
-                        <SelectTrigger className="border-gray-400">
-                          <SelectValue placeholder="Property type" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {filters.map((i) => (
-                            <SelectItem key={i.id} value={i.id.toString()}>
-                              {i.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="occupant"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-gray-900 text-base">
-                      Occupant
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        placeholder="Max occupant"
-                        type="number"
-                        className="border-gray-400"
-                        disabled={loading}
-                        required
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="flex justify-between gap-3">
-              <FormField
-                control={form.control}
-                name="status"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-gray-900 text-base">
-                      Status
-                    </FormLabel>
-                    <FormControl>
-                      <Select
-                        {...field}
-                        onValueChange={field.onChange}
-                        defaultValue={"unlisted"}
-                        value={field.value}
-                        disabled={loading}
-                        required
-                      >
-                        <SelectTrigger className="border-gray-400">
-                          <SelectValue placeholder="Status" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="unlisted">
-                            Unlist for now
-                          </SelectItem>
-                          <SelectItem value="available">
-                            List property
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="rent"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-gray-900 text-base">
-                      Rent per month
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        placeholder="Rent"
-                        type="number"
-                        className="border-gray-400"
-                        onChange={(event) =>
-                          field.onChange(+event.target.value)
-                        }
-                        disabled={loading}
-                        required
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="space-y-2 text-gray-900">
-              <div className="flex gap-2">
-                <MapIcon />
-                <h1 className="text-base font-semibold">Location</h1>
-              </div>
-              <Map
-                style={{
-                  width: "100%",
-                  height: "500px",
-                  borderRadius: "10px",
-                  overflow: "hidden",
-                }}
-                defaultCenter={
-                  latLang ? latLang : { lat: property.latitude, lng: property.longitude }
-                }
-                defaultZoom={20}
-                gestureHandling="greedy"
-                disableDefaultUI
-                onClick={(e) => setLatLang(e.detail.latLng)}
-              >
-                <Marker position={latLang ? latLang : { lat: property.latitude, lng: property.longitude }} />
-              </Map>
-            </div>
-            <div className="flex justify-end gap-3 my-4">
-              <Button
-                variant={"secondary"}
-                onClick={() => setClose((prev) => !prev)}
-                className="w-20 text-gray-900"
-                disabled={loading}
-              >
-                Cancel
-              </Button>
-              <Button type="submit" className="w-28 bg-green-700">
-                {loading ? (
-                  <Loader2 size={25} className="animate-spin" />
-                ) : (
-                  "Save"
-                )}
-              </Button>
-            </div>
-          </form>
-        </Form>
-      </div>
-    </div>
+    </>
   );
 }

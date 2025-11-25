@@ -7,7 +7,7 @@ export default function RequestsAndInvites() {
   const { tenancies } = useTenanciesContext();
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col-reverse gap-2">
       {tenancies.map((item) => (
         <RequestOrInviteItem
           key={item.id}

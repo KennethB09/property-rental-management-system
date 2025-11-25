@@ -15,7 +15,7 @@ type TenantItemProps = {
 export default function TenantItem({ tenant, onEvict }: TenantItemProps) {
   return (
     <div className="flex flex-wrap gap-2 border border-gray-200 rounded-2xl p-3">
-      <div className="flex flex-wrap">
+      <div className="flex flex-wrap justify-between lg:w-full">
         <div className="flex items-center gap-3 w-full">
           <img
             className="aspect-square w-10 rounded-full"
@@ -28,7 +28,7 @@ export default function TenantItem({ tenant, onEvict }: TenantItemProps) {
         <span className="font-semibold text-gray-900">Occupied: {tenant.property_id.name}</span>
         <div>
           <span className="font-semibold text-gray-900">
-            Rented on: {format(new Date(tenant.start), "MMM dd yyyy hh:mm aa")}
+            Rented on: {format(tenant.start ? new Date(tenant.start) : new Date(), "MMM dd yyyy hh:mm aa")}
           </span>
           {tenant.end && <span>End on: {tenant.end}</span>}
         </div>

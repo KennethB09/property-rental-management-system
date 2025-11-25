@@ -17,6 +17,10 @@ import TenantExplore from "@/pages/tenant/tabs/tenantExplore";
 import TenantChats from "@/pages/tenant/tabs/tenantChats";
 import TenantSaved from "@/pages/tenant/tabs/tenantSaved";
 import TenantMenu from "@/pages/tenant/tabs/tenantMenu";
+import LandlordChats from "@/pages/landlord/tabs/landlordChats";
+import LandlordManage from "@/pages/landlord/tabs/landlordManage";
+import LandlordMenu from "@/pages/landlord/tabs/landlordMenu";
+import LandlordHome from "@/pages/landlord/tabs/landlordHome";
 
 function App() {
   const { session } = useAuthContext();
@@ -37,15 +41,24 @@ function App() {
         <Route path="/email-verification" element={<ConfirmEmail />} />
 
         <Route
-          path="/landlord/dashboard/*"
+          path="/landlord"
           element={
             <ProtectedRoute allowedRoles={["landlord"]}>
               <PropertiesProvider>
-                <LandlordDashboard />
+                <Outlet />
               </PropertiesProvider>
             </ProtectedRoute>
           }
-        />
+        >
+          <Route path="dashboard" element={<LandlordDashboard />}>
+            <Route index element={<LandlordHome />} />
+            <Route path="chats" element={<LandlordChats />} />
+            <Route path="manage" element={<LandlordManage />} />
+            <Route path="menu" element={<LandlordMenu />} />
+            <Route path="*" element={<PageNotFound />} />
+          </Route>
+          <Route path="*" element={<PageNotFound />} />
+        </Route>
 
         <Route
           path="/tenant"
@@ -55,13 +68,12 @@ function App() {
             </ProtectedRoute>
           }
         >
-          <Route index element={<Navigate to="dashboard" replace />} />
-
           <Route path="dashboard" element={<TenantDashboard />}>
             <Route index element={<TenantExplore />} />
             <Route path="chats" element={<TenantChats />} />
             <Route path="saved" element={<TenantSaved />} />
             <Route path="menu" element={<TenantMenu />} />
+            <Route path="*" element={<PageNotFound />} />
           </Route>
 
           <Route path="search" element={<TenantSearch />} />

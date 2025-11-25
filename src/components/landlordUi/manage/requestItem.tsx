@@ -45,7 +45,7 @@ export default function RequestItem({ request }: RequestItemProps) {
 
   if (request.initiated_by === "landlord") {
     return (
-      <div className="flex flex-wrap border border-gray-200 rounded-2xl p-3">
+      <div className="flex flex-wrap border justify-between items-center gap-4 border-gray-200 rounded-2xl p-3">
         <div className="space-y-1">
           <h1 className="text-lg font-bold text-gray-900">Invite</h1>
           <p className="text-base text-gray-900">
@@ -61,7 +61,7 @@ export default function RequestItem({ request }: RequestItemProps) {
           </span>
         </div>
         {request.status === "pending" && (
-          <div className="text-gray-900 space-y-3">
+          <div className="text-gray-900 flex justify-between items-center w-full lg:w-1/2">
             <p className="font-semibold text-base">Waiting for confirmation</p>
             <Button
               variant={"secondary"}
@@ -104,7 +104,7 @@ export default function RequestItem({ request }: RequestItemProps) {
   }
 
   return (
-    <div className="flex flex-wrap gap-2 border border-gray-200 rounded-2xl p-3">
+    <div className="flex flex-wrap items-center justify-between gap-2 border border-gray-200 rounded-2xl p-3">
       <div className="space-y-1">
         <h1 className="text-lg font-bold text-gray-900">Rent Request</h1>
         <p className="text-base text-gray-900">

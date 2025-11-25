@@ -6,6 +6,7 @@ import {
   MapPin,
   User,
   Map as MapIcon,
+  X
 } from "lucide-react";
 import {
   Dialog,
@@ -22,7 +23,7 @@ import { useApi } from "@/context/ApiContext";
 import { useAuthContext } from "@/context/AuthContext";
 import { toast } from "sonner";
 import { useAppContext } from "@/hooks/useAppContext";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import StartConvoModal from "./startConvoModal";
 import ReviewItem from "../review/reviewItem";
 
@@ -42,7 +43,9 @@ export default function ListingDetails({
   const { dispatch, saves } = useAppContext();
   const [openMessageLandlord, setOpenLandlord] = useState(false);
   const isSave = saves.map((item) => item.listing_ID.id).includes(details.id);
-  // console.log(details)
+  const [viewerOpen, setViewerOpen] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const viewerContainerRef = useRef<HTMLDivElement | null>(null);
 
   async function handleSave() {
     if (isSave) {
@@ -66,6 +69,13 @@ export default function ListingDetails({
     toast.success("Listing Saved.");
   }
 
+  useEffect(() => {
+      if (viewerOpen && viewerContainerRef.current) {
+        const container = viewerContainerRef.current;
+        container.scrollLeft = selectedIndex * container.clientWidth;
+      }
+    }, [viewerOpen, selectedIndex]);
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       {openMessageLandlord && (
@@ -77,14 +87,18 @@ export default function ListingDetails({
       )}
 
       <DialogContent className="[&>button]:hidden p-0 border-0 min-w-full h-screen rounded-none overflow-y-scroll lg:min-w-[800px] lg:h-3/4 lg:rounded-2xl lg:flex lg:flex-col no-scrollbar">
-        <DialogHeader className="absolute flex-row justify-between bg-black/30 w-full text-white p-3 lg:w-1/2">
+        <DialogHeader className="absolute z-10 flex-row justify-between bg-black/30 w-full text-white p-3 lg:w-1/2">
           <DialogClose className="w-fit">
             <ArrowLeft size={30} />
           </DialogClose>
           <DialogTitle className="text-2xl">Details</DialogTitle>
           <button onClick={handleSave}>
             {isSave ? (
-              <Heart size={25} fill="oklch(52.7% 0.154 150.069)" className="font-semibold" />
+              <Heart
+                size={25}
+                fill="oklch(52.7% 0.154 150.069)"
+                className="font-semibold"
+              />
             ) : (
               <Heart size={25} />
             )}
@@ -93,19 +107,67 @@ export default function ListingDetails({
             Details of listed property
           </DialogDescription>
         </DialogHeader>
-        <div className="h-full flex flex-col lg:flex-row lg:justify-between">
-          <div className="w-screen h-64 overflow-x-auto snap-x snap-mandatory flex lg:w-1/2 lg:h-full">
-            {details.images.map((image, index) => (
-              <div key={index} className="snap-start shrink-0 w-screen h-full">
-                <img
-                  src={`https://bdmyzcymcqiuqanmbmrn.supabase.co/storage/v1/object/public/listings_image/${image}`}
-                  alt={`Property image ${index + 1}`}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            ))}
+
+        {viewerOpen && (
+          <div className="fixed inset-0 z-50 bg-gray-950/95">
+            <button
+              type="button"
+              className="absolute top-4 right-4 z-60 px-3 py-1"
+              onClick={() => setViewerOpen(false)}
+            >
+              <X className="text-white" size={25} />
+            </button>
+
+            <div
+              ref={viewerContainerRef}
+              className="h-full w-full flex overflow-x-auto snap-x snap-mandatory"
+            >
+              {details.images.map((image, index) => (
+                <div
+                  key={index}
+                  className="relative snap-center snap-always min-w-full h-full flex  justify-center"
+                >
+                  <img
+                    src={`https://bdmyzcymcqiuqanmbmrn.supabase.co/storage/v1/object/public/listings_image/${image}`}
+                    alt={`Full size property image ${index + 1}`}
+                    className="max-w-full max-h-full object-contain"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="lg:w-1/2 lg:h-full overflow-y-auto no-scrollbar">
+        )}
+
+        <div className="flex flex-col overflow-y-auto lg:justify-between lg:flex-row h-full">
+          <div className="w-full bg-gray-800 overflow-x-auto snap-x snap-mandatory flex lg:w-1/2 items-center">
+            {details.images && details.images.length !== 0 ? (
+              details.images.map((image, index) => (
+                <div key={index} className="snap-start shrink-0 w-full h-96">
+                  <button
+                    type="button"
+                    className="w-full h-full p-0 block"
+                    onClick={() => {
+                      setSelectedIndex(index);
+                      setViewerOpen(true);
+                    }}
+                    aria-label={`Open image ${index + 1} in viewer`}
+                  >
+                    <img
+                      className="w-full h-full object-cover bg-gray-900"
+                      src={`https://bdmyzcymcqiuqanmbmrn.supabase.co/storage/v1/object/public/listings_image/${image}`}
+                      alt={`Property image ${index + 1}`}
+                    />
+                  </button>
+                </div>
+              ))
+            ) : (
+              <div className="w-full h-[300px] bg-gray-100 flex items-center justify-center text-gray-500">
+                No Images Available
+              </div>
+            )}
+          </div>
+
+          <div className="lg:w-1/2 lg:h-full lg:overflow-y-auto no-scrollbar max-sm:h-1/2">
             <div className="m-4">
               <h1 className="text-3xl font-bold text-center text-gray-900">
                 {details.name}
@@ -178,7 +240,7 @@ export default function ListingDetails({
                   lng: details.longitude,
                 }}
                 defaultZoom={20}
-                gestureHandling="greedy"
+                gestureHandling="cooperative"
                 disableDefaultUI
               >
                 <Marker
@@ -186,9 +248,9 @@ export default function ListingDetails({
                 />
               </Map>
             </div>
-            <div className="px-4 flex flex-col gap-3">
+            <div className="px-4 flex flex-col gap-3 pb-16">
               <h1 className="text-base font-semibold text-gray-900">Reviews</h1>
-              <div>
+              <div className="flex flex-col-reverse gap-2">
                 {details.reviews.map((review) => (
                   <ReviewItem key={review.id} data={review} />
                 ))}
@@ -196,14 +258,14 @@ export default function ListingDetails({
             </div>
           </div>
         </div>
-            <div className="sticky bottom-0 w-full bg-white p-3 lg:w-1/2 lg:ml-auto">
-              <Button
-                className="w-full bg-green-700"
-                onClick={() => setOpenLandlord(true)}
-              >
-                Message Landlord
-              </Button>
-            </div>
+        <div className="sticky lg:absolute bottom-0 w-full bg-white p-3 lg:w-1/2 lg:right-0">
+          <Button
+            className="w-full bg-green-700"
+            onClick={() => setOpenLandlord(true)}
+          >
+            Message Landlord
+          </Button>
+        </div>
       </DialogContent>
     </Dialog>
   );

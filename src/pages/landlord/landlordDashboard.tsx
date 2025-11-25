@@ -2,14 +2,10 @@ import ResponsiveDialog from "@/components/responsiveDialog";
 import NavigationItem from "@/components/navigationBar/navigationItem";
 import { House, MessageCircle, LayoutGrid, Menu } from "lucide-react";
 import NavigationBar from "@/components/navigationBar/navigationBar";
-import { Routes, Route } from "react-router";
-import LandlordHome from "./tabs/landlordHome";
+import { Outlet } from "react-router";
 import { useEffect, useState } from "react";
 import { useAuthContext } from "@/context/AuthContext.tsx";
 import { toast, Toaster } from "sonner";
-import LandlordChats from "./tabs/landlordChats";
-import LandlordManage from "@/pages/landlord/tabs/landlordManage";
-import LandlordMenu from "./tabs/landlordMenu";
 import { useLocation } from "react-router";
 import { useGetLandlordProperty } from "@/hooks/useGetLandlordProperty";
 import { useApi } from "@/context/ApiContext";
@@ -111,15 +107,12 @@ export default function LandlordDashboard() {
   }
 
   return (
-    <main className="bg-white h-screen relative">
+    <main className=" font-roboto lg:flex lg:flex-row-reverse h-dvh lg:items-center">
       <Toaster richColors />
       <ResponsiveDialog state={accountSetup} setState={setAccountSetup} />
-      <Routes>
-        <Route index path="" element={<LandlordHome />} />
-        <Route path="/chats" element={<LandlordChats />} />
-        <Route path="/manage" element={<LandlordManage />} />
-        <Route path="/menu" element={<LandlordMenu />} />
-      </Routes>
+      
+      <Outlet />
+
       <NavigationBar>
         <NavigationItem
           url="/landlord/dashboard"

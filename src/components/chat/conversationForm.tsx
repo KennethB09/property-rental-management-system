@@ -7,6 +7,15 @@ import { useAuthContext } from "@/context/AuthContext";
 import type { Ttenancies } from "@/types/appData";
 import type { tenanciesInitiatedBy } from "@/types/enums";
 import { useTenanciesContext } from "@/hooks/useTenanciesContext";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "../ui/alert-dialog";
 
 type ConversationFormProps = {
   landlordId: string;
@@ -29,11 +38,13 @@ export default function ConversationForm({
   const [isLoading, setIsLoading] = useState(false);
   const { dispatch, tenancies } = useTenanciesContext();
   const [checkTenancy, setCheckTenancy] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
 
   useEffect(() => {
     const isInTenancies = tenancies
-      .map((tenancy) => tenancy.property_id.id)
-      .includes(propertyId);
+      .filter((tenancy) => tenancy.status === "pending" || tenancy.status === "active")
+      .map((filtered) => filtered.property_id.id.toString())
+      .includes(propertyId.toString());
     setCheckTenancy(isInTenancies);
   }, [tenancies]);
 
@@ -66,6 +77,7 @@ export default function ConversationForm({
 
     toast.success("Tenant request Sent.");
     dispatch({ type: "ADD_REQUEST", payload: json });
+    setOpenAlert(false)
     // TODO: Create message after request.
   }
 
@@ -115,24 +127,55 @@ export default function ConversationForm({
 
   return (
     <div className="flex gap-3 p-4">
-      {!checkTenancy &&
-        (session.user.user_metadata.role === "landlord" ? (
-          <Button
-            className="bg-green-700"
-            onClick={() => createTenancy("landlord")}
-          >
-            <UserRoundPlus />
-            Add as tenant
-          </Button>
-        ) : (
-          <Button
-            className="bg-green-700"
-            onClick={() => createTenancy("tenant")}
-          >
-            <HousePlus />
-            Rent
-          </Button>
-        ))}
+      <AlertDialog open={openAlert} onOpenChange={setOpenAlert}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {session.user.user_metadata.role === "landlord"
+                ? "Add as tenant"
+                : "Rent"}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              {session.user.user_metadata.role === "landlord"
+                ? "Invite this user to rent your property."
+                : "Send a rent request to a landlord."}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            {session.user.user_metadata.role === "landlord" ? (
+              <Button
+                className="bg-green-700 hover:bg-green-900"
+                onClick={() => createTenancy("landlord")}
+              >
+                <UserRoundPlus />
+                Add as tenant
+              </Button>
+            ) : (
+              <Button
+                className="bg-green-700 hover:bg-green-900"
+                onClick={() => createTenancy("tenant")}
+              >
+                <HousePlus />
+                Rent
+              </Button>
+            )}
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+      {!checkTenancy && (
+        <Button className="bg-green-700 hover:bg-green-900" onClick={() => setOpenAlert(true)}>
+          {session.user.user_metadata.role === "landlord" ? (
+            <>
+              <UserRoundPlus /> Add as tenant
+            </>
+          ) : (
+            <>
+              <HousePlus /> Rent
+            </>
+          )}
+        </Button>
+      )}
       <Input
         value={message}
         onChange={(e) => setMessage(e.target.value)}

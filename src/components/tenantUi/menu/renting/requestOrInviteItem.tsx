@@ -56,7 +56,7 @@ export default function RequestOrInviteItem({
 
   if (item.initiated_by === "landlord") {
     return (
-      <div className="flex flex-wrap border gap-2 border-gray-200 rounded-2xl p-3">
+      <div className="flex flex-wrap items-center justify-between border gap-2 border-gray-200 rounded-2xl p-3">
         <div className="space-y-1">
           <h1 className="text-lg font-bold text-gray-900">Landlord Invite</h1>
           <p className="text-base text-gray-900">

@@ -21,9 +21,9 @@ export default function LandlordProfile({
   const [editProfile, setEditProfile] = useState(false);
 
   return (
-    <div className="font-roboto">
+    <div className="font-roboto overflow-y-scroll no-scrollbar">
       {editProfile && (
-        <div className="absolute w-full h-full z-10 left-0 top-0 bg-white">
+        <div className="absolute w-full h-full z-10 left-0 top-0 bg-white overflow-y-auto">
           <LandlordEditProfile userData={userData} setState={setEditProfile} />
         </div>
       )}
@@ -36,7 +36,7 @@ export default function LandlordProfile({
           Edit
         </Button>
       </div>
-      <div className="flex flex-col items-center gap-10 px-4">
+      <div className="flex flex-col items-center gap-10 p-4">
         <div className="flex justify-center items-center rounded-full border-1 border-green-700 aspect-square h-32 overflow-hidden">
           <img
             className="aspect-square w-fill object-fill"

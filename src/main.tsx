@@ -1,6 +1,6 @@
+import App from "./App.tsx";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import App from "./App.tsx";
 import { AuthContextProvider } from "./context/AuthContext.tsx";
 import { ThemeProvider } from "@/components/themeProvider";
 import { APIProvider } from "@vis.gl/react-google-maps";
