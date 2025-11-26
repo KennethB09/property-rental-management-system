@@ -53,22 +53,24 @@ export const AuthContextProvider = ({
     role: UserRole
   ) => {
     try {
+      // console.log({ role, first_name, last_name, phone_number, occupation });
       const { data, error } = await supabase.auth.signUp({
         email: email,
         password: password,
         options: {
-          emailRedirectTo: `${import.meta.env.CLIENT}/${role}/dashboard`,
+          emailRedirectTo: `${import.meta.env.VITE_CLIENT}/${role}/dashboard`,
           data: {
             role,
             first_name,
             last_name,
             phone_number,
             occupation,
+            profile_pic: "",
           },
         },
       });
       if (error) {
-        // console.log("Sign-up error:", error);
+        console.log("Sign-up error:", error);
         return { success: false, error: error.message };
       }
       return { success: true, data };
@@ -132,7 +134,7 @@ export const AuthContextProvider = ({
       console.error("Error during signup:", error);
       return {
         success: false,
-        error: error.message || "An unexpected error occurred during signup"
+        error: error.message || "An unexpected error occurred during signup",
       };
     }
   };
@@ -143,7 +145,6 @@ export const AuthContextProvider = ({
     business_name: string,
     phone_number: string
   ) => {
-
     const response = await fetch(
       `${import.meta.env.VITE_SERVER_URL}/rent-ease/api/complete-setup`,
       {
@@ -165,7 +166,11 @@ export const AuthContextProvider = ({
     const json = await response.json();
 
     if (!response.ok) {
-      return { success: false, error: json.message || "An unexpected error occurred. Please try again." };
+      return {
+        success: false,
+        error:
+          json.message || "An unexpected error occurred. Please try again.",
+      };
     }
 
     return { success: true, data: json };
@@ -187,8 +192,8 @@ export const AuthContextProvider = ({
       console.error("Error signing out:", error);
     }
 
-    localStorage.removeItem("activeTab")
-    localStorage.removeItem("TenantActiveTab")
+    localStorage.removeItem("activeTab");
+    localStorage.removeItem("TenantActiveTab");
     setSession(null);
   }
 

@@ -194,7 +194,7 @@ export default function TenantSignup() {
                         </SelectTrigger>
                         <SelectContent>
                           {occupantion.map((item) => (
-                            <SelectItem value={item.id.toString()}>
+                            <SelectItem key={item.id} value={item.id.toString()}>
                               {item.name}
                             </SelectItem>
                           ))}

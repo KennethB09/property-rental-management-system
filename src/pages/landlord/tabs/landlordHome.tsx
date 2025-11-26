@@ -58,7 +58,7 @@ export default function LandlordHome() {
 
             </div>
           ) : (
-            <div className="h-full flex justify-center items-center">
+            <div className="h-full w-full flex justify-center items-center">
               <h1 className="text-xl font-semibold text-gray-700">No Properties</h1>
             </div>
           )}

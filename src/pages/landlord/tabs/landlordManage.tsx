@@ -78,7 +78,9 @@ export default function LandlordManage() {
                   />
                 ))
               ) : (
-                <h1>No Listings</h1>
+                <div className="h-full w-full flex items-start justify-center">
+                  <h1 className="text-gray-900 dark:text-gray-600">No Listings</h1>
+                </div>
               )}
             </div>
             </div>
