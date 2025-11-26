@@ -50,13 +50,13 @@ export default function ProfileUpload({ setProfile }: ProfileUploadProps) {
 
   const onChange = (
     imageList: ImageListType,
-    addUpdatedIndex?: Array<number>
+    _addUpdatedIndex?: Array<number>
   ) => {
     setImage(imageList);
     setUserCropping(true);
   };
 
-  const onCropComplete = (croppedArea: Area, croppedAreaPixels: Area) => {
+  const onCropComplete = (_croppedArea: Area, croppedAreaPixels: Area) => {
     setCroppedAreaPixels(croppedAreaPixels);
   };
 

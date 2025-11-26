@@ -16,7 +16,7 @@ export default function UploadPropertyImages({ listItemThumbnail, listItemImages
 
   const onChange = (
     imageList: ImageListType,
-    addUpdatedIndex?: Array<number>
+    _addUpdatedIndex?: Array<number>
   ) => {
     setImages(imageList);
     setThumbnail(imageList[0]);

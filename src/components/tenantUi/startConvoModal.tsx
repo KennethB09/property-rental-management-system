@@ -9,7 +9,7 @@ import {
   DialogTitle,
 } from "../ui/dialog";
 import { Input } from "../ui/input";
-import type { listing, message } from "@/types/interface";
+import type { listing } from "@/types/interface";
 import { useNavigate } from "react-router";
 import { useAuthContext } from "@/context/AuthContext";
 import { toast } from "sonner";

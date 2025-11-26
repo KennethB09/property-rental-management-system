@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import type { propertiesCount, TProperty } from "@/types/appData";
+import type { propertiesCount } from "@/types/appData";
 import { useAuthContext } from "@/context/AuthContext";
 import type { TpropertyType } from "@/types/enums";
 import { useAppContext } from "./useAppContext";

@@ -45,15 +45,15 @@ export default function TenantExplore() {
         </Link>
       </div>
 
-      <div className="">
+      <div className="flex flex-col overflow-y-auto">
         <div className="flex w-full justify-between px-4">
-          <h1 className="text-2xl font-semibold text-gray-900">Listings</h1>
-          <button>
+          <h1 className="text-2xl font-semibold text-gray-900 mr-auto">Listings</h1>
+          {listings.length > 30 && <button>
             <ArrowRight size={30} className="text-gray-900" />
-          </button>
+          </button>}
         </div>
 
-        <div className="px-4 w-full h-full overflow-y-scroll flex gap-2 py-2">
+        <div className="px-4 w-full flex flex-wrap h-full overflow-y-scroll gap-2 py-2">
           {listings.map((item) => (
             <ListingItem
               key={item.id}

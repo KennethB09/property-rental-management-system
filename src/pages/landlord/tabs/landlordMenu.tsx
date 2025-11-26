@@ -2,7 +2,7 @@ import { User } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useAuthContext } from "@/context/AuthContext.tsx";
 import { toast } from "sonner";
-import { Loader2, SunMoon, Star } from "lucide-react";
+import { Loader2, SunMoon } from "lucide-react";
 import { ModeToggle } from "@/components/modeToggle";
 import { Button } from "@/components/ui/button";
 import type { TuserProfile } from "@/types/userData";
