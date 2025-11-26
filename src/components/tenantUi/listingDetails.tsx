@@ -6,7 +6,7 @@ import {
   MapPin,
   User,
   Map as MapIcon,
-  X
+  X,
 } from "lucide-react";
 import {
   Dialog,
@@ -27,6 +27,8 @@ import { useState, useRef, useEffect } from "react";
 import StartConvoModal from "./startConvoModal";
 import ReviewItem from "../review/reviewItem";
 import { format } from "date-fns";
+import { useConversationContext } from "@/hooks/useConversationContext";
+import { Link } from "react-router";
 
 type ListingDetailsProps = {
   details: listing & ratingAndReviews;
@@ -42,11 +44,15 @@ export default function ListingDetails({
   const { session } = useAuthContext();
   const { tenantSave, tenantRemoveSave } = useApi();
   const { dispatch, saves } = useAppContext();
+  const { conversations } = useConversationContext();
   const [openMessageLandlord, setOpenLandlord] = useState(false);
   const isSave = saves.map((item) => item.listing_ID.id).includes(details.id);
   const [viewerOpen, setViewerOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const viewerContainerRef = useRef<HTMLDivElement | null>(null);
+  const isHaveConvo = conversations
+    .map((convo) => convo.listing_id.id)
+    .includes(details.id);
 
   async function handleSave() {
     if (isSave) {
@@ -71,11 +77,11 @@ export default function ListingDetails({
   }
 
   useEffect(() => {
-      if (viewerOpen && viewerContainerRef.current) {
-        const container = viewerContainerRef.current;
-        container.scrollLeft = selectedIndex * container.clientWidth;
-      }
-    }, [viewerOpen, selectedIndex]);
+    if (viewerOpen && viewerContainerRef.current) {
+      const container = viewerContainerRef.current;
+      container.scrollLeft = selectedIndex * container.clientWidth;
+    }
+  }, [viewerOpen, selectedIndex]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -213,7 +219,9 @@ export default function ListingDetails({
               <div className="flex gap-2 items-center">
                 <User size={30} /> <span>{details.occupant} tenant</span>
               </div>
-              <span className="text-gray-500 dark:text-slate-500">{format(new Date(details.created_at), "MMM dd, yyyy h:mm aa")}</span>
+              <span className="text-gray-500 dark:text-slate-500">
+                {format(new Date(details.created_at), "MMM dd, yyyy h:mm aa")}
+              </span>
             </div>
 
             <div className="space-y-3 mx-4 border-y-2 py-3 border-gray-300">
@@ -250,7 +258,9 @@ export default function ListingDetails({
               </Map>
             </div>
             <div className="px-4 flex flex-col gap-3 pb-16">
-              <h1 className="text-base font-semibold text-gray-900 dark:text-slate-100">Reviews</h1>
+              <h1 className="text-base font-semibold text-gray-900 dark:text-slate-100">
+                Reviews
+              </h1>
               <div className="flex flex-col-reverse gap-2">
                 {details.reviews.map((review) => (
                   <ReviewItem key={review.id} data={review} />
@@ -260,12 +270,23 @@ export default function ListingDetails({
           </div>
         </div>
         <div className="sticky lg:absolute bottom-0 w-full bg-white dark:bg-gray-800 p-3 lg:w-1/2 lg:right-0">
-          <Button
-            className="w-full bg-green-700 hover:bg-green-900 text-slate-100"
-            onClick={() => setOpenLandlord(true)}
-          >
-            Message Landlord
-          </Button>
+          {isHaveConvo ? (
+            <Link
+              to={"/tenant/dashboard/chats"}
+              onClick={() => localStorage.setItem("TenantActiveTab", "Chats")}
+            >
+              <Button className="w-full bg-green-700 hover:bg-green-900 text-slate-100">
+                Go to Chats
+              </Button>
+            </Link>
+          ) : (
+            <Button
+              className="w-full bg-green-700 hover:bg-green-900 text-slate-100"
+              onClick={() => setOpenLandlord(true)}
+            >
+              Message Landlord
+            </Button>
+          )}
         </div>
       </DialogContent>
     </Dialog>
