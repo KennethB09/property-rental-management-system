@@ -171,9 +171,9 @@ export default function AddProperty({ open, setClose }: AddPropertyProps) {
 
   return (
     <Dialog open={open} onOpenChange={setClose}>
-      <DialogContent className="flex flex-col overflow-y-scroll font-roboto min-w-screen h-screen p-0 rounded-none lg:h-3/4 lg:min-w-2/3 lg:border lg:border-gray-300 lg:rounded-2xl gap-0">
+      <DialogContent className="flex flex-col overflow-y-scroll dark:bg-gray-900 font-roboto min-w-screen h-screen p-0 rounded-none lg:h-3/4 lg:min-w-2/3 lg:border lg:border-gray-300 lg:rounded-2xl gap-0">
         <DialogHeader className="p-4 lg:border-b lg:border-gray-300">
-          <DialogTitle className="text-start text-2xl text-gray-900 font-bold">
+          <DialogTitle className="text-start text-2xl text-gray-900 dark:text-slate-100 font-bold">
             Add Property
           </DialogTitle>
           <DialogDescription hidden>Add a new property.</DialogDescription>
@@ -184,7 +184,7 @@ export default function AddProperty({ open, setClose }: AddPropertyProps) {
             <h1 className="text-gray-900 font-semibold text-lg px-4">
               Add Images
             </h1>
-            <p className="px-4 mb-2 text-gray-900 text-base">
+            <p className="px-4 mb-2 text-gray-900 dark:text-slate-100 text-base">
               The first image that selected will be the default thumbnail if not
               set.
             </p>
@@ -207,7 +207,7 @@ export default function AddProperty({ open, setClose }: AddPropertyProps) {
                   name="title"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-gray-900 text-base">
+                      <FormLabel className="text-gray-900 dark:text-slate-100 text-base">
                         Title
                       </FormLabel>
                       <FormControl>
@@ -228,7 +228,7 @@ export default function AddProperty({ open, setClose }: AddPropertyProps) {
                   name="description"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-gray-900 text-base">
+                      <FormLabel className="text-gray-900 dark:text-slate-100 text-base">
                         About this property
                       </FormLabel>
                       <FormControl>
@@ -249,7 +249,7 @@ export default function AddProperty({ open, setClose }: AddPropertyProps) {
                   name="address"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-gray-900 text-base">
+                      <FormLabel className="text-gray-900 dark:text-slate-100 text-base">
                         Address
                       </FormLabel>
                       <FormControl>
@@ -272,7 +272,7 @@ export default function AddProperty({ open, setClose }: AddPropertyProps) {
                     name="propertyType"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-gray-900 text-base">
+                        <FormLabel className="text-gray-900 dark:text-slate-100 text-base">
                           Property type
                         </FormLabel>
                         <FormControl>
@@ -305,7 +305,7 @@ export default function AddProperty({ open, setClose }: AddPropertyProps) {
                     name="occupant"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-gray-900 text-base">
+                        <FormLabel className="text-gray-900 dark:text-slate-100 text-base">
                           Occupant
                         </FormLabel>
                         <FormControl>
@@ -329,7 +329,7 @@ export default function AddProperty({ open, setClose }: AddPropertyProps) {
                     name="status"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-gray-900 text-base">
+                        <FormLabel className="text-gray-900 dark:text-slate-100 text-base">
                           Status
                         </FormLabel>
                         <FormControl>
@@ -363,7 +363,7 @@ export default function AddProperty({ open, setClose }: AddPropertyProps) {
                     name="rent"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-gray-900 text-base">
+                        <FormLabel className="text-gray-900 dark:text-slate-100 text-base">
                           Rent per month
                         </FormLabel>
                         <FormControl>
@@ -384,7 +384,7 @@ export default function AddProperty({ open, setClose }: AddPropertyProps) {
                     )}
                   />
                 </div>
-                <div className="space-y-2 text-gray-900">
+                <div className="space-y-2 text-gray-900 dark:text-slate-100">
                   <div className="flex gap-2">
                     <MapIcon />
                     <h1 className="text-base font-semibold">Location</h1>
@@ -411,12 +411,12 @@ export default function AddProperty({ open, setClose }: AddPropertyProps) {
                   <Button
                     variant={"secondary"}
                     onClick={() => setClose((prev) => !prev)}
-                    className="w-20 text-gray-900"
+                    className="text-gray-900 w-24 dark:text-slate-100 dark:bg-gray-800"
                     disabled={loading}
                   >
                     Cancel
                   </Button>
-                  <Button type="submit" className="w-28 bg-green-700">
+                  <Button type="submit" className="w-24 bg-green-700 hover:bg-green-900 text-slate-100">
                     {loading ? (
                       <Loader2 size={25} className="animate-spin" />
                     ) : (

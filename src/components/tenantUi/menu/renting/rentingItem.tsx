@@ -45,11 +45,11 @@ export default function RentingItem({ renting }: RentingItemProps) {
           className="object-cover aspect-square rounded-2xl w-24 h-24"
           src={`https://bdmyzcymcqiuqanmbmrn.supabase.co/storage/v1/object/public/listings_image/${renting.property_id.thumbnail}`}
         />
-        <div className="overflow-hidden">
-          <h1 className="text-gray-900 font-semibold text-lg truncate">
+        <div className="overflow-hidden flex flex-wrap">
+          <h1 className="text-gray-900 dark:text-slate-100 font-semibold text-lg truncate">
             {renting.property_id.name}
           </h1>
-          <div className="flex flex-wrap gap-2 font-regular text-gray-700">
+          <div className="flex flex-wrap gap-2 font-regular text-gray-700 dark:text-slate-500">
             <span>Rent: {renting.property_id.rent}</span>
             <span>
               Rented on: {format(new Date(renting.start), "MMM dd, yyyy")}

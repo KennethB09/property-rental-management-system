@@ -6,10 +6,13 @@ import ListingDetails from "@/components/tenantUi/listingDetails";
 import { useState } from "react";
 import { Link } from "react-router";
 import logo from "@/assets/logo/logo-light.svg";
+import logoDark from "@/assets/logo/logo-dark.svg"
+import { useTheme } from "@/components/themeProvider";
 export default function TenantExplore() {
   const { listings } = useAppContext();
   const [selected, setSelected] = useState<listing & ratingAndReviews>();
   const [openModal, setOpenModal] = useState(false);
+  const { theme } = useTheme()
 
   function handleSelectedListing(param: listing & ratingAndReviews) {
     setSelected(param);
@@ -28,15 +31,15 @@ export default function TenantExplore() {
 
       <div className="flex justify-between">
         <div className="hidden lg:flex lg:items-center lg:gap-3">
-          <img src={logo} className="aspect-square w-10" />
-          <p className="text-2xl font-semibold text-gray-900">
+          <img src={theme === "dark" ? logoDark : logo} className="aspect-square w-10" />
+          <p className="text-2xl font-semibold text-gray-900 dark:text-slate-100">
             Rent
             <span className="text-green-700">Ease</span>
           </p>
         </div>
         <Link
           to={"/tenant/search"}
-          className="flex w-full lg:w-[500px] items-center mx-4 p-4 gap-4 border-1 border-gray-300 rounded-3xl"
+          className="flex w-full lg:w-[500px] items-center mx-4 p-4 gap-4 border-1 border-gray-300 dark:border-none rounded-3xl dark:bg-gray-900"
         >
           <div>
             <Search size={25} className="text-green-700" />
@@ -47,7 +50,7 @@ export default function TenantExplore() {
 
       <div className="flex flex-col overflow-y-auto">
         <div className="flex w-full justify-between px-4">
-          <h1 className="text-2xl font-semibold text-gray-900 mr-auto">Listings</h1>
+          <h1 className="text-2xl font-semibold text-gray-900 dark:text-slate-100 mr-auto">Listings</h1>
           {listings.length > 30 && <button>
             <ArrowRight size={30} className="text-gray-900" />
           </button>}

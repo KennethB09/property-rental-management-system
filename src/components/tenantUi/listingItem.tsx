@@ -77,7 +77,7 @@ export default function ListingItem({ property, onClick }: ListingItemProps) {
         {isSave ? (
           <Heart size={25} fill="oklch(52.7% 0.154 150.069)" stroke="0" />
         ) : (
-          <Heart size={25} />
+          <Heart size={25} className="dark:text-gray-900"/>
         )}
       </button>
       <div className="flex justify-center items-center w-full h-full object-fill">

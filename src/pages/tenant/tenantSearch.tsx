@@ -65,7 +65,7 @@ export default function TenantSearch() {
   }
 
   return (
-    <div className="p-4 font-roboto flex flex-col h-screen">
+    <div className="dark:bg-gray-950 p-4 font-roboto flex flex-col h-screen">
       {openModal && selected && (
         <ListingDetails
           details={selected}
@@ -88,25 +88,25 @@ export default function TenantSearch() {
             e.key === "Enter" && !e.shiftKey && handleApplyFilters()
           }
           disabled={isLoading}
-          className="flex-1 max-w-2xl ml-auto p-5 rounded-2xl"
+          className="flex-1 max-w-2xl ml-auto p-5 rounded-2xl dark:border-none dark:bg-slate-900"
         />
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="icon" className="cursor-pointer rounded-2xl p-5">
+            <Button variant="outline" size="icon" className="cursor-pointer rounded-2xl p-5 dark:border-none dark:bg-slate-900">
               <Filter size={20} className="text-green-700" />
             </Button>
           </DropdownMenuTrigger>
 
-          <DropdownMenuContent align="end" className="w-56">
-            <DropdownMenuLabel className="text-gray-900 font-semibold">
+          <DropdownMenuContent align="end" className="w-56 dark:border-none dark:bg-slate-900">
+            <DropdownMenuLabel className="text-gray-900 dark:text-slate-100 font-semibold">
               Filter Options
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
 
             {/* Min Price */}
             <div className="px-2 py-2">
-              <label className="text-sm text-gray-900 font-semibold">
+              <label className="text-sm text-gray-900 dark:text-slate-100 font-semibold">
                 Min Price
               </label>
               <Input
@@ -122,7 +122,7 @@ export default function TenantSearch() {
 
             {/* Max Price */}
             <div className="px-2 py-2">
-              <label className="text-sm text-gray-900 font-semibold">
+              <label className="text-sm text-gray-900 dark:text-slate-100 font-semibold">
                 Max Price
               </label>
               <Input
@@ -138,7 +138,7 @@ export default function TenantSearch() {
 
             {/* Property Type */}
             <div className="px-2 py-2">
-              <label className="text-sm text-gray-900 font-semibold">
+              <label className="text-sm text-gray-900 dark:text-slate-100 font-semibold">
                 Property Type
               </label>
               <select
@@ -146,7 +146,7 @@ export default function TenantSearch() {
                 onChange={(e) =>
                   setFilters({ ...filters, propertyType: e.target.value })
                 }
-                className="w-full mt-1 h-8 px-2 rounded border text-sm"
+                className="w-full mt-1 h-8 px-2 rounded-[10px] border text-sm dark:bg-slate-900"
               >
                 <option value="">Select type</option>
                 {property_type.map((item) => (
@@ -157,7 +157,7 @@ export default function TenantSearch() {
 
             {/* Max Tenant */}
             <div className="px-2 py-2">
-              <label className="text-sm text-gray-900 font-semibold">
+              <label className="text-sm text-gray-900 dark:text-slate-100 font-semibold">
                 Max Tenant
               </label>
               <Input
@@ -174,7 +174,7 @@ export default function TenantSearch() {
             <DropdownMenuSeparator />
             <div className="px-2 py-2 flex gap-2">
               <Button
-                className="text-gray-900"
+                className="text-gray-900 dark:text-slate-100"
                 size="sm"
                 variant="outline"
                 onClick={() =>
@@ -189,7 +189,7 @@ export default function TenantSearch() {
               >
                 Clear
               </Button>
-              <Button size="sm" className="bg-green-700 hover:bg-green-800" onClick={handleApplyFilters}>
+              <Button size="sm" className="bg-green-700 hover:bg-green-800 text-slate-100" onClick={handleApplyFilters}>
                 Apply
               </Button>
             </div>

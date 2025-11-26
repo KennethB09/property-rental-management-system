@@ -21,13 +21,13 @@ export default function TenantItem({ tenant, onEvict }: TenantItemProps) {
             className="aspect-square w-10 rounded-full"
             src={`https://bdmyzcymcqiuqanmbmrn.supabase.co/storage/v1/object/public/${tenant.tenant_id.profile_pic}`}
           />
-          <h1 className="text-lg text-gray-900 font-semibold">
+          <h1 className="text-lg text-gray-900 font-semibold dark:text-slate-100">
             {tenant.tenant_id.first_name} {tenant.tenant_id.last_name}
           </h1>
         </div>
-        <span className="font-semibold text-gray-900">Occupied: {tenant.property_id.name}</span>
+        <span className="font-semibold text-gray-900 dark:text-slate-100">Occupied: {tenant.property_id.name}</span>
         <div>
-          <span className="font-semibold text-gray-900">
+          <span className="font-semibold text-gray-900 dark:text-slate-100">
             Rented on: {format(tenant.start ? new Date(tenant.start) : new Date(), "MMM dd yyyy hh:mm aa")}
           </span>
           {tenant.end && <span>End on: {tenant.end}</span>}

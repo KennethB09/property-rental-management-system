@@ -107,7 +107,7 @@ export default function LandlordDashboard() {
   }
 
   return (
-    <main className=" font-roboto lg:flex lg:flex-row-reverse h-dvh lg:items-center">
+    <main className=" font-roboto lg:flex lg:flex-row-reverse h-dvh lg:items-center dark:bg-gray-950">
       <Toaster richColors />
       <ResponsiveDialog state={accountSetup} setState={setAccountSetup} />
       

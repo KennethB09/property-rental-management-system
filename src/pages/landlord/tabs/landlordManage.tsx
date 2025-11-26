@@ -36,21 +36,21 @@ export default function LandlordManage() {
       <AddProperty setClose={setOpenAddForm} open={openAddForm} />
 
       <header className="mb-4">
-        <h1 className="font-bold text-3xl text-gray-900">Manage</h1>
+        <h1 className="font-bold text-3xl text-gray-900 dark:text-slate-100">Manage</h1>
       </header>
 
       <Tabs defaultValue="properties" className="overflow-y-hidden">
-        <TabsList>
+        <TabsList className="dark:bg-gray-800">
           <TabsTrigger value="properties">Properties</TabsTrigger>
           <TabsTrigger value="Requests">Requests</TabsTrigger>
           <TabsTrigger value="Tenants">Tenants</TabsTrigger>
         </TabsList>
         <TabsContent value="properties">
-          <div className="border border-gray-300 rounded-2xl h-full p-3">
-            <div className="flex justify-between ">
+          <div className="flex flex-col border border-gray-300 rounded-2xl h-full p-3">
+            <div className="flex justify-between">
               <div className="text-white">
                 <Button
-                  className="bg-green-700"
+                  className="bg-green-700 hover:bg-green-900 text-slate-100"
                   onClick={() => setOpenAddForm((prev) => !prev)}
                 >
                   Add <Plus />
@@ -66,7 +66,7 @@ export default function LandlordManage() {
                 </SelectContent>
               </Select>
             </div>
-            <div className="mt-2">
+            <div className="mt-2 flex flex-col-reverse h-full gap-1">
               {properties?.length !== 0 ? (
                 properties?.map((property) => (
                   <Item

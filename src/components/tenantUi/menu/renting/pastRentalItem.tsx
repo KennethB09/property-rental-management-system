@@ -16,10 +16,10 @@ export default function PastRentalItem({ pastRental, handleClick }: PastRentalIt
           src={`https://bdmyzcymcqiuqanmbmrn.supabase.co/storage/v1/object/public/listings_image/${pastRental.property_id.thumbnail}`}
         />
         <div className="overflow-hidden">
-          <h1 className="text-gray-900 font-semibold text-lg truncate">
+          <h1 className="text-gray-900 dark:text-slate-100 font-semibold text-lg truncate">
             {pastRental.property_id.name}
           </h1>
-          <div className="flex flex-wrap gap-1 text-sm font-regular text-gray-700">
+          <div className="flex flex-wrap gap-1 text-sm font-regular text-gray-700 dark:text-slate-500">
             <span>Rent: {pastRental.property_id.rent}</span>
             <span>
               Rented on: {format(new Date(pastRental.start), "MMM dd, yyyy")}

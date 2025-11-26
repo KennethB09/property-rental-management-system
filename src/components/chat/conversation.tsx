@@ -73,12 +73,12 @@ export default function Conversation({
 
   return (
     <div
-      className="fixed inset-0 h-screen w-full bg-white z-10 flex flex-col justify-between 
+      className="fixed inset-0 h-screen w-full bg-white dark:bg-gray-900 z-10 flex flex-col justify-between 
 lg:static lg:border lg:border-gray-300 lg:rounded-2xl lg:h-full lg:w-1/2"
     >
       <ConversationHeader onClose={onClose} conversation={conversation} />
 
-      <div className="flex-1 overflow-y-scroll p-4" ref={newMessageRef}>
+      <div className="flex-1 overflow-y-scroll no-scrollbar p-4" ref={newMessageRef}>
         {!isLoading ? (
           <div className="flex flex-col space-y-3">
             {sortMessages.length === 0 && <p>No messages yet...</p>}

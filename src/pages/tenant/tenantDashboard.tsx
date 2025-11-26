@@ -84,7 +84,7 @@ export default function TenantDashboard() {
   }
 
   return (
-    <main className="font-roboto lg:flex lg:flex-row-reverse h-dvh lg:items-center">
+    <main className="font-roboto lg:flex lg:flex-row-reverse h-dvh lg:items-center dark:bg-gray-950">
       <Toaster richColors />
 
       <Outlet />

@@ -21,9 +21,9 @@ export default function LandlordProfile({
   const [editProfile, setEditProfile] = useState(false);
 
   return (
-    <div className="font-roboto overflow-y-scroll no-scrollbar">
+    <div className="font-roboto overflow-y-scroll no-scrollbar dark:bg-gray-900">
       {editProfile && (
-        <div className="absolute w-full h-full z-10 left-0 top-0 bg-white overflow-y-auto">
+        <div className="absolute w-full h-full z-10 left-0 top-0 bg-white dark:bg-gray-900 overflow-y-auto">
           <LandlordEditProfile userData={userData} setState={setEditProfile} />
         </div>
       )}

@@ -73,7 +73,7 @@ export default function ChatItem({
         />
       </div>
       <div className="flex flex-col w-full min-w-0">
-        <h1 className="text-2xl font-semibold text-gray-900 truncate">
+        <h1 className="text-2xl font-semibold text-gray-900 dark:text-slate-100 truncate">
           {conversation.listing_id.name}
         </h1>
         {conversation.last_msg && (

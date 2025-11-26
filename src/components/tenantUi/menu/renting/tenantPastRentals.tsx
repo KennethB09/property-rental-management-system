@@ -50,7 +50,7 @@ export default function TenantPastRentals() {
   }
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col-reverse gap-2">
       {toReview && <ReviewDialog
         open={reviewOpen}
         onOpenChange={setReviewOpen}

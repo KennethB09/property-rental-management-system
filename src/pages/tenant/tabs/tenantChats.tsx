@@ -18,11 +18,11 @@ export default function TenantChats() {
   }
 
   return (
-    <div className="flex flex-col h-full lg:w-[91%]">
+    <div className="flex flex-col h-full lg:w-[91%] ">
       <TenantHeader title="Chats" />
       
-      <div className="lg:m-4 lg:p-4 lg:border lg:border-gray-300 lg:rounded-2xl flex-1 min-h-0 lg:flex">
-        <div className="flex flex-col h-full overflow-y-scroll gap-2 px-4 lg:w-1/2">
+      <div className="dark:bg-gray-900 lg:m-4 lg:p-4 lg:border lg:border-gray-300 lg:rounded-2xl flex-1 min-h-0 lg:flex">
+        <div className="flex flex-col h-full overflow-y-scroll no-scrollbar gap-2 px-4 lg:w-1/2">
           {conversations.map((item) => (
             <ChatItem
               key={item.id}

@@ -21,6 +21,7 @@ import {
   DialogDescription,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { format } from "date-fns";
 
 type PropertyInfoProps = {
   property: TProperty;
@@ -48,7 +49,7 @@ export default function PropertyInfo({
 
   return (
     <Dialog open={open} onOpenChange={setClose}>
-      <DialogContent className="[&>button]:hidden flex flex-col overflow-clip font-roboto min-w-screen h-screen p-0 rounded-none lg:h-3/4 lg:min-w-2/3 lg:border lg:border-gray-300 lg:rounded-2xl gap-0">
+      <DialogContent className="[&>button]:hidden flex flex-col overflow-clip font-roboto min-w-screen h-screen p-0 rounded-none lg:h-3/4 lg:min-w-2/3 lg:border lg:border-gray-300 lg:rounded-2xl gap-0 dark:bg-gray-900">
         {editFormOpen && (
           <EditProperty property={property} setClose={setEditFormOpen} />
         )}
@@ -61,12 +62,12 @@ export default function PropertyInfo({
                   className="w-full"
                   onClick={() => setClose((prev) => !prev)}
                 >
-                  <ArrowLeft size={30} />
+                  <ArrowLeft size={30} className="dark:text-slate-100"/>
                 </button>
-                <DialogTitle className="w-fit text-2xl text-gray-900 font-bold ">
+                <DialogTitle className="w-fit text-2xl text-gray-900 dark:text-slate-100 font-bold ">
                   Property
                 </DialogTitle>
-                <div className="flex gap-4 justify-end w-full">
+                <div className="flex gap-4 justify-end w-full dark:text-slate-100 items-center h-full">
                   <button onClick={() => setEditFormOpen((prev) => !prev)}>
                     <Pen />
                   </button>
@@ -140,7 +141,7 @@ export default function PropertyInfo({
 
               <div className="lg:w-1/2 lg:overflow-y-auto lg:h-full h-1/2">
                 <div className="m-4">
-                  <h1 className="text-3xl font-bold text-center text-gray-900">
+                  <h1 className="text-3xl font-bold text-center text-gray-900 dark:text-slate-100">
                     {property.name}
                   </h1>
                   <div className="flex justify-center gap-7 font-semibold text-gray-500 my-3">
@@ -159,13 +160,13 @@ export default function PropertyInfo({
                       {session.user.user_metadata.first_name}{" "}
                       {session.user.user_metadata.last_name}
                     </h1>
-                    <span className="capitalize font-semibold text-gray-700">
+                    <span className="capitalize font-semibold text-gray-500">
                       {session.user.user_metadata.role}
                     </span>
                   </div>
                 </div>
 
-                <div className="mx-4 py-3 space-y-3 text-gray-900 text-base font-medium">
+                <div className="mx-4 py-3 space-y-3 text-gray-900 dark:text-slate-100 text-base font-medium">
                   <div className="flex gap-2 items-center">
                     <PhilippinePeso size={30} />{" "}
                     <span>{property.rent} per month</span>
@@ -181,14 +182,14 @@ export default function PropertyInfo({
                   <div className="flex gap-2 items-center">
                     <User size={30} /> <span>{property.occupant} tenant</span>
                   </div>
-                  <span className="text-gray-500">{property.created_at}</span>
+                  <span className="text-gray-500">{format(new Date(property.created_at), "MMM dd, yyyy H:mm aa")}</span>
                 </div>
 
                 <div className="space-y-3 mx-4 border-y-2 py-3 border-gray-300">
-                  <h1 className="text-2xl font-semibold text-gray-900">
+                  <h1 className="text-2xl font-semibold text-gray-900 dark:text-slate-100">
                     About this property
                   </h1>
-                  <p className="text-gray-700 text-base font-medium">
+                  <p className="text-gray-700 dark:text-slate-400 text-base font-medium">
                     {property.description}
                   </p>
                 </div>

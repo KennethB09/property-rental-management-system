@@ -56,9 +56,9 @@ export default function LandlordMenu() {
   return (
     <div className="flex flex-col p-4 h-full gap-4 font-roboto lg:w-[91%]">
       <header>
-        <h1 className="text-3xl font-bold text-gray-900">Menu</h1>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-slate-100">Menu</h1>
       </header>
-      <div className="gap-4 lg:m-4 lg:p-4 lg:border lg:border-gray-300 lg:rounded-2xl flex-1 min-h-0 lg:flex">
+      <div className="gap-4 lg:m-4 lg:p-4 lg:border lg:border-gray-300 lg:rounded-2xl flex-1 min-h-0 lg:flex dark:bg-slate-900">
         <div className="flex flex-col h-full lg:w-1/2">
           <div className="flex flex-col items-center h-full gap-3">
             <div className="flex justify-center items-center rounded-full border-1 border-green-700 aspect-square h-44 overflow-hidden">
@@ -71,7 +71,7 @@ export default function LandlordMenu() {
                 />
               )}
             </div>
-            <h1 className="text-lg font-semibold text-gray-900">
+            <h1 className="text-lg font-semibold text-gray-900 dark:text-slate-100">
               {profile?.userData.first_name} {profile?.userData.last_name}
             </h1>
             <div className="flex flex-col justify-between h-full w-full">
@@ -81,14 +81,14 @@ export default function LandlordMenu() {
                   <h2 className="text-lg font-semibold">Your Ratings</h2>
                 </div> */}
                 <div
-                  className="py-1 flex gap-4 items-center text-gray-900"
+                  className="py-1 flex gap-4 items-center text-gray-900 dark:text-slate-100"
                   onClick={() => setActiveList("profile")}
                 >
                   <User size={30} />
                   <h2 className="text-lg font-semibold">Profile</h2>
                 </div>
                 <div className="py-1 flex gap-3 w-full justify-between items-center">
-                  <div className="flex gap-4 items-center text-gray-900">
+                  <div className="flex gap-4 items-center text-gray-900 dark:text-slate-100">
                     <SunMoon size={30} />
                     <h2 className="text-lg font-semibold">Theme</h2>
                   </div>

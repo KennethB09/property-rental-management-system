@@ -64,7 +64,7 @@ export default function ReviewDialog({
           src={`https://bdmyzcymcqiuqanmbmrn.supabase.co/storage/v1/object/public/listings_image/${data.property_id.thumbnail}`}
         />
 
-        <h1 className="truncate text-lg font-semibold text-gray-900">
+        <h1 className="truncate text-lg font-semibold text-gray-900 dark:text-slate-100">
           {data.property_id.name}
         </h1>
       </div>
@@ -113,7 +113,7 @@ export default function ReviewDialog({
       <Button
         onClick={handleSubmit}
         disabled={isLoading}
-        className="w-full bg-green-700 hover:bg-green-800"
+        className="w-full bg-green-700 hover:bg-green-800 text-slate-100"
       >
         {isLoading ? "Posting..." : "Post"}
       </Button>
@@ -123,7 +123,7 @@ export default function ReviewDialog({
   if (width >= 768) {
     return (
       <Dialog open={open} onOpenChange={handleOpenChange}>
-        <DialogContent className="max-w-md">
+        <DialogContent className="max-w-md dark:bg-gray-900">
           <DialogHeader>
             <DialogTitle>Write a Review</DialogTitle>
           </DialogHeader>
@@ -135,7 +135,7 @@ export default function ReviewDialog({
 
   return (
     <Drawer open={open} onOpenChange={handleOpenChange}>
-      <DrawerContent>
+      <DrawerContent className="dark:bg-gray-900">
         <DrawerHeader>
           <DrawerTitle>Write a Review</DrawerTitle>
         </DrawerHeader>

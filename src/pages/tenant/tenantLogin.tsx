@@ -16,6 +16,7 @@ import { useAuthContext } from "@/context/AuthContext";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
+import { Link } from "react-router";
 
 const formSchema = z.object({
   email: z.email({
@@ -55,11 +56,11 @@ export default function TenantLogin() {
   }
 
   return (
-    <div className="flex flex-col h-screen px-10 max-sm:px-5 font-roboto">
+    <div className="flex flex-col h-screen px-10 max-sm:px-5 font-roboto dark:bg-gray-950">
       <Toaster richColors />
       <div className="flex flex-row h-full">
         <div className="w-5/12 max-sm:w-full text-center h-full flex flex-col justify-center gap-20">
-          <h1 className="text-gray-900 font-bold text-4xl">
+          <h1 className="text-gray-900 dark:text-slate-100 font-bold text-4xl">
             Welcome <span className="text-green-700">Back</span>!
           </h1>
           <Form {...form}>
@@ -75,7 +76,7 @@ export default function TenantLogin() {
                         type="email"
                         placeholder="Email"
                         {...field}
-                        className="border-gray-900"
+                        className="border-gray-900 dark:border-gray-500"
                         required
                       />
                     </FormControl>
@@ -94,7 +95,7 @@ export default function TenantLogin() {
                         type="password"
                         placeholder="Password"
                         {...field}
-                        className="border-gray-900"
+                        className="border-gray-900 dark:border-gray-500"
                         required
                       />
                     </FormControl>
@@ -111,16 +112,16 @@ export default function TenantLogin() {
 
               <Button
                 type="submit"
-                className="w-full bg-green-700 hover:bg-green-900"
+                className="w-full bg-green-700 hover:bg-green-900 text-slate-100"
                 disabled={loading}
               >
                 Login
               </Button>
-              <p className="text-gray-900">
+              <p className="text-gray-900 dark:text-slate-100">
                 Don't have an account?{" "}
-                <a href="/auth/tenant-signup" className="text-green-700">
+                <Link to="/auth/tenant-signup" className="text-green-700">
                   Sign-up
-                </a>
+                </Link>
               </p>
             </form>
           </Form>

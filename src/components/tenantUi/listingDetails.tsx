@@ -26,6 +26,7 @@ import { useAppContext } from "@/hooks/useAppContext";
 import { useState, useRef, useEffect } from "react";
 import StartConvoModal from "./startConvoModal";
 import ReviewItem from "../review/reviewItem";
+import { format } from "date-fns";
 
 type ListingDetailsProps = {
   details: listing & ratingAndReviews;
@@ -86,12 +87,12 @@ export default function ListingDetails({
         />
       )}
 
-      <DialogContent className="[&>button]:hidden p-0 border-0 min-w-full h-screen rounded-none overflow-y-scroll lg:min-w-[800px] lg:h-3/4 lg:rounded-2xl lg:flex lg:flex-col no-scrollbar">
-        <DialogHeader className="absolute z-10 flex-row justify-between bg-black/30 w-full text-white p-3 lg:w-1/2">
+      <DialogContent className="[&>button]:hidden p-0 border-0 min-w-full h-screen rounded-none overflow-y-scroll lg:min-w-[800px] lg:h-3/4 lg:rounded-2xl lg:flex lg:flex-col no-scrollbar dark:bg-gray-900">
+        <DialogHeader className="absolute z-10 flex-row justify-between bg-black/80 w-full text-white p-3 lg:w-1/2">
           <DialogClose className="w-fit">
             <ArrowLeft size={30} />
           </DialogClose>
-          <DialogTitle className="text-2xl">Details</DialogTitle>
+          <DialogTitle className="text-2xl text-slate-100">Details</DialogTitle>
           <button onClick={handleSave}>
             {isSave ? (
               <Heart
@@ -139,7 +140,7 @@ export default function ListingDetails({
         )}
 
         <div className="flex flex-col overflow-y-auto lg:justify-between lg:flex-row h-full">
-          <div className="w-full bg-gray-800 overflow-x-auto snap-x snap-mandatory flex lg:w-1/2 items-center">
+          <div className="w-full bg-gray-950 overflow-x-auto snap-x snap-mandatory flex lg:w-1/2 items-center">
             {details.images && details.images.length !== 0 ? (
               details.images.map((image, index) => (
                 <div key={index} className="snap-start shrink-0 w-full h-96">
@@ -169,7 +170,7 @@ export default function ListingDetails({
 
           <div className="lg:w-1/2 lg:h-full lg:overflow-y-auto no-scrollbar max-sm:h-1/2">
             <div className="m-4">
-              <h1 className="text-3xl font-bold text-center text-gray-900">
+              <h1 className="text-3xl font-bold text-center text-gray-900 dark:text-slate-100">
                 {details.name}
               </h1>
               <div className="flex justify-center gap-7 font-semibold text-gray-500 my-3">
@@ -186,17 +187,17 @@ export default function ListingDetails({
                 />
               </div>
               <div className="">
-                <h1 className="font-bold text-lg">
+                <h1 className="font-bold text-lg text-slate-100">
                   {details.landlord_ID.first_name}{" "}
                   {details.landlord_ID.last_name}
                 </h1>
-                <span className="capitalize font-semibold text-gray-700">
+                <span className="capitalize font-semibold text-gray-500">
                   Landlord
                 </span>
               </div>
             </div>
 
-            <div className="mx-4 py-3 space-y-3 text-gray-900 text-base font-medium">
+            <div className="mx-4 py-3 space-y-3 text-gray-900 dark:text-gray-100 text-base font-medium">
               <div className="flex gap-2 items-center">
                 <PhilippinePeso size={30} />{" "}
                 <span>{details.rent} per month</span>
@@ -212,14 +213,14 @@ export default function ListingDetails({
               <div className="flex gap-2 items-center">
                 <User size={30} /> <span>{details.occupant} tenant</span>
               </div>
-              <span className="text-gray-500">{details.created_at}</span>
+              <span className="text-gray-500 dark:text-slate-500">{format(new Date(details.created_at), "MMM dd, yyyy h:mm aa")}</span>
             </div>
 
             <div className="space-y-3 mx-4 border-y-2 py-3 border-gray-300">
-              <h1 className="text-2xl font-semibold text-gray-900">
+              <h1 className="text-2xl font-semibold text-gray-900 dark:text-slate-100">
                 About this property
               </h1>
-              <p className="text-gray-700 text-base font-medium">
+              <p className="text-gray-700 dark:text-slate-400 text-base font-medium">
                 {details.description}
               </p>
             </div>
@@ -249,7 +250,7 @@ export default function ListingDetails({
               </Map>
             </div>
             <div className="px-4 flex flex-col gap-3 pb-16">
-              <h1 className="text-base font-semibold text-gray-900">Reviews</h1>
+              <h1 className="text-base font-semibold text-gray-900 dark:text-slate-100">Reviews</h1>
               <div className="flex flex-col-reverse gap-2">
                 {details.reviews.map((review) => (
                   <ReviewItem key={review.id} data={review} />
@@ -258,9 +259,9 @@ export default function ListingDetails({
             </div>
           </div>
         </div>
-        <div className="sticky lg:absolute bottom-0 w-full bg-white p-3 lg:w-1/2 lg:right-0">
+        <div className="sticky lg:absolute bottom-0 w-full bg-white dark:bg-gray-800 p-3 lg:w-1/2 lg:right-0">
           <Button
-            className="w-full bg-green-700"
+            className="w-full bg-green-700 hover:bg-green-900 text-slate-100"
             onClick={() => setOpenLandlord(true)}
           >
             Message Landlord

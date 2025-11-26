@@ -20,7 +20,7 @@ export default function AuthPageLayout() {
 
   return (
     <>
-      <nav className="flex flex-row justify-between items-center h-20 px-10 max-sm:px-5">
+      <nav className="flex flex-row justify-between items-center h-20 px-10 max-sm:px-5 dark:bg-gray-950">
         <img
           className="w-10 aspect-square"
           src={theme === "dark" ? logoDark : logoLight}
@@ -30,10 +30,10 @@ export default function AuthPageLayout() {
             <Button
               variant="outline"
               size="default"
-              className="capitalize font-semibold text-gray-900 border-gray-900"
+              className="capitalize font-semibold text-gray-900 border-gray-900 dark:border-slate-100 dark:text-slate-100"
             >
               {select}
-              <ChevronDown className="text-gray-900" />
+              <ChevronDown className="text-gray-900 dark:text-slate-100" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">

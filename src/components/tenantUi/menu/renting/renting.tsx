@@ -6,7 +6,7 @@ export default function Renting() {
     const filterRenting = tenancies.filter(item => item.status === "active");
 
     return (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col-reverse gap-2">
             {filterRenting.map(renting => (
                 <RentingItem key={renting.id} renting={renting}/>
             ))}

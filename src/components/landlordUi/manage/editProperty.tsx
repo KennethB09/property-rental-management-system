@@ -174,7 +174,7 @@ export default function EditProperty({
   return (
     <>
       <DialogHeader className="flex flex-row justify-between p-4 lg:border-b lg:border-gray-300">
-        <DialogTitle className="text-start text-2xl w-fit text-gray-900 font-bold">
+        <DialogTitle className="text-start text-2xl w-fit text-gray-900 dark:text-slate-100 font-bold">
           Edit Property
         </DialogTitle>
         <Button variant={"ghost"} size={"icon"} onClick={() => setClose(false)}><X /></Button>
@@ -183,10 +183,10 @@ export default function EditProperty({
 
       <div className="flex overflow-y-auto flex-col py-4 h-full lg:flex-row lg:justify-between lg:gap-4">
         <div className="mb-3 lg:h-full lg:w-1/2">
-          <h1 className="text-gray-900 font-semibold text-lg px-4">
+          <h1 className="text-gray-900 dark:text-slate-100 font-semibold text-lg px-4">
             Edit Images
           </h1>
-          <p className="px-4 mb-2 text-gray-900 text-base">
+          <p className="px-4 mb-2 text-gray-900 dark:text-slate-400 text-base">
             The first image that selected will be the default thumbnail if not
             set.
           </p>
@@ -211,7 +211,7 @@ export default function EditProperty({
                 name="title"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-gray-900 text-base">
+                    <FormLabel className="text-gray-900 dark:text-slate-100 text-base">
                       Title
                     </FormLabel>
                     <FormControl>
@@ -232,7 +232,7 @@ export default function EditProperty({
                 name="description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-gray-900 text-base">
+                    <FormLabel className="text-gray-900 dark:text-slate-100 text-base">
                       About this property
                     </FormLabel>
                     <FormControl>
@@ -253,7 +253,7 @@ export default function EditProperty({
                 name="address"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-gray-900 text-base">
+                    <FormLabel className="text-gray-900 dark:text-slate-100 text-base">
                       Address
                     </FormLabel>
                     <FormControl>
@@ -276,7 +276,7 @@ export default function EditProperty({
                   name="propertyType"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-gray-900 text-base">
+                      <FormLabel className="text-gray-900 dark:text-slate-100 text-base">
                         Property type
                       </FormLabel>
                       <FormControl>
@@ -309,7 +309,7 @@ export default function EditProperty({
                   name="occupant"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-gray-900 text-base">
+                      <FormLabel className="text-gray-900 dark:text-slate-100 text-base">
                         Occupant
                       </FormLabel>
                       <FormControl>
@@ -333,7 +333,7 @@ export default function EditProperty({
                   name="status"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-gray-900 text-base">
+                      <FormLabel className="text-gray-900 dark:text-slate-100 text-base">
                         Status
                       </FormLabel>
                       <FormControl>
@@ -367,7 +367,7 @@ export default function EditProperty({
                   name="rent"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-gray-900 text-base">
+                      <FormLabel className="text-gray-900 dark:text-slate-100 text-base">
                         Rent per month
                       </FormLabel>
                       <FormControl>
@@ -388,7 +388,7 @@ export default function EditProperty({
                   )}
                 />
               </div>
-              <div className="space-y-2 text-gray-900">
+              <div className="space-y-2 text-gray-900 dark:text-slate-100">
                 <div className="flex gap-2">
                   <MapIcon />
                   <h1 className="text-base font-semibold">Location</h1>
@@ -423,14 +423,14 @@ export default function EditProperty({
                 <Button
                   variant={"secondary"}
                   onClick={() => setClose((prev) => !prev)}
-                  className="w-20 text-gray-900"
+                  className="w-20 text-gray-900 dark:text-slate-100 dark:bg-gray-600"
                   disabled={loading}
                 >
                   Cancel
                 </Button>
-                <Button type="submit" className="w-28 bg-green-700">
+                <Button type="submit" className="w-28 bg-green-700 hover:bg-green-900 text-slate-100">
                   {loading ? (
-                    <Loader2 size={25} className="animate-spin" />
+                    <Loader2 size={25} className="animate-spin dark:text-white" />
                   ) : (
                     "Save"
                   )}

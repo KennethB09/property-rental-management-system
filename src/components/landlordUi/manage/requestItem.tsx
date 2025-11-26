@@ -47,8 +47,8 @@ export default function RequestItem({ request }: RequestItemProps) {
     return (
       <div className="flex flex-wrap border justify-between items-center gap-4 border-gray-200 rounded-2xl p-3">
         <div className="space-y-1">
-          <h1 className="text-lg font-bold text-gray-900">Invite</h1>
-          <p className="text-base text-gray-900">
+          <h1 className="text-lg font-bold text-gray-900 dark:text-slate-100">Invite</h1>
+          <p className="text-base text-gray-900 dark:text-slate-100">
             You invited{" "}
             <span className="font-semibold">
               {request.tenant_id.first_name} {request.tenant_id.last_name}
@@ -106,8 +106,8 @@ export default function RequestItem({ request }: RequestItemProps) {
   return (
     <div className="flex flex-wrap items-center justify-between gap-2 border border-gray-200 rounded-2xl p-3">
       <div className="space-y-1">
-        <h1 className="text-lg font-bold text-gray-900">Rent Request</h1>
-        <p className="text-base text-gray-900">
+        <h1 className="text-lg font-bold text-gray-900 dark:text-slate-100">Rent Request</h1>
+        <p className="text-base text-gray-900 dark:text-slate-100">
           <span className="font-semibold">
             {request.tenant_id.first_name} {request.tenant_id.last_name}
           </span>{" "}

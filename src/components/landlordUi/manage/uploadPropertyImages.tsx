@@ -114,7 +114,7 @@ export default function UploadPropertyImages({ listItemThumbnail, listItemImages
                 variant={"outline"}
                 type="button"
                 onClick={onImageRemoveAll}
-                className=" text-gray-900"
+                className=" text-gray-900 dark:text-slate-100"
               >
                 Remove all images
               </Button>
@@ -155,7 +155,7 @@ export default function UploadPropertyImages({ listItemThumbnail, listItemImages
                           Remove
                         </Button>
                         <Button
-                          className="bg-green-700 w-1/2"
+                          className="bg-green-700 hover:bg-green-900 text-slate-100 w-1/2"
                           size={"lg"}
                           onClick={() => handleSetThumbnail(image)}
                         >

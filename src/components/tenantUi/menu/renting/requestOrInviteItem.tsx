@@ -58,8 +58,8 @@ export default function RequestOrInviteItem({
     return (
       <div className="flex flex-wrap items-center justify-between border gap-2 border-gray-200 rounded-2xl p-3">
         <div className="space-y-1">
-          <h1 className="text-lg font-bold text-gray-900">Landlord Invite</h1>
-          <p className="text-base text-gray-900">
+          <h1 className="text-lg font-bold text-gray-900 dark:text-slate-100">Landlord Invite</h1>
+          <p className="text-base text-gray-900 dark:text-slate-100">
             <span className="font-semibold">
               {item.landlord_id.first_name} {item.landlord_id.last_name}
             </span>{" "}
@@ -112,8 +112,8 @@ export default function RequestOrInviteItem({
   return (
     <div className="flex flex-wrap gap-2 border border-gray-200 rounded-2xl p-3">
       <div className="space-y-1">
-        <h1 className="text-lg font-bold text-gray-900">Rent Request</h1>
-        <p className="text-base text-gray-900">
+        <h1 className="text-lg font-bold text-gray-900 dark:text-slate-100">Rent Request</h1>
+        <p className="text-base text-gray-900 dark:text-slate-100">
           You sent rent request to{" "}
           <span className="font-semibold">
             {item.landlord_id.first_name} {item.landlord_id.last_name}

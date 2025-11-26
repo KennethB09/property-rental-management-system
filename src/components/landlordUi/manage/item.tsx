@@ -15,8 +15,8 @@ export default function Item({ property, onClick }: ItemProps) {
         />
       </div>
       <div className="truncate">
-        <h1 className="font-bold text-lg text-gray-900">{property.name}</h1>
-        <span className="font-semibold text-base text-gray-800">Rent: {property.rent}</span>
+        <h1 className="font-bold text-lg text-gray-900 dark:text-slate-100">{property.name}</h1>
+        <span className="font-semibold text-base text-gray-800 dark:text-slate-600">Rent: {property.rent}</span>
       </div>
     </div>
   );

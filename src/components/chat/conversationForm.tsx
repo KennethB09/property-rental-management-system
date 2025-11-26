@@ -128,12 +128,12 @@ export default function ConversationForm({
   return (
     <div className="flex gap-3 p-4">
       <AlertDialog open={openAlert} onOpenChange={setOpenAlert}>
-        <AlertDialogContent>
+        <AlertDialogContent className="bg-white dark:bg-gray-900">
           <AlertDialogHeader>
             <AlertDialogTitle>
               {session.user.user_metadata.role === "landlord"
                 ? "Add as tenant"
-                : "Rent"}
+                : "Rent Listing"}
             </AlertDialogTitle>
             <AlertDialogDescription>
               {session.user.user_metadata.role === "landlord"
@@ -145,7 +145,7 @@ export default function ConversationForm({
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             {session.user.user_metadata.role === "landlord" ? (
               <Button
-                className="bg-green-700 hover:bg-green-900"
+                className="bg-green-700 hover:bg-green-900 text-slate-100"
                 onClick={() => createTenancy("landlord")}
               >
                 <UserRoundPlus />
@@ -153,7 +153,7 @@ export default function ConversationForm({
               </Button>
             ) : (
               <Button
-                className="bg-green-700 hover:bg-green-900"
+                className="bg-green-700 hover:bg-green-900 text-slate-100"
                 onClick={() => createTenancy("tenant")}
               >
                 <HousePlus />
@@ -164,7 +164,7 @@ export default function ConversationForm({
         </AlertDialogContent>
       </AlertDialog>
       {!checkTenancy && (
-        <Button className="bg-green-700 hover:bg-green-900" onClick={() => setOpenAlert(true)}>
+        <Button className="bg-green-700 hover:bg-green-900 text-slate-100" onClick={() => setOpenAlert(true)}>
           {session.user.user_metadata.role === "landlord" ? (
             <>
               <UserRoundPlus /> Add as tenant
@@ -187,7 +187,7 @@ export default function ConversationForm({
         disabled={isLoading}
         className="bg-green-700"
       >
-        {isLoading ? <Loader2 className="animate-spin" /> : <Send />}
+        {isLoading ? <Loader2 className="animate-spin dark:text-slate-100" /> : <Send className="text-slate-100"/>}
       </Button>
     </div>
   );

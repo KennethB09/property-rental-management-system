@@ -16,7 +16,7 @@ import { useAuthContext } from "@/context/AuthContext";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 const formSchema = z.object({
   first_name: z.string(),
@@ -80,11 +80,11 @@ export default function LandlordSignUp() {
     setLoading(false);
   }
   return (
-    <div className="flex flex-col px-10 max-sm:px-5 font-roboto">
+    <div className="flex flex-col px-10 max-sm:px-5 font-roboto dark:bg-gray-950">
       <Toaster richColors />
       <div className="flex flex-row">
         <div className="w-5/12 max-sm:w-full h-full flex flex-col justify-center gap-10 my-10">
-          <h1 className="text-gray-900 font-bold text-3xl">Sign-up</h1>
+          <h1 className="text-gray-900 dark:text-slate-100 font-bold text-3xl">Sign-up</h1>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
               <FormField
@@ -98,7 +98,7 @@ export default function LandlordSignUp() {
                         type="text"
                         placeholder="First Name"
                         {...field}
-                        className="border-gray-900"
+                        className="border-gray-900 dark:border-gray-500"
                         required
                       />
                     </FormControl>
@@ -117,7 +117,7 @@ export default function LandlordSignUp() {
                         type="text"
                         placeholder="Last Name"
                         {...field}
-                        className="border-gray-900"
+                        className="border-gray-900 dark:border-gray-500"
                         required
                       />
                     </FormControl>
@@ -136,7 +136,7 @@ export default function LandlordSignUp() {
                         type="email"
                         placeholder="Email"
                         {...field}
-                        className="border-gray-900"
+                        className="border-gray-900 dark:border-gray-500"
                         required
                       />
                     </FormControl>
@@ -155,7 +155,7 @@ export default function LandlordSignUp() {
                         type="password"
                         placeholder="Password"
                         {...field}
-                        className="border-gray-900"
+                        className="border-gray-900 dark:border-gray-500"
                         required
                       />
                     </FormControl>
@@ -172,16 +172,16 @@ export default function LandlordSignUp() {
 
               <Button
                 type="submit"
-                className="w-full bg-green-700 hover:bg-green-900"
+                className="w-full bg-green-700 hover:bg-green-900 dark:text-slate-100"
                 disabled={loading}
               >
                 Sign-up
               </Button>
-              <p className="text-gray-900 text-center">
+              <p className="text-gray-900 dark:text-slate-100 text-center">
                 Already have an account?{" "}
-                <a href="/auth/landlord-login" className="text-green-700">
+                <Link to="/auth/landlord-login" className="text-green-700">
                   Login
-                </a>
+                </Link>
               </p>
             </form>
           </Form>
