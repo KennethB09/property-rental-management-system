@@ -54,7 +54,7 @@ export default function LandlordMenu() {
   }, []);
 
   return (
-    <div className="flex flex-col p-4 h-full gap-4 font-roboto lg:w-[91%] max-md:bg-gray-900">
+    <div className="flex flex-col p-4 h-full gap-4 font-roboto lg:w-[91%] max-md:dark:bg-gray-900">
       <header>
         <h1 className="text-3xl font-bold text-gray-900 dark:text-slate-100">Menu</h1>
       </header>
