@@ -64,7 +64,6 @@ export const AuthContextProvider = ({
             last_name,
             phone_number,
             occupation,
-            profile_pic: "",
           },
         },
       });

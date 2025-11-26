@@ -30,8 +30,10 @@ export default function StartConvoModal({
   const { dispatch } = useConversationContext();
   const navigate = useNavigate();
   const [message, setMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   async function startConversation() {
+    setIsLoading(true);
 
     const response = await fetch(
       `${import.meta.env.VITE_SERVER_URL}/rent-ease/api/start-conversation`,
@@ -53,6 +55,8 @@ export default function StartConvoModal({
     const json = await response.json();
 
     if (!response.ok) {
+      setIsLoading(false);
+      console.log(json.error)
       return toast.error(json.error);
     }
 
@@ -60,23 +64,25 @@ export default function StartConvoModal({
     navigate("/tenant/dashboard/chats", {
       state: json,
     });
+    setIsLoading(false);
     localStorage.setItem("TenantActiveTab", "Chats");
   }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent>
+      <DialogContent className="dark:bg-gray-900">
         <DialogHeader>
           <DialogTitle>Chat Landlord</DialogTitle>
           <DialogDescription hidden></DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button onClick={startConversation} className="bg-green-700">Send Message</Button>
+          <Button disabled={isLoading} onClick={startConversation} className="bg-green-700 hover:bg-green-900 text-slate-100">Send Message</Button>
           <Input
             value={message}
             placeholder="Message"
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && startConversation()}
+            disabled={isLoading}
           />
         </DialogFooter>
       </DialogContent>

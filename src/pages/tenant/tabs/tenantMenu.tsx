@@ -15,7 +15,7 @@ import TenantRenting from "@/components/tenantUi/menu/renting/tenantRenting";
 export type TactiveList = "profile" | "renting";
 
 export default function TenantMenu() {
-  const { session, signOut } = useAuthContext();
+  const { signOut } = useAuthContext();
   const { getTenantProfile } = useApi();
   const [loading, setLoading] = useState(false);
   const [profile, setProfile] = useState<undefined | tenant>(undefined);
@@ -40,7 +40,7 @@ export default function TenantMenu() {
   }, []);
 
   return (
-    <div className="flex flex-col h-full lg:w-[91%]">
+    <div className="flex flex-col h-full lg:w-[91%] max-md:bg-gray-900">
       <TenantHeader title="Menu" />
 
       <div className="lg:m-4 lg:p-4 lg:border lg:border-gray-300 dark:bg-gray-900 lg:rounded-2xl flex-1 min-h-0 lg:flex">
@@ -60,8 +60,8 @@ export default function TenantMenu() {
             )}
           </div>
           <h1 className="text-lg font-semibold text-gray-900 dark:text-slate-100">
-            {session.user.user_metadata.first_name}{" "}
-            {session.user.user_metadata.last_name}
+            {profile?.first_name}{" "}
+            {profile?.last_name}
           </h1>
           <div className="flex flex-col justify-between h-full w-full">
             <div className="mx-4">

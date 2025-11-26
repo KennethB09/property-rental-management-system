@@ -72,12 +72,12 @@ export default function ProfileUpload({ setProfile }: ProfileUploadProps) {
         {({ onImageUpload }) => (
           // write your building UI
           <div className="flex justify-center items-center">
-            <div className="relative flex justify-center items-center rounded-full border-1 border-gray-900 text-green-700 w-28 aspect-square">
+            <div className="relative flex justify-center items-center rounded-full border-1 border-gray-900 dark:border-gray-200 text-green-700 w-28 aspect-square">
               {!image ? (
                 <>
                   <User size={70} />
                   <span
-                    className="flex justify-center items-center bg-white p-1 absolute bottom-0 right-0 rounded-full border-1 border-gray-900 w-10 aspect-square"
+                    className="flex justify-center items-center bg-white dark:bg-gray-200 p-1 absolute bottom-0 right-0 rounded-full border-1 border-gray-900 w-10 aspect-square"
                     onClick={onImageUpload}
                   >
                     <Pen />

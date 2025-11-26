@@ -121,7 +121,7 @@ export default function RequestItem({ request }: RequestItemProps) {
       {request.status === "pending" && (
         <div className="flex gap-3">
           <Button
-            className="bg-green-700"
+            className="bg-green-700 hover:bg-green-900 text-slate-100"
             onClick={() => updateStatus(request.id, "active")}
             disabled={isLoading}
           >

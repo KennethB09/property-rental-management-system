@@ -80,7 +80,7 @@ export default function RequestOrInviteItem({
               Decline
             </Button>
             <Button
-              className="bg-green-700"
+              className="bg-green-700 hover:bg-green-900 text-slate-100"
               onClick={() => handleUpdate("active")}
               disabled={isLoading}
             >

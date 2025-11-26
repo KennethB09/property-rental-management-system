@@ -16,7 +16,7 @@ export default function TenantProfile({ tenant, onClose }: TenantProfileProps) {
   const [openEditModal, setOpenEditModal] = useState(false);
 
   return (
-    <div className="fixed inset-0 flex flex-col overflow-hidden h-full w-full z-10 bg-white lg:border lg:border-gray-300 lg:rounded-2xl lg:h-full lg:w-1/2 lg:relative">
+    <div className="fixed inset-0 flex flex-col overflow-hidden h-full w-full z-20 bg-white dark:bg-gray-900 lg:border lg:border-gray-300 lg:rounded-2xl lg:h-full lg:w-1/2 lg:relative">
       {openEditModal && (
         <TenantEditProfile userData={tenant} setState={setOpenEditModal} />
       )}
@@ -25,7 +25,7 @@ export default function TenantProfile({ tenant, onClose }: TenantProfileProps) {
         <button onClick={() => onClose("")} className="">
           <X size={30} />
         </button>
-        <h1 className="text-2xl font-bold text-gray-900 ml-6">Profile</h1>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-slate-100 ml-6">Profile</h1>
         <Button
           variant={"outline"}
           className=""
@@ -50,7 +50,7 @@ export default function TenantProfile({ tenant, onClose }: TenantProfileProps) {
               <span className="font-semibold text-gray-900 text-lg">
                 First Name
               </span>
-              <span className="rounded-2xl bg-gray-200 p-3 text-gray-600 font-medium">
+              <span className="rounded-2xl bg-gray-200 dark:bg-gray-800 p-3 text-gray-600 dark:text-gray-500 font-medium">
                 {tenant.first_name}
               </span>
             </div>
@@ -58,7 +58,7 @@ export default function TenantProfile({ tenant, onClose }: TenantProfileProps) {
               <span className="font-semibold text-gray-900 text-lg">
                 Last Name
               </span>
-              <span className="rounded-2xl bg-gray-200 p-3 text-gray-600 font-medium">
+              <span className="rounded-2xl bg-gray-200 p-3 dark:bg-gray-800 text-gray-600 dark:text-gray-500 font-medium">
                 {tenant.last_name}
               </span>
             </div>
@@ -66,13 +66,13 @@ export default function TenantProfile({ tenant, onClose }: TenantProfileProps) {
               <span className="font-semibold text-gray-900 text-lg">
                 Phone Number
               </span>
-              <span className="rounded-2xl bg-gray-200 p-3 text-gray-600 font-medium">
+              <span className="rounded-2xl bg-gray-200 dark:bg-gray-800 p-3 text-gray-600 dark:text-gray-500 font-medium">
                 {tenant.phone_number}
               </span>
             </div>
             <div className="flex flex-col gap-1">
               <span className="font-semibold text-gray-900 text-lg">Email</span>
-              <span className="rounded-2xl bg-gray-200 p-3 text-gray-600 font-medium">
+              <span className="rounded-2xl bg-gray-200 dark:bg-gray-800 p-3 text-gray-600 dark:text-gray-500 font-medium">
                 {tenant.email}
               </span>
             </div>
@@ -80,7 +80,7 @@ export default function TenantProfile({ tenant, onClose }: TenantProfileProps) {
               <span className="font-semibold text-gray-900 text-lg">
                 Occupation
               </span>
-              <span className="rounded-2xl bg-gray-200 p-3 text-gray-600 font-medium capitalize">
+              <span className="rounded-2xl bg-gray-200 dark:bg-gray-800 p-3 text-gray-600 dark:text-gray-500 font-medium capitalize">
                 {tenant.occupation.name}
               </span>
             </div>

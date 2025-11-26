@@ -73,7 +73,7 @@ export default function TenantSearch() {
           setOpen={setOpenModal}
         />
       )}
-      <div className="flex gap-3 items-center">
+      <div className="flex gap-3 items-center pb-4">
         <Link to={"/tenant/dashboard"}>
           <ArrowLeft size={30} className="text-green-700" />
         </Link>
@@ -196,7 +196,7 @@ export default function TenantSearch() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="flex flex-wrap overflow-y-auto h-screen gap-2 p-4 w-full">
+      <div className="flex flex-wrap overflow-y-auto h-full gap-2 p-4 w-full">
         {results.map((item) => (
           <ListingItem key={item.id} property={item} onClick={handleSelectedListing} />
         ))}

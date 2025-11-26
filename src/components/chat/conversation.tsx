@@ -73,7 +73,7 @@ export default function Conversation({
 
   return (
     <div
-      className="fixed inset-0 h-screen w-full bg-white dark:bg-gray-900 z-10 flex flex-col justify-between 
+      className="fixed inset-0 h-svh w-full bg-white dark:bg-gray-900 z-20 flex flex-col justify-between 
 lg:static lg:border lg:border-gray-300 lg:rounded-2xl lg:h-full lg:w-1/2"
     >
       <ConversationHeader onClose={onClose} conversation={conversation} />

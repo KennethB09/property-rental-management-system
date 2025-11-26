@@ -87,7 +87,7 @@ export default function ListingDetails({
         />
       )}
 
-      <DialogContent className="[&>button]:hidden p-0 border-0 min-w-full h-screen rounded-none overflow-y-scroll lg:min-w-[800px] lg:h-3/4 lg:rounded-2xl lg:flex lg:flex-col no-scrollbar dark:bg-gray-900">
+      <DialogContent className="[&>button]:hidden p-0 border-0 min-w-full h-dvh rounded-none overflow-y-scroll lg:min-w-[800px] lg:h-3/4 lg:rounded-2xl lg:flex lg:flex-col no-scrollbar dark:bg-gray-900">
         <DialogHeader className="absolute z-10 flex-row justify-between bg-black/80 w-full text-white p-3 lg:w-1/2">
           <DialogClose className="w-fit">
             <ArrowLeft size={30} />

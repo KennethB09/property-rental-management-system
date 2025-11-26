@@ -39,13 +39,13 @@ export default function LandlordManage() {
         <h1 className="font-bold text-3xl text-gray-900 dark:text-slate-100">Manage</h1>
       </header>
 
-      <Tabs defaultValue="properties" className="overflow-y-hidden">
+      <Tabs defaultValue="properties" className="overflow-y-hidden h-full">
         <TabsList className="dark:bg-gray-800">
           <TabsTrigger value="properties">Properties</TabsTrigger>
           <TabsTrigger value="Requests">Requests</TabsTrigger>
           <TabsTrigger value="Tenants">Tenants</TabsTrigger>
         </TabsList>
-        <TabsContent value="properties">
+        <TabsContent value="properties" className="h-full">
           <div className="flex flex-col border border-gray-300 rounded-2xl h-full p-3">
             <div className="flex justify-between">
               <div className="text-white">
@@ -66,7 +66,9 @@ export default function LandlordManage() {
                 </SelectContent>
               </Select>
             </div>
-            <div className="mt-2 flex flex-col-reverse h-full gap-1">
+            <div className="mt-2 pb-12 h-full w-full flex items-start justify-center overflow-y-auto">
+
+            <div className="flex w-full flex-col-reverse gap-1">
               {properties?.length !== 0 ? (
                 properties?.map((property) => (
                   <Item
@@ -78,6 +80,7 @@ export default function LandlordManage() {
               ) : (
                 <h1>No Listings</h1>
               )}
+            </div>
             </div>
           </div>
         </TabsContent>

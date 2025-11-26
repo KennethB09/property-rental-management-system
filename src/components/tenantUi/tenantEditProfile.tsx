@@ -114,9 +114,9 @@ export default function TenantEditProfile({
   }, []);
 
   return (
-    <div className="fixed w-full h-screen bg-white lg:absolute lg:h-full lg:w-full lg:flex lg:flex-col">
+    <div className="fixed w-full h-screen bg-white dark:bg-gray-900 lg:absolute lg:h-full lg:w-full lg:flex lg:flex-col">
       <div className="flex justify-between items-center h-16 px-4 lg:p-4">
-        <h1 className="text-2xl font-bold text-gray-900">Edit Profile</h1>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-slate-100">Edit Profile</h1>
         <button onClick={() => setState(false)}>
           <X size={30} />
         </button>
@@ -227,12 +227,12 @@ export default function TenantEditProfile({
             <Button
               variant={"secondary"}
               onClick={() => setState((prev) => !prev)}
-              className="w-20 text-gray-900"
+              className="w-20 text-gray-900 dark:text-slate-100 dark:bg-gray-700"
               disabled={loading}
             >
               Cancel
             </Button>
-            <Button type="submit" className="w-20 bg-green-700">
+            <Button type="submit" className="w-20 bg-green-700 hover:bg-green-900 text-slate-100">
               {loading ? (
                 <Loader2 size={25} className="animate-spin" />
               ) : (

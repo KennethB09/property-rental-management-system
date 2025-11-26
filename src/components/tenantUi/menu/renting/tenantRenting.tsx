@@ -11,7 +11,7 @@ type TenantRentingProps = {
 
 export default function TenantRenting({ onClick }: TenantRentingProps) {
   return (
-    <div className="fixed flex flex-col w-full h-full top-0 left-0 bg-white dark:bg-gray-900 z-10 lg:static lg:border lg:border-gray-300 lg:rounded-2xl lg:w-1/2">
+    <div className="fixed flex flex-col w-full h-full top-0 left-0 z-20 bg-white dark:bg-gray-900 lg:static lg:border lg:border-gray-300 lg:rounded-2xl lg:w-1/2">
       <div className="flex w-full justify-between p-4">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-slate-100">Renting</h1>
         <button onClick={() => onClick("")}>
