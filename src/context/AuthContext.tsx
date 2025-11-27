@@ -117,7 +117,7 @@ export const AuthContextProvider = ({
         email: email,
         password: password,
         options: {
-          emailRedirectTo: `${import.meta.env.CLIENT}/${role}/dashboard`,
+          emailRedirectTo: `${import.meta.env.VITE_CLIENT}/${role}/dashboard`,
           data: {
             role,
             first_name,
